@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InterStock Group Project</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+        
+        .col-centered {
+            float: none;
+            margin: 0 auto;
+        }
+        
+        .carousel-control {
+            width: 8%;
+            width: 0px;
+        }
+        
+        .carousel-control.left,
+        .carousel-control.right {
+            margin-right: 40px;
+            margin-left: 32px;
+            background-image: none;
+            opacity: 1;
+        }
+        
+        .carousel-control>a>span {
+            color: white;
+            font-size: 29px !important;
+        }
+        
+        .carousel-col {
+            position: relative;
+            min-height: 1px;
+            padding: 5px;
+            float: left;
+        }
+        
+        .active>div {
+            display: none;
+        }
+        
+        .active>div:first-child {
+            display: block;
+        }
+        /*xs*/
+        
+        @media (max-width: 767px) {
+            .carousel-inner .active.left {
+                left: -50%;
+            }
+            .carousel-inner .active.right {
+                left: 50%;
+            }
+            .carousel-inner .next {
+                left: 50%;
+            }
+            .carousel-inner .prev {
+                left: -50%;
+            }
+            .carousel-col {
+                width: 50%;
+            }
+            .active>div:first-child+div {
+                display: block;
+            }
+        }
+        /*sm*/
+        
+        @media (min-width: 768px) and (max-width: 991px) {
+            .carousel-inner .active.left {
+                left: -50%;
+            }
+            .carousel-inner .active.right {
+                left: 50%;
+            }
+            .carousel-inner .next {
+                left: 50%;
+            }
+            .carousel-inner .prev {
+                left: -50%;
+            }
+            .carousel-col {
+                width: 50%;
+            }
+            .active>div:first-child+div {
+                display: block;
+            }
+        }
+        /*md*/
+        
+        @media (min-width: 992px) and (max-width: 1199px) {
+            .carousel-inner .active.left {
+                left: -33%;
+            }
+            .carousel-inner .active.right {
+                left: 33%;
+            }
+            .carousel-inner .next {
+                left: 33%;
+            }
+            .carousel-inner .prev {
+                left: -33%;
+            }
+            .carousel-col {
+                width: 33%;
+            }
+            .active>div:first-child+div {
+                display: block;
+            }
+            .active>div:first-child+div+div {
+                display: block;
+            }
+        }
+        /*lg*/
+        
+        @media (min-width: 1200px) {
+            .carousel-inner .active.left {
+                left: -25%;
+            }
+            .carousel-inner .active.right {
+                left: 25%;
+            }
+            .carousel-inner .next {
+                left: 25%;
+            }
+            .carousel-inner .prev {
+                left: -25%;
+            }
+            .carousel-col {
+                width: 25%;
+            }
+            .active>div:first-child+div {
+                display: block;
+            }
+            .active>div:first-child+div+div {
+                display: block;
+            }
+            .active>div:first-child+div+div+div {
+                display: block;
+            }
+        }
+        
+        .block {
+            width: 306px;
+            height: 230px;
+        }
+        
+        .block {
+            background: gray;
+        }
+        
+        .carousel {
+            text-align: center;
+        }
+    </style>
+
+    <!--[if IE]>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">InterStock</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Countries <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><span class="flag-icon">
+                            <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/ba/Flag_of_Germany.svg/23px-Flag_of_Germany.svg.png"></span>
+                                <a href="#">Germany</a></li>
+                            <li><a href="#">China - Hong Kong Dollar</a></li>
+                            <li><a href="#">China - Yuan</a></li>
+                            <li><a href="#">Euro</a></li>
+                            <li><a href="#">Japan - Yen</a></li>
+                            <li><a href="#">United States</a></li>
+                        </ul>
+                    </li>
+
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <div class="form-group">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+                      Account
+                    </button>
+                </form>
+            </div>
+            <!--.nav-collapse -->
+        </div>
+    </nav>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Enter Email Address</h4>
+                </div>
+                <div class="modal-body">
+                    Enter your email address to save your preferences.
+                    <div class="form-group">
+                        <label for="emailAddress">Email Address:</label>
+                        <input type="email" class="form-control" id="email" placeholder="yourname@email.com">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container content">
+        <div class="jumbotron">
+            <h1>InterStock</h1>
+            <p>Up to the minute global stock information at your finger tips when you want it.</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-11 col-md-10 col-centered">
+
+                <div id="carousel" class="carousel slide" data-ride="carousel" data-type="multi" data-interval="3000">
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <div class="carousel-col">
+                                <div class="block img-responsive">
+                                    <h3>News Headline</h3>
+                                    <p>Text from API</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="carousel-col">
+                                <div class="block img-responsive">
+                                    <h3>News Headline</h3>
+                                    <p>Text from API</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="carousel-col">
+                                <div class="block img-responsive">
+                                    <h3>News Headline</h3>
+                                    <p>Text from API</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="carousel-col">
+                                <div class="block img-responsive">
+                                    <h3>News Headline</h3>
+                                    <p>Text from API</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Controls -->
+                    <div class="left carousel-control">
+                        <a href="#carousel" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </div>
+                    <div class="right carousel-control">
+                        <a href="#carousel" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+
+</html>
