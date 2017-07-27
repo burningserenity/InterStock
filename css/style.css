@@ -1,6 +1,12 @@
      body {
             padding-top: 50px;
         }
+
+#logo {
+    height: 19px;
+    width: 23;
+    
+}
         
         .starter-template {
             padding: 40px 15px;
