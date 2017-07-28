@@ -45,7 +45,7 @@ var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/'
 var symbol;
 
-getStock() {
+function getStock() {
   $.ajax({
     url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
     method: "GET"
@@ -56,7 +56,7 @@ getStock() {
 
 $(".stockSelect").on('click', function(event) {
   exchange = $(this).attr('value');
-
+  $(this).appendTo(".navbar");
 });
 
 $("#submit").on("click", function(event) {
@@ -69,7 +69,7 @@ $("#emailSubmit").on("click", function(event){
   var userEmail = $("#email").val();
 })
 
-displayStock(response) {
+function displayStock(response) {
   $("#carousel").detach();
   $("<div>").attr({
     id: 'stockDisplay'
