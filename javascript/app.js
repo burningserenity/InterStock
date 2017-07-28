@@ -45,7 +45,10 @@ country: "ENGLAND"
  country: "EUROPE"
 }];
  
-
+var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
+var queryURL = 'https://www.quandl.com/api/v3/datasets/';
+var exchange = "";
+var symbol = "";
 
 
 //mobilizing the carousel
@@ -78,12 +81,10 @@ $("#symbolsubmit").on("click",function(event){
 //  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
 //  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
 
+
+symbol = $("#symbolsearch").val().trim();
 var stringapi = "";
 
-var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
-var queryURL = 'https://www.quandl.com/api/v3/datasets/'
-var exchange = $("#countryDrop").val();
-var symbol = $("#symbolsearch").val().trim();
 
 if (exchange === "BSE"){
       symbol = "BOM"+symbol;
@@ -105,6 +106,12 @@ $.ajax({
 
 });
 
+
+$('#countryDrop li').click(function(){
+    var $this = $(this);
+    exchange = $this.attr("value");
+    console.log(exchange);
+})
 
 
 $("#submit").on("click", function(event){
