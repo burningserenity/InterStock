@@ -12,11 +12,12 @@
        position: relative;
        top: 1px;
        border: 2px double gray;
+       visibility: hidden;
      }
 
-     #logo {
+     .logo {
          height: 19px;
-         width: 23;
+         width: 23px;
      }
 
      .starter-template {

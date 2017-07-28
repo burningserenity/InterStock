@@ -2,174 +2,193 @@
 <html lang="en-us">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>InterStock Group Project</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InterStock Group Project</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="css/style.css">
 
-    <!--[if IE]>
+  <!--[if IE]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+  <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">InterStock</a>
-            </div>
+        <a class="navbar-brand" href="#">InterStock</a>
+      </div>
 
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
+      <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
 
-                    <li class="dropdown" id="countryDrop">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Countries <b class="caret"></b></a>
-                        <ul class="dropdown-menu">
+          <li class="dropdown" id="countryDrop">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Countries <b class="caret"></b></a>
+            <ul class="dropdown-menu">
 
-                            <li value="FSE">
-                                <a href="#"><img src="images/Boerse_Frankfurt.png" alt="Frankfurt Stock Exchange" id="logo" value="FSE"> | Frankfurt Stock Exchange (FSE)</a>
-                            </li>
-                            <li value="SSE">
-                                <a href="#"><img src="images/Boerse_Stuttgart_logo.png" id="logo" value="SSE"> | Boerse Stuttgart (SSE)</a>
-                            </li>
-                            <li value="LSE">
-                                <a href="#"><img src="images/london-stock-exchange-logo.png" alt="London Stock Exchange" id="logo" value="LSE"> | London Stock Exchange (LSE)</a>
-                            </li>
-                            <li value="TSE">
-                                <a href="#"><img src="images/Tokyo_Stock_Exchange.svg" alt="Tokyo Stock Exchange" id="logo" value="TSE"> | Tokyo Stock Exchange (TSE)</a>
-                            </li>
-                            <li value="NSE">
-                                <a href="#"><img src="images/national-stock-exchange-india.jpeg" alt="National Stock Exchange of India" id="logo" value="NSE"> | National Stock Exchange of India (NSE)</a>
-                            </li>
-                            <li value="BSE">
-                                <a href="#"><img src="images/2000px-Bombay_Stock_Exchange_logo.svg.png" alt="Bombay Stock Exchange" id="logo" value="BSE"> | Bombay Stock Exchange (BSE)</a>
-                            </li>
-                            <li value="EURONEXT">
-                                <a href="#"><img src="images/xeuronext.png.pagespeed.ic.aFgFwi7vte.png" alt="Bombay Stock Exchange" id="logo" value="EURONEXT"> | Euronext Stock Exchange (EURONEXT)</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li id="listItemHolder"></li>
-                </ul>
+              <li data-value="FSE">
+                <a href="#"><img src="images/Boerse_Frankfurt.png" alt="Frankfurt Stock Exchange" class="logo"> | Frankfurt Stock Exchange (FSE)</a>
+              </li>
+              <li data-value="SSE">
+                <a href="#"><img src="images/Boerse_Stuttgart_logo.png" alt="Boerse Stuttgart" class="logo"> | Boerse Stuttgart (SSE)</a>
+              </li>
+              <li data-value="LSE">
+                <a href="#"><img src="images/london-stock-exchange-logo.png" alt="London Stock Exchange" class="logo"> | London Stock Exchange (LSE)</a>
+              </li>
+              <li data-value="TSE">
+                <a href="#"><img src="images/Tokyo_Stock_Exchange.svg" alt="Tokyo Stock Exchange" class="logo"> | Tokyo Stock Exchange (TSE)</a>
+              </li>
+              <li data-value="NSE">
+                <a href="#"><img src="images/national-stock-exchange-india.jpeg" alt="National Stock Exchange of India" class="logo"> | National Stock Exchange of India (NSE)</a>
+              </li>
+              <li data-value="BSE">
+                <a href="#"><img src="images/2000px-Bombay_Stock_Exchange_logo.svg.png" alt="Bombay Stock Exchange" class="logo"> | Bombay Stock Exchange (BSE)</a>
+              </li>
+              <li data-value="EURONEXT">
+                <a href="#"><img src="images/xeuronext.png.pagespeed.ic.aFgFwi7vte.png" alt="Euronext Stock Exchange" class="logo"> | Euronext Stock Exchange (EURONEXT)</a>
+              </li>
+            </ul>
+          </li>
+          <li id="listItemHolder"></li>
+        </ul>
 
 
-                <form class="navbar-form navbar-right">
-                    <div class="form-group">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                        <input type="text" class="form-control" id="symbolsearch" placeholder="Search">
-                    </div>
-                    <button type="submit" class="btn btn-default" id="symbolsubmit">Submit</button>
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+        <form class="navbar-form navbar-right">
+          <div class="form-group">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            <input type="text" class="form-control" id="symbolsearch" placeholder="Search">
+          </div>
+          <button type="submit" class="btn btn-default" id="symbolsubmit">Submit</button>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
                       Account
                     </button>
-                </form>
-            </div>
-            <!--.nav-collapse -->
-        </div>
-    </nav>
-
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Enter Email Address</h4>
-                </div>
-                <div class="modal-body">
-                    Enter your email address to save your preferences.
-                    <div class="form-group">
-                        <label for="emailAddress">Email Address:</label>
-                        <input type="email" class="form-control" id="email" placeholder="yourname@email.com">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="emailSubmit">Save</button>
-                </div>
-            </div>
-        </div>
+        </form>
+      </div>
+      <!--.nav-collapse -->
     </div>
+  </nav>
 
-    <div class="container content">
-        <div class="jumbotron">
-            <h1>InterStock</h1>
-            <p>Up to the minute global stock information at your finger tips when you want it.</p>
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Enter Email Address</h4>
         </div>
+        <div class="modal-body">
+          Enter your email address to save your preferences.
+          <div class="form-group">
+            <label for="email">Email Address:</label>
+            <input type="email" class="form-control" id="email" placeholder="yourname@email.com">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="emailSubmit">Save</button>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <div class="container">
+  <div class="container content">
+    <div class="jumbotron">
+      <h1>InterStock</h1>
+      <p>Up to the minute global stock information at your finger tips when you want it.</p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-11 col-md-10 col-centered">
         <div class="row">
-            <div class="col-xs-11 col-md-10 col-centered" id="displayContainer">
+          <div class="col-md-12 col-xs-12" id="stockName">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12" id="stockSymbol">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-xs-12" id="stockPrice">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-                <div id="carousel" class="carousel slide" data-ride="carousel" data-type="multi" data-interval="3000">
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <div class="carousel-col">
-                                <div class="block img-responsive">
-                                    <h3>News Headline</h3>
-                                    <p>Text from API</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="carousel-col">
-                                <div class="block img-responsive">
-                                    <h3>News Headline</h3>
-                                    <p>Text from API</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="carousel-col">
-                                <div class="block img-responsive">
-                                    <h3>News Headline</h3>
-                                    <p>Text from API</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="carousel-col">
-                                <div class="block img-responsive">
-                                    <h3>News Headline</h3>
-                                    <p>Text from API</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  <div class="container" id="carouselContainer">
+    <div class="row">
+      <div class="col-xs-11 col-md-10 col-centered" id="displayContainer">
 
-                    <!-- Controls -->
-                    <div class="left carousel-control">
-                        <a href="#carousel" role="button" data-slide="prev">
+        <div id="carousel" class="carousel slide" data-ride="carousel" data-type="multi" data-interval="3000">
+          <div class="carousel-inner">
+            <div class="item active">
+              <div class="carousel-col">
+                <div class="block img-responsive">
+                  <h3>News Headline</h3>
+                  <p>Text from API</p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="carousel-col">
+                <div class="block img-responsive">
+                  <h3>News Headline</h3>
+                  <p>Text from API</p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="carousel-col">
+                <div class="block img-responsive">
+                  <h3>News Headline</h3>
+                  <p>Text from API</p>
+                </div>
+              </div>
+            </div>
+            <div class="item">
+              <div class="carousel-col">
+                <div class="block img-responsive">
+                  <h3>News Headline</h3>
+                  <p>Text from API</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div class="left carousel-control">
+            <a href="#carousel" role="button" data-slide="prev">
                             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                             <span class="sr-only">Previous</span>
                         </a>
-                    </div>
-                    <div class="right carousel-control">
-                        <a href="#carousel" role="button" data-slide="next">
+          </div>
+          <div class="right carousel-control">
+            <a href="#carousel" role="button" data-slide="next">
                             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                             <span class="sr-only">Next</span>
                         </a>
-                    </div>
-                </div>
-
-            </div>
+          </div>
         </div>
+
+      </div>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="javascript/app.js"></script>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="javascript/app.js"></script>
 
 </body>
 

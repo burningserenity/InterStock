@@ -49,20 +49,10 @@ $('.carousel[data-type="multi"] .item').each(function() {
 //  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
 //  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
 
-
-
-$(".stockSelect").on('click', function(event) {
-  exchange = $(this).attr('value');
-  console.log(exchange);
-  $(this).appendTo(".navbar");
-});
-
 $("#symbolsubmit").on("click", function(event) {
-
 
   symbol = $("#symbolsearch").val().trim();
   var stringapi = "";
-
 
   if (exchange === "BSE") {
     symbol = "BOM" + symbol;
@@ -87,8 +77,9 @@ $("#symbolsubmit").on("click", function(event) {
 
 $('#countryDrop li').click(function() {
   var $this = $(this);
-  exchange = $this.attr("value");
+  exchange = $this.attr("data-value");
   console.log(exchange);
+  $("#listItemHolder").css('visibility', 'visible');
   $("#listItemHolder").empty();
   $this.appendTo("#listItemHolder");
 })
@@ -98,10 +89,11 @@ $("#emailSubmit").on("click", function(event) {
 })
 
 function displayStock(response) {
-  $("#carousel").detach();
   $("<div>").attr({
-    id: 'stockDisplay'
-  }).appendTo("#displayContainer");
+    class: 'container',
+    id: 'stockContainer'
+  }).prependTo("#carouselContainer");
+    $("<div>")
   $("<div>").attr('class', 'jumbotron').appendTo("#stockDisplay");
   $("<h3>").attr('class', 'stockNameDisplay').html(response.name).appendTo(".jumbotron");
   $("<h4>").attr('class', 'stockSymbolDisplay').html(response.symbol).appendTo(".jumbotron");
