@@ -39,8 +39,6 @@ $('.carousel[data-type="multi"] .item').each(function () {
 });
 
 
-$("#symbolsubmit").on("click", function (event) {
-
     // Quandl API
     // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
     // Tokyo Stock Exchange, Japan: TSE
@@ -53,22 +51,13 @@ $("#symbolsubmit").on("click", function (event) {
 
 
 
-    function getStock() {
-        $.ajax({
-            url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-            method: "GET"
-        }).done(function (response) {
-            console.log(response);
-        });
-    }
-
     $(".stockSelect").on('click', function (event) {
         exchange = $(this).attr('value');
         console.log(exchange);
         $(this).appendTo(".navbar");
     });
 
-    $("#submit").on("click", function (event) {
+    $("#symbolsubmit").on("click", function (event) {
 
 
         symbol = $("#symbolsearch").val().trim();
@@ -102,15 +91,6 @@ $("#symbolsubmit").on("click", function (event) {
         console.log(exchange);
     })
 
-
-    $("#submit").on("click", function (event) {
-
-        event.preventDefault;
-        symbol = $("#search").val();
-        getStock(exchange, symbol);
-    })
-
-
     $("#emailSubmit").on("click", function (event) {
         var userEmail = $("#email").val();
     })
@@ -125,4 +105,3 @@ $("#symbolsubmit").on("click", function (event) {
         $("<h4>").attr('class', 'stockSymbolDisplay').html(response.symbol).appendTo(".jumbotron");
         $("<h4>").attr('class', 'stockCurrentPrice').html(response.currentPrice).appendTo(".jumbotron");
     }
-});
