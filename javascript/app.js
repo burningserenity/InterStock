@@ -9,6 +9,42 @@ var config = {
 };
 firebase.initializeApp(config);
 
+var exchange = [
+{ name:"National Stock Exchange of India",
+  symbol: "NSE",
+  country : "INDIA"
+},
+{
+ name:"Bombay Stock Exchange",
+ symbol: "BSE",
+ prepend: "BOM",
+ country: "INDIA"
+},
+{
+ name: "Japan Exchange Group",
+ symbol: "TSE",
+ country: "JAPAN"
+},
+{
+name: "Frankfurt Stock Exchange",
+symbol: "FSE",
+country: "GERMANY"
+},{
+name: "Stuttgart Stock Exchange",
+symbol: "SSE",
+country: "GERMANY"
+},
+{
+name: "London Stock Exchange",
+symbol: "LSE",
+country: "ENGLAND"
+},
+{
+ name:"Euronext NV",
+ symbol: "LSE",
+ country: "EUROPE"
+}];
+ 
 
 
 
@@ -29,6 +65,9 @@ $('.carousel[data-type="multi"] .item').each(function() {
   }
 });
 
+
+$("#symbolsubmit").on("click",function(event){
+
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
 // Tokyo Stock Exchange, Japan: TSE
@@ -39,17 +78,34 @@ $('.carousel[data-type="multi"] .item').each(function() {
 //  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
 //  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
 
+var stringapi = "";
+
 var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/'
-var exchange;
-var symbol;
+var exchange = $("#countryDrop").val();
+var symbol = $("#symbolsearch").val().trim();
+
+if (exchange === "BSE"){
+      symbol = "BOM"+symbol;
+}
+
+stringapi = queryURL+ exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+
+console.log(stringapi);
+
 
 $.ajax({
   url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+
   method: "GET"
 }).done(function(response) {
   console.log(response);
 });
+
+
+});
+
+
 
 $("#submit").on("click", function(event){
   event.preventDefault;
@@ -57,3 +113,4 @@ $("#submit").on("click", function(event){
   symbol = $("#search").val();
   getStock(exchange, symbol);
 })
+
