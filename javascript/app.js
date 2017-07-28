@@ -9,46 +9,16 @@ var config = {
 };
 firebase.initializeApp(config);
 
-var exchange = [
-{ name:"National Stock Exchange of India",
-  symbol: "NSE",
-  country : "INDIA"
-},
-{
- name:"Bombay Stock Exchange",
- symbol: "BSE",
- prepend: "BOM",
- country: "INDIA"
-},
-{
- name: "Japan Exchange Group",
- symbol: "TSE",
- country: "JAPAN"
-},
-{
-name: "Frankfurt Stock Exchange",
-symbol: "FSE",
-country: "GERMANY"
-},{
-name: "Stuttgart Stock Exchange",
-symbol: "SSE",
-country: "GERMANY"
-},
-{
-name: "London Stock Exchange",
-symbol: "LSE",
-country: "ENGLAND"
-},
-{
- name:"Euronext NV",
- symbol: "LSE",
- country: "EUROPE"
-}];
- 
+
+var database = firebase.database;
+
+
+
 var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/';
 var exchange = "";
 var symbol = "";
+
 
 
 //mobilizing the carousel
@@ -81,6 +51,25 @@ $("#symbolsubmit").on("click",function(event){
 //  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
 //  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
 
+
+
+function getStock() {
+  $.ajax({
+    url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+    method: "GET"
+  }).done(function(response) {
+    console.log(response);
+  });
+}
+
+$(".stockSelect").on('click', function(event) {
+  exchange = $(this).attr('value');
+  console.log(exchange);
+  $(this).appendTo(".navbar");
+});
+
+$("#submit").on("click", function(event) {
+=======
 
 symbol = $("#symbolsearch").val().trim();
 var stringapi = "";
@@ -115,9 +104,26 @@ $('#countryDrop li').click(function(){
 
 
 $("#submit").on("click", function(event){
+
   event.preventDefault;
-  exchange = dropdownData-value;
   symbol = $("#search").val();
   getStock(exchange, symbol);
 })
+
+
+$("#emailSubmit").on("click", function(event){
+  var userEmail = $("#email").val();
+})
+
+function displayStock(response) {
+  $("#carousel").detach();
+  $("<div>").attr({
+    id: 'stockDisplay'
+  }).appendTo("#displayContainer");
+    $("<div>").attr('class', 'jumbotron').appendTo("#stockDisplay");
+    $("<h3>").attr('class', 'stockNameDisplay').html(response.name).appendTo(".jumbotron");
+    $("<h4>").attr('class', 'stockSymbolDisplay').html(response.symbol).appendTo(".jumbotron");
+    $("<h4>").attr('class', 'stockCurrentPrice').html(response.currentPrice).appendTo(".jumbotron");
+}
+
 

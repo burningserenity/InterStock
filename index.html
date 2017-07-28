@@ -34,6 +34,7 @@
                     <li class="dropdown" id="countryDrop">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Countries <b class="caret"></b></a>
                         <ul class="dropdown-menu">
+
                             <li value="FSE">
                                 <a href="#"><img src="images/Boerse_Frankfurt.png" alt="Frankfurt Stock Exchange" id="logo" value = "FSE"> | Frankfurt Stock Exchange (FSE)</a>
                             </li>
@@ -94,7 +95,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" id="emailSubmit">Save</button>
                 </div>
             </div>
         </div>
@@ -109,7 +110,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-xs-11 col-md-10 col-centered">
+            <div class="col-xs-11 col-md-10 col-centered" id="displayContainer">
 
                 <div id="carousel" class="carousel slide" data-ride="carousel" data-type="multi" data-interval="3000">
                     <div class="carousel-inner">
@@ -168,7 +169,8 @@
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-     <script src="javascript/app.js"></script>
+    <script src="javascript/app.js"></script>
+
 </body>
 
 </html>
