@@ -9,8 +9,15 @@ var config = {
 };
 firebase.initializeApp(config);
 
+
 var database = firebase.database;
 
+
+
+var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
+var queryURL = 'https://www.quandl.com/api/v3/datasets/';
+var exchange = "";
+var symbol = "";
 
 
 
@@ -31,6 +38,9 @@ $('.carousel[data-type="multi"] .item').each(function() {
   }
 });
 
+
+$("#symbolsubmit").on("click",function(event){
+
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
 // Tokyo Stock Exchange, Japan: TSE
@@ -41,9 +51,7 @@ $('.carousel[data-type="multi"] .item').each(function() {
 //  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
 //  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
 
-var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
-var queryURL = 'https://www.quandl.com/api/v3/datasets/'
-var symbol;
+
 
 function getStock() {
   $.ajax({
@@ -61,10 +69,47 @@ $(".stockSelect").on('click', function(event) {
 });
 
 $("#submit").on("click", function(event) {
+=======
+
+symbol = $("#symbolsearch").val().trim();
+var stringapi = "";
+
+
+if (exchange === "BSE"){
+      symbol = "BOM"+symbol;
+}
+
+stringapi = queryURL+ exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+
+console.log(stringapi);
+
+
+$.ajax({
+  url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+
+  method: "GET"
+}).done(function(response) {
+  console.log(response);
+});
+
+
+});
+
+
+$('#countryDrop li').click(function(){
+    var $this = $(this);
+    exchange = $this.attr("value");
+    console.log(exchange);
+})
+
+
+$("#submit").on("click", function(event){
+
   event.preventDefault;
   symbol = $("#search").val();
   getStock(exchange, symbol);
 })
+
 
 $("#emailSubmit").on("click", function(event){
   var userEmail = $("#email").val();
@@ -80,3 +125,5 @@ function displayStock(response) {
     $("<h4>").attr('class', 'stockSymbolDisplay').html(response.symbol).appendTo(".jumbotron");
     $("<h4>").attr('class', 'stockCurrentPrice').html(response.currentPrice).appendTo(".jumbotron");
 }
+
+
