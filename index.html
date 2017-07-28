@@ -34,26 +34,26 @@
                     <li class="dropdown" id="countryDrop">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Countries <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li value="fse">
-                                <a href="#"><img src="images/Boerse_Frankfurt.png" alt="Frankfurt Stock Exchange" id="logo"> | Frankfurt Stock Exchange (FSE)</a>
+                            <li value="FSE">
+                                <a href="#"><img src="images/Boerse_Frankfurt.png" alt="Frankfurt Stock Exchange" id="logo" value = "FSE"> | Frankfurt Stock Exchange (FSE)</a>
                             </li>
-                            <li value="sse">
-                                <a href="#"><img src="images/Boerse_Stuttgart_logo.png" id="logo"> | Boerse Stuttgart (SSE)</a>
+                            <li value="SSE">
+                                <a href="#"><img src="images/Boerse_Stuttgart_logo.png" id="logo" value = "SSE" | Boerse Stuttgart (SSE)</a>
                             </li>
-                            <li value="lse">
-                                <a href="#"><img src="images/london-stock-exchange-logo.png" alt="London Stock Exchange" id="logo"> | London Stock Exchange (LSE)</a>
+                            <li value="LSE">
+                                <a href="#"><img src="images/london-stock-exchange-logo.png" alt="London Stock Exchange" id="logo" value = "LSE"> | London Stock Exchange (LSE)</a>
                             </li>
-                            <li value="tse">
-                                <a href="#"><img src="images/Tokyo_Stock_Exchange.svg" alt="Tokyo Stock Exchange" id="logo"> | Tokyo Stock Exchange (TSE)</a>
+                            <li value="TSE">
+                                <a href="#"><img src="images/Tokyo_Stock_Exchange.svg" alt="Tokyo Stock Exchange" id="logo" value = "TSE"> | Tokyo Stock Exchange (TSE)</a>
                             </li>
-                            <li value="nse">
-                                <a href="#"><img src="images/national-stock-exchange-india.jpeg" alt="National Stock Exchange of India" id="logo"> | National Stock Exchange of India (NSE)</a>
+                            <li value="NSE">
+                                <a href="#"><img src="images/national-stock-exchange-india.jpeg" alt="National Stock Exchange of India" id="logo" value = "NSE"> | National Stock Exchange of India (NSE)</a>
                             </li>
-                            <li value="bse">
-                                <a href="#"><img src="images/2000px-Bombay_Stock_Exchange_logo.svg.png" alt="Bombay Stock Exchange" id="logo"> | Bombay Stock Exchange (BSE)</a>
+                            <li value="BSE">
+                                <a href="#"><img src="images/2000px-Bombay_Stock_Exchange_logo.svg.png" alt="Bombay Stock Exchange" id="logo" value = "BSE"> | Bombay Stock Exchange (BSE)</a>
                             </li>
-                            <li value="euronext">
-                                <a href="#"><img src="images/xeuronext.png.pagespeed.ic.aFgFwi7vte.png" alt="Bombay Stock Exchange" id="logo"> | Euronext Stock Exchange (EURONEXT)</a>
+                            <li value="EURONEXT">
+                                <a href="#"><img src="images/xeuronext.png.pagespeed.ic.aFgFwi7vte.png" alt="Bombay Stock Exchange" id="logo" value = "EURONEXT"> | Euronext Stock Exchange (EURONEXT)</a>
                             </li>
                         </ul>
                     </li>
@@ -64,9 +64,9 @@
                 <form class="navbar-form navbar-right">
                     <div class="form-group">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" class="form-control" id = "symbolsearch" placeholder="Search">
                     </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
+                    <button type="submit" class="btn btn-default" id ="symbolsubmit">Submit</button>
                     <!-- Button trigger modal -->
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
                       Account
@@ -168,7 +168,7 @@
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="javascript/app.js"></script>
+     <script src="javascript/app.js"></script>
 </body>
 
 </html>
