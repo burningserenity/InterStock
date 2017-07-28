@@ -9,6 +9,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
+var database = firebase.database;
+
 
 
 
@@ -41,19 +43,39 @@ $('.carousel[data-type="multi"] .item').each(function() {
 
 var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/'
-var exchange;
 var symbol;
 
-$.ajax({
-  url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-  method: "GET"
-}).done(function(response) {
-  console.log(response);
+getStock() {
+  $.ajax({
+    url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+    method: "GET"
+  }).done(function(response) {
+    console.log(response);
+  });
+}
+
+$(".stockSelect").on('click', function(event) {
+  exchange = $(this).attr('value');
+
 });
 
-$("#submit").on("click", function(event){
+$("#submit").on("click", function(event) {
   event.preventDefault;
-  exchange = dropdownData-value;
   symbol = $("#search").val();
   getStock(exchange, symbol);
 })
+
+$("#emailSubmit").on("click", function(event){
+  var userEmail = $("#email").val();
+})
+
+displayStock(response) {
+  $("#carousel").detach();
+  $("<div>").attr({
+    id: 'stockDisplay'
+  }).appendTo("#displayContainer");
+    $("<div>").attr('class', 'jumbotron').appendTo("#stockDisplay");
+    $("<h3>").attr('class', 'stockNameDisplay').html(response.name).appendTo(".jumbotron");
+    $("<h4>").attr('class', 'stockSymbolDisplay').html(response.symbol).appendTo(".jumbotron");
+    $("<h4>").attr('class', 'stockCurrentPrice').html(response.currentPrice).appendTo(".jumbotron");
+}

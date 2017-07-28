@@ -34,25 +34,25 @@
                     <li class="dropdown" id="countryDrop">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Countries <b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li value="fse">
+                            <li class="stockSelect" value="FSE">
                                 <a href="#"><img src="images/Boerse_Frankfurt.png" alt="Frankfurt Stock Exchange" id="logo"> | Frankfurt Stock Exchange (FSE)</a>
                             </li>
-                            <li value="sse">
+                            <li class="stockSelect" value="SSE">
                                 <a href="#"><img src="images/Boerse_Stuttgart_logo.png" id="logo"> | Boerse Stuttgart (SSE)</a>
                             </li>
-                            <li value="lse">
+                            <li class="stockSelect" value="LSE">
                                 <a href="#"><img src="images/london-stock-exchange-logo.png" alt="London Stock Exchange" id="logo"> | London Stock Exchange (LSE)</a>
                             </li>
-                            <li value="tse">
+                            <li class="stockSelect" value="TSE">
                                 <a href="#"><img src="images/Tokyo_Stock_Exchange.svg" alt="Tokyo Stock Exchange" id="logo"> | Tokyo Stock Exchange (TSE)</a>
                             </li>
-                            <li value="nse">
+                            <li class="stockSelect" value="NSE">
                                 <a href="#"><img src="images/national-stock-exchange-india.jpeg" alt="National Stock Exchange of India" id="logo"> | National Stock Exchange of India (NSE)</a>
                             </li>
-                            <li value="bse">
+                            <li class="stockSelect" value="BSE">
                                 <a href="#"><img src="images/2000px-Bombay_Stock_Exchange_logo.svg.png" alt="Bombay Stock Exchange" id="logo"> | Bombay Stock Exchange (BSE)</a>
                             </li>
-                            <li value="euronext">
+                            <li class="stockSelect" value="EURONEXT">
                                 <a href="#"><img src="images/xeuronext.png.pagespeed.ic.aFgFwi7vte.png" alt="Bombay Stock Exchange" id="logo"> | Euronext Stock Exchange (EURONEXT)</a>
                             </li>
                         </ul>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-primary" id="emailSubmit">Save</button>
                 </div>
             </div>
         </div>
@@ -109,7 +109,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-xs-11 col-md-10 col-centered">
+            <div class="col-xs-11 col-md-10 col-centered" id="displayContainer">
 
                 <div id="carousel" class="carousel slide" data-ride="carousel" data-type="multi" data-interval="3000">
                     <div class="carousel-inner">
