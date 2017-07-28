@@ -56,6 +56,7 @@ function getStock() {
 
 $(".stockSelect").on('click', function(event) {
   exchange = $(this).attr('value');
+  console.log(exchange);
   $(this).appendTo(".navbar");
 });
 
