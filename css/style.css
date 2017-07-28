@@ -1,31 +1,39 @@
      html {
          background-image: url("../images/stock-market-tickers-digital-data-display-background_n1yzlgj4x__F0000.png");
      }
-     
+
      body {
          padding-top: 50px;
      }
-     
+
+     #listItemHolder {
+       background-color: #eeeeee;
+       padding: 12px;
+       position: relative;
+       top: 1px;
+       border: 2px double gray;
+     }
+
      #logo {
          height: 19px;
          width: 23;
      }
-     
+
      .starter-template {
          padding: 40px 15px;
          text-align: center;
      }
-     
+
      .col-centered {
          float: none;
          margin: 0 auto;
      }
-     
+
      .carousel-control {
          width: 8%;
          width: 0px;
      }
-     
+
      .carousel-control.left,
      .carousel-control.right {
          margin-right: 40px;
@@ -33,28 +41,28 @@
          background-image: none;
          opacity: 1;
      }
-     
+
      .carousel-control>a>span {
          color: white;
          font-size: 29px !important;
      }
-     
+
      .carousel-col {
          position: relative;
          min-height: 1px;
          padding: 5px;
          float: left;
      }
-     
+
      .active>div {
          display: none;
      }
-     
+
      .active>div:first-child {
          display: block;
      }
      /*xs*/
-     
+
      @media (max-width: 767px) {
          .carousel-inner .active.left {
              left: -50%;
@@ -76,7 +84,7 @@
          }
      }
      /*sm*/
-     
+
      @media (min-width: 768px) and (max-width: 991px) {
          .carousel-inner .active.left {
              left: -50%;
@@ -98,7 +106,7 @@
          }
      }
      /*md*/
-     
+
      @media (min-width: 992px) and (max-width: 1199px) {
          .carousel-inner .active.left {
              left: -33%;
@@ -123,7 +131,7 @@
          }
      }
      /*lg*/
-     
+
      @media (min-width: 1200px) {
          .carousel-inner .active.left {
              left: -25%;
@@ -150,16 +158,16 @@
              display: block;
          }
      }
-     
+
      .block {
          width: 306px;
          height: 230px;
      }
-     
+
      .block {
          background: gray;
      }
-     
+
      .carousel {
          text-align: center;
      }

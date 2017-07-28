@@ -1,11 +1,11 @@
 // Initialize Firebase
 var config = {
-    apiKey: "AIzaSyAl9dOoxfYyfKZAcvopxCRAhBeEkgNAQeA",
-    authDomain: "interstock-9002d.firebaseapp.com",
-    databaseURL: "https://interstock-9002d.firebaseio.com",
-    projectId: "interstock-9002d",
-    storageBucket: "interstock-9002d.appspot.com",
-    messagingSenderId: "154569829116"
+  apiKey: "AIzaSyAl9dOoxfYyfKZAcvopxCRAhBeEkgNAQeA",
+  authDomain: "interstock-9002d.firebaseapp.com",
+  databaseURL: "https://interstock-9002d.firebaseio.com",
+  projectId: "interstock-9002d",
+  storageBucket: "interstock-9002d.appspot.com",
+  messagingSenderId: "154569829116"
 };
 firebase.initializeApp(config);
 
@@ -22,86 +22,88 @@ var symbol = "";
 
 
 //mobilizing the carousel
-$('.carousel[data-type="multi"] .item').each(function () {
-    var next = $(this).next();
+$('.carousel[data-type="multi"] .item').each(function() {
+  var next = $(this).next();
+  if (!next.length) {
+    next = $(this).siblings(':first');
+  }
+  next.children(':first-child').clone().appendTo($(this));
+
+  for (var i = 0; i < 2; i++) {
+    next = next.next();
     if (!next.length) {
-        next = $(this).siblings(':first');
+      next = $(this).siblings(':first');
     }
     next.children(':first-child').clone().appendTo($(this));
-
-    for (var i = 0; i < 2; i++) {
-        next = next.next();
-        if (!next.length) {
-            next = $(this).siblings(':first');
-        }
-        next.children(':first-child').clone().appendTo($(this));
-    }
+  }
 });
 
 
-    // Quandl API
-    // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
-    // Tokyo Stock Exchange, Japan: TSE
-    // National Stock Exchange of India: NSE
-    // Frankfurt Stock Exchange, Germany: FSE
-    //  Boerse Stuttgart, Germany: SSE
-    //  London Stock Exchange, England: LSE
-    //  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
-    //  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
+// Quandl API
+// Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
+// Tokyo Stock Exchange, Japan: TSE
+// National Stock Exchange of India: NSE
+// Frankfurt Stock Exchange, Germany: FSE
+//  Boerse Stuttgart, Germany: SSE
+//  London Stock Exchange, England: LSE
+//  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
+//  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
 
 
 
-    $(".stockSelect").on('click', function (event) {
-        exchange = $(this).attr('value');
-        console.log(exchange);
-        $(this).appendTo(".navbar");
-    });
+$(".stockSelect").on('click', function(event) {
+  exchange = $(this).attr('value');
+  console.log(exchange);
+  $(this).appendTo(".navbar");
+});
 
-    $("#symbolsubmit").on("click", function (event) {
-
-
-        symbol = $("#symbolsearch").val().trim();
-        var stringapi = "";
+$("#symbolsubmit").on("click", function(event) {
 
 
-        if (exchange === "BSE") {
-            symbol = "BOM" + symbol;
-        }
-
-        stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-
-            console.log(stringapi);
+  symbol = $("#symbolsearch").val().trim();
+  var stringapi = "";
 
 
-        $.ajax({
-            url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+  if (exchange === "BSE") {
+    symbol = "BOM" + symbol;
+  }
 
-            method: "GET"
-        }).done(function (response) {
-            console.log(response);
-        });
+  stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 
-
-    });
+    console.log(stringapi);
 
 
-    $('#countryDrop li').click(function () {
-        var $this = $(this);
-        exchange = $this.attr("value");
-        console.log(exchange);
-    })
+  $.ajax({
+    url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 
-    $("#emailSubmit").on("click", function (event) {
-        var userEmail = $("#email").val();
-    })
+    method: "GET"
+  }).done(function(response) {
+    console.log(response);
+  });
 
-    function displayStock(response) {
-        $("#carousel").detach();
-        $("<div>").attr({
-            id: 'stockDisplay'
-        }).appendTo("#displayContainer");
-        $("<div>").attr('class', 'jumbotron').appendTo("#stockDisplay");
-        $("<h3>").attr('class', 'stockNameDisplay').html(response.name).appendTo(".jumbotron");
-        $("<h4>").attr('class', 'stockSymbolDisplay').html(response.symbol).appendTo(".jumbotron");
-        $("<h4>").attr('class', 'stockCurrentPrice').html(response.currentPrice).appendTo(".jumbotron");
-    }
+
+});
+
+
+$('#countryDrop li').click(function() {
+  var $this = $(this);
+  exchange = $this.attr("value");
+  console.log(exchange);
+  $("#listItemHolder").empty();
+  $this.appendTo("#listItemHolder");
+})
+
+$("#emailSubmit").on("click", function(event) {
+  var userEmail = $("#email").val();
+})
+
+function displayStock(response) {
+  $("#carousel").detach();
+  $("<div>").attr({
+    id: 'stockDisplay'
+  }).appendTo("#displayContainer");
+  $("<div>").attr('class', 'jumbotron').appendTo("#stockDisplay");
+  $("<h3>").attr('class', 'stockNameDisplay').html(response.name).appendTo(".jumbotron");
+  $("<h4>").attr('class', 'stockSymbolDisplay').html(response.symbol).appendTo(".jumbotron");
+  $("<h4>").attr('class', 'stockCurrentPrice').html(response.currentPrice).appendTo(".jumbotron");
+}
