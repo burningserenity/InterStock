@@ -9,46 +9,14 @@ var config = {
 };
 firebase.initializeApp(config);
 
-var exchange = [
-{ name:"National Stock Exchange of India",
-  symbol: "NSE",
-  country : "INDIA"
-},
-{
- name:"Bombay Stock Exchange",
- symbol: "BSE",
- prepend: "BOM",
- country: "INDIA"
-},
-{
- name: "Japan Exchange Group",
- symbol: "TSE",
- country: "JAPAN"
-},
-{
-name: "Frankfurt Stock Exchange",
-symbol: "FSE",
-country: "GERMANY"
-},{
-name: "Stuttgart Stock Exchange",
-symbol: "SSE",
-country: "GERMANY"
-},
-{
-name: "London Stock Exchange",
-symbol: "LSE",
-country: "ENGLAND"
-},
-{
- name:"Euronext NV",
- symbol: "LSE",
- country: "EUROPE"
-}];
- 
+
+var database = firebase.database;
+
 var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/';
 var exchange = "";
 var symbol = "";
+
 
 
 //mobilizing the carousel
@@ -68,56 +36,60 @@ $('.carousel[data-type="multi"] .item').each(function() {
   }
 });
 
-
-$("#symbolsubmit").on("click",function(event){
-
-// Quandl API
-// Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
-// Tokyo Stock Exchange, Japan: TSE
-// National Stock Exchange of India: NSE
-// Frankfurt Stock Exchange, Germany: FSE
-//  Boerse Stuttgart, Germany: SSE
-//  London Stock Exchange, England: LSE
-//  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
-//  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
-
-
-symbol = $("#symbolsearch").val().trim();
-var stringapi = "";
-
-
-if (exchange === "BSE"){
-      symbol = "BOM"+symbol;
-}
-
-stringapi = queryURL+ exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-
-console.log(stringapi);
-
-
-$.ajax({
-  url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-
-  method: "GET"
-}).done(function(response) {
-  console.log(response);
-});
-
-
-});
-
-
 $('#countryDrop li').click(function(){
     var $this = $(this);
     exchange = $this.attr("value");
-    console.log(exchange);
-})
+    console.log("Stock:"+exchange);
+});
 
 
-$("#submit").on("click", function(event){
-  event.preventDefault;
-  exchange = dropdownData-value;
-  symbol = $("#search").val();
-  getStock(exchange, symbol);
-})
+$("#symbolsubmit").on("click", function(event) {
+
+  symbol = $("#symbolsearch").val().trim();
+
+  console.log("Stock 2:"+exchange);
+  
+  var stringapi = "";
+
+  if (exchange === "BSE") {
+    symbol = "BOM" + symbol;
+  }
+
+  stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+
+    console.log(stringapi);
+
+
+  $.ajax({
+    url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+
+    method: "GET"
+  }).done (function(response) {
+       console.log(response);
+       displayStock(response);
+     })
+    .fail (function(XMLHttpRequest, textStatus, errorThrown) {
+           $("#stockName").empty();
+           $("#stockSymbol").empty();
+           $("#stockPrice").empty();
+           $("#stockDate").empty();
+           $("<h4>").attr('class', 'stockSymbolDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");   
+     })
+ });
+
+
+$("#emailSubmit").on("click", function(event) {
+  var userEmail = $("#email").val();
+});
+
+function displayStock(response) {
+  $("#stockName").empty();
+  $("#stockSymbol").empty();
+  $("#stockPrice").empty();
+  $("#stockDate").empty();
+  $("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
+  $("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
+  $("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][1]).appendTo("#stockPrice");
+  $("<h4>").attr('class', 'stockCurrentDate').html('Date: '+ response.dataset.data[0][0]).appendTo("#stockDate");
+}
 
