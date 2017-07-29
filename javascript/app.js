@@ -69,6 +69,7 @@ $("#symbolsubmit").on("click", function(event) {
     method: "GET"
   }).done(function(response) {
     console.log(response);
+    displayStock(response);
   });
 
 
@@ -77,11 +78,12 @@ $("#symbolsubmit").on("click", function(event) {
 
 $('#countryDrop li').click(function() {
   var $this = $(this);
+  var $clone = $this.clone();
   exchange = $this.attr("data-value");
   console.log(exchange);
   $("#listItemHolder").css('visibility', 'visible');
   $("#listItemHolder").empty();
-  $this.appendTo("#listItemHolder");
+  $clone.appendTo("#listItemHolder");
 })
 
 $("#emailSubmit").on("click", function(event) {
@@ -89,13 +91,10 @@ $("#emailSubmit").on("click", function(event) {
 })
 
 function displayStock(response) {
-  $("<div>").attr({
-    class: 'container',
-    id: 'stockContainer'
-  }).prependTo("#carouselContainer");
-    $("<div>")
-  $("<div>").attr('class', 'jumbotron').appendTo("#stockDisplay");
-  $("<h3>").attr('class', 'stockNameDisplay').html(response.name).appendTo(".jumbotron");
-  $("<h4>").attr('class', 'stockSymbolDisplay').html(response.symbol).appendTo(".jumbotron");
-  $("<h4>").attr('class', 'stockCurrentPrice').html(response.currentPrice).appendTo(".jumbotron");
+  $("#stockName").empty();
+  $("#stockSymbol").empty();
+  $("#stockPrice").empty();
+  $("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
+  $("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
+  $("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][4]).appendTo("#stockPrice");
 }
