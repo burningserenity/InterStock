@@ -20,7 +20,7 @@
      body {
          padding-top: 50px;
          height: 100%;
-         background-image: url("../images/ticker-image-blue.jpg");
+  
      }
      
      #listItemHolder {
@@ -33,20 +33,16 @@
      }
      
      .hideWell {
-         background: transparent;
-         background: rgba(0, 0, 0, 0.4);
+         background: lightgray;
          visibility: hidden;
      }
-     
-     .well {
-         background: transparent;
-         background: rgba(0, 0, 0, 0.4);
-     }
+          
      
      .logo {
          height: 19px;
          width: 23px;
      }
+     
      
      .starter-template {
          padding: 40px 15px;
@@ -194,8 +190,7 @@
      }
      
      .block {
-                  background: white;
-/*         background: rgba(0, 0, 0, 0.4);*/
+         background: lightgray;
      }
      
      .carousel {
