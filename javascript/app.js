@@ -49,7 +49,6 @@ $("#symbolsubmit").on("click", function(event) {
 
   console.log("Stock 2:"+exchange);
 
-
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
 // Tokyo Stock Exchange, Japan: TSE
@@ -73,6 +72,7 @@ $("#symbolsubmit").on("click", function(event) {
   $.ajax({
     url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 
+David2
     method: "GET"
   }).done (function(response) {
        console.log(response);
@@ -156,19 +156,15 @@ Chart.Line('chart', {
 
 }
 
-
-// $('#countryDrop li').click(function() {
-//   var $this = $(this);
-//   var $clone = $this.clone();
-//   console.log($clone);
-//   exchange = $this.attr("data-value");
-//   console.log(exchange);
-//   $("#listItemHolder").css('visibility', 'visible');
-//   $("#listItemHolder").empty();
-//   $clone.appendTo("#listItemHolder");
-// })
-
-
+/*$('#countryDrop li').click(function() {
+  var $this = $(this);
+  var $clone = $this.clone();
+  exchange = $this.attr("data-value");
+  console.log(exchange);
+  $("#listItemHolder").css('visibility', 'visible');
+  $("#listItemHolder").empty();
+  $clone.appendTo("#listItemHolder");
+})*/
 
 $("#emailSubmit").on("click", function(event) {
   var userEmail = $("#email").val();
