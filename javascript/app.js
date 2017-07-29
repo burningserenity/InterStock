@@ -12,8 +12,6 @@ firebase.initializeApp(config);
 
 var database = firebase.database;
 
-
-
 var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/';
 var exchange = "";
@@ -38,6 +36,19 @@ $('.carousel[data-type="multi"] .item').each(function() {
   }
 });
 
+$('#countryDrop li').click(function(){
+    var $this = $(this);
+    exchange = $this.attr("value");
+    console.log("Stock:"+exchange);
+});
+
+
+$("#symbolsubmit").on("click", function(event) {
+
+  symbol = $("#symbolsearch").val().trim();
+
+  console.log("Stock 2:"+exchange);
+  
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -49,9 +60,6 @@ $('.carousel[data-type="multi"] .item').each(function() {
 //  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
 //  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
 
-$("#symbolsubmit").on("click", function(event) {
-
-  symbol = $("#symbolsearch").val().trim();
   var stringapi = "";
 
   if (exchange === "BSE") {
@@ -60,23 +68,96 @@ $("#symbolsubmit").on("click", function(event) {
 
   stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 
-    console.log(stringapi);
-
+  console.log(stringapi);
 
   $.ajax({
     url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 
+David2
     method: "GET"
-  }).done(function(response) {
-    console.log(response);
-    displayStock(response);
-  });
+  }).done (function(response) {
+       console.log(response);
+       displayStock(response);
+     })
+    .fail (function(XMLHttpRequest, textStatus, errorThrown) {
+           $("#stockName").empty();
+           $("#stockSymbol").empty();
+           $("#stockPrice").empty();
+           $("#stockDate").empty();
+           $("<h4>").attr('class', 'stockSymbolDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");   
+     })
+ });
 
 
+
+$("#emailSubmit").on("click", function(event) {
+  var userEmail = $("#email").val();
 });
 
+function displayStock(response) {
+  $("#stockName").empty();
+  $("#stockSymbol").empty();
+  $("#stockPrice").empty();
+  $("#stockDate").empty();
+  $("#chart").empty();
+  $("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
+  $("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
+  $("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][1]).appendTo("#stockPrice");
+  $("<h4>").attr('class', 'stockCurrentDate').html('Date: '+ response.dataset.data[0][0]).appendTo("#stockDate");
+  
+  var label =[];
+  var data = [];
 
-$('#countryDrop li').click(function() {
+  for (var i = 10; i > 0; i--) {
+   
+    label.push(response.dataset.data[i][0]);
+    data.push(response.dataset.data[i][1]);
+  }
+
+
+    console.log(label);
+    console.log(data);
+
+  var data = {
+      //labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+       labels: label,
+       datasets: [{
+           label: "Price",
+           backgroundColor: "rgba(0, 0, 0, 0)",
+           borderColor: "rgba(0, 57, 122, 1)",
+           borderWidth: 2,
+           hoverBackgroundColor: "rgba(255,99,132,0.4)",
+           hoverBorderColor: "rgba(255,99,132,1)",
+           data: data,
+       }]
+   };
+
+var options = {
+  maintainAspectRatio: false,
+  scales: {
+    yAxes: [{
+      stacked: true,
+      gridLines: {
+        display: true,
+        color: "rgba(0, 0, 255, 0.3)"
+      }
+    }],
+    xAxes: [{
+      gridLines: {
+        display: false
+      }
+    }]
+  }
+};
+
+Chart.Line('chart', {
+  options: options,
+  data: data
+});
+
+}
+
+/*$('#countryDrop li').click(function() {
   var $this = $(this);
   var $clone = $this.clone();
   exchange = $this.attr("data-value");
@@ -84,7 +165,7 @@ $('#countryDrop li').click(function() {
   $("#listItemHolder").css('visibility', 'visible');
   $("#listItemHolder").empty();
   $clone.appendTo("#listItemHolder");
-})
+})*/
 
 $("#emailSubmit").on("click", function(event) {
   var userEmail = $("#email").val();
@@ -96,5 +177,6 @@ function displayStock(response) {
   $("#stockPrice").empty();
   $("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
   $("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
+  // Change this to different currencies
   $("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][4]).appendTo("#stockPrice");
 }

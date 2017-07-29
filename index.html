@@ -25,6 +25,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+
         <a class="navbar-brand" href="#">InterStock</a>
       </div>
 
@@ -103,16 +104,19 @@
 
   <div class="container content">
     <div class="jumbotron">
+      
         <div class="transparentLayer">
             <h1>InterStock</h1>
       <p>Up to the minute global stock information at your finger tips when you want it.</p>
       </div>
+
     </div>
   </div>
 
   <div class="container">
     <div class="row">
       <div class="col-xs-11 col-md-10 col-centered">
+
         <div class="row">
           <div class="col-md-12 col-xs-12" id="stockName">
           </div>
@@ -124,6 +128,13 @@
         <div class="row">
           <div class="col-md-12 col-xs-12" id="stockPrice">
           </div>
+        </div>
+        <div class="row">
+           <div class="col-md-12 col-xs-12" id="stockDate">
+          </div>
+        </div>
+        <div class="chart-container">
+            <canvas id="chart"></canvas>
         </div>
       </div>
     </div>
@@ -190,8 +201,13 @@
   <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+
   <script src="javascript/app.js"></script>
 
 </body>
 
 </html>
+
