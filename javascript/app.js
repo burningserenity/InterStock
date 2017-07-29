@@ -36,11 +36,11 @@ $('.carousel[data-type="multi"] .item').each(function () {
     }
 });
 
-$('#countryDrop li').click(function(){
-    var $this = $(this);
-    exchange = $this.attr("value");
-    console.log("Stock:"+exchange);
-});
+//$('#countryDrop li').click(function(){
+//    var $this = $(this);
+//    exchange = $this.attr("value");
+//    console.log("Stock:"+exchange);
+//});
 
 
 // Quandl API
@@ -151,7 +151,7 @@ Chart.Line('chart', {
 
 }
 
-/*$('#countryDrop li').click(function() {
+$('#countryDrop li').click(function() {
   var $this = $(this);
   var $clone = $this.clone();
   exchange = $this.attr("data-value");
@@ -159,7 +159,7 @@ Chart.Line('chart', {
   $("#listItemHolder").css('visibility', 'visible');
   $("#listItemHolder").empty();
   $clone.appendTo("#listItemHolder");
-})*/
+})
 
 
 $("#emailSubmit").on("click", function (event) {
@@ -167,6 +167,7 @@ $("#emailSubmit").on("click", function (event) {
 });
 
 function displayStock(response) {
+    $(".hideWell").css("visibility", "visible");
     $("#stockName").empty();
     $("#stockSymbol").empty();
     $("#stockPrice").empty();
