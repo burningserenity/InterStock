@@ -49,6 +49,17 @@ $("#symbolsubmit").on("click", function(event) {
 
   console.log("Stock 2:"+exchange);
   
+
+// Quandl API
+// Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
+// Tokyo Stock Exchange, Japan: TSE
+// National Stock Exchange of India: NSE
+// Frankfurt Stock Exchange, Germany: FSE
+//  Boerse Stuttgart, Germany: SSE
+//  London Stock Exchange, England: LSE
+//  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
+//  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
+
   var stringapi = "";
 
   if (exchange === "BSE") {
@@ -57,12 +68,12 @@ $("#symbolsubmit").on("click", function(event) {
 
   stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 
-    console.log(stringapi);
-
+  console.log(stringapi);
 
   $.ajax({
     url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 
+David2
     method: "GET"
   }).done (function(response) {
        console.log(response);
@@ -76,6 +87,7 @@ $("#symbolsubmit").on("click", function(event) {
            $("<h4>").attr('class', 'stockSymbolDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");   
      })
  });
+
 
 
 $("#emailSubmit").on("click", function(event) {
@@ -101,6 +113,7 @@ function displayStock(response) {
     label.push(response.dataset.data[i][0]);
     data.push(response.dataset.data[i][1]);
   }
+
 
     console.log(label);
     console.log(data);
@@ -144,3 +157,26 @@ Chart.Line('chart', {
 
 }
 
+/*$('#countryDrop li').click(function() {
+  var $this = $(this);
+  var $clone = $this.clone();
+  exchange = $this.attr("data-value");
+  console.log(exchange);
+  $("#listItemHolder").css('visibility', 'visible');
+  $("#listItemHolder").empty();
+  $clone.appendTo("#listItemHolder");
+})*/
+
+$("#emailSubmit").on("click", function(event) {
+  var userEmail = $("#email").val();
+})
+
+function displayStock(response) {
+  $("#stockName").empty();
+  $("#stockSymbol").empty();
+  $("#stockPrice").empty();
+  $("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
+  $("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
+  // Change this to different currencies
+  $("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][4]).appendTo("#stockPrice");
+}
