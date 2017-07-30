@@ -27,9 +27,6 @@ var exchangeList = [
 	'TSE', 'NSE', 'FSE', 'SSE', 'LSE', 'EURONEXT', 'BSE'
 ];
 var symbol = "";
-var ajaxDone = 0;
-
-
 
 //mobilizing the carousel
 $('.carousel[data-type="multi"] .item').each(function() {
@@ -62,7 +59,6 @@ function newsforcarousel() {
 
 	var stringapi2 = "";
 
-
 	stringapi2 = queryURL_NEWS + '?' + symbol + '.json?api_key=' + API_KEY_NEWS,
 
 		console.log(stringapi2);
@@ -80,14 +76,10 @@ function newsforcarousel() {
 			$("#stockPrice").empty();
 			$("#stockDate").empty();
 			$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
-
 		});
 }
 
-
-
 $("#symbolsubmit").on("click", function(event) {
-	ajaxDone = 0;
 	$("#stockName").empty();
 	$("#stockSymbol").empty();
 	$("#stockPrice").empty();
@@ -114,7 +106,6 @@ $("#symbolsubmit").on("click", function(event) {
 			}).done(function(response) {
 				console.log(response);
 				displayStock(response);
-				ajaxDone++;
 			});
 			var delay = setTimeout(delayfunc(), 100);
 		}
