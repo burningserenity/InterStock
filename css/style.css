@@ -20,7 +20,6 @@
      body {
          padding-top: 50px;
          height: 100%;
-  
      }
      
      #listItemHolder {
@@ -36,13 +35,11 @@
          background: white;
          visibility: hidden;
      }
-          
      
      .logo {
          height: 28px;
          width: 55px;
      }
-     
      
      .starter-template {
          padding: 40px 15px;
@@ -187,10 +184,39 @@
      .block {
          width: 400px;
          height: 280px;
+         background: white;
      }
      
-     .block {
-         background: lightgray;
+     div.img1 {
+         width: 60%;
+         height: 60%;
+         content: url("../images/Bloomberg.png");
+         display: block;
+         margin: auto;
+     }
+     
+     div.img2 {
+         width: 60%;
+         height: 60%;
+         content: url("../images//Business-Insider.png");
+         display: block;
+         margin: auto;
+     }
+     
+     div.img3 {
+         width: 60%;
+         height: 60%;
+         content: url("../images/The-Economist.png");
+         display: block;
+         margin: auto;
+     }
+     
+     div.img4 {
+         width: 60%;
+         height: 60%;
+         content: url("../images/International-Trade.jpg");
+         display: block;
+         margin: auto;
      }
      
      .carousel {
