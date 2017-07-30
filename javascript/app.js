@@ -104,6 +104,7 @@ $("#symbolsubmit").on("click", function(event) {
 						}).done(function(response) {
 							console.log(response);
 							displayStock(response);
+              return;
 						})
 						.fail(function(XMLHttpRequest, textStatus, errorThrown) {
 							$("#stockName").empty();
