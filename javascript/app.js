@@ -135,6 +135,7 @@ function displayStock(response) {
     $("#stockSymbol").empty();
     $("#stockPrice").empty();
     $("#stockDate").empty();
+        $(".hideWell").css("visibility", "visible");
     $("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
     $("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
     $("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][1]).appendTo("#stockPrice");
@@ -213,12 +214,4 @@ $("#emailSubmit").on("click", function (event) {
     var userEmail = $("#email").val();
 });
 
-function displayStock(response) {
-    $(".hideWell").css("visibility", "visible");
-    $("#stockName").empty();
-    $("#stockSymbol").empty();
-    $("#stockPrice").empty();
-    $("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
-    $("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
-    $("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][4]).appendTo("#stockPrice");
-}
+

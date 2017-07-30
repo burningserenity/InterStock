@@ -33,14 +33,14 @@
      }
      
      .hideWell {
-         background: lightgray;
+         background: white;
          visibility: hidden;
      }
           
      
      .logo {
-         height: 19px;
-         width: 23px;
+         height: 28px;
+         width: 55px;
      }
      
      
