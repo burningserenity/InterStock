@@ -9,8 +9,6 @@ var config = {
 };
 
 firebase.initializeApp(config);
-
-
 var database = firebase.database;
 
 // Quandl API
@@ -50,7 +48,7 @@ var queryURL_NEWS = 'https://newsapi.org/v1/articles?source=';
 var newsSrc = "";
 var newsSrcList = [
 	'bloomberg', 'business-insider', 'business-insider-uk', 'cnbc', 'financial-times', 'fortune',
-	'the-economist',	'the-wall-street-journal'
+	'the-economist', 'the-wall-street-journal'
 ];
 
 
@@ -79,14 +77,14 @@ function newsforcarousel() {
 
 	stringapi2 = queryURL_NEWS + '?' + newsSrc + '&apiKey=' + API_KEY_NEWS
 
-		console.log(stringapi2);
+	console.log(stringapi2);
 
 	$.ajax({
-			url: stringapi2,
-			method: "GET"
-		}).done(function(response) {
-			console.log(response);
-		});
+		url: stringapi2,
+		method: "GET"
+	}).done(function(response) {
+		console.log(response);
+	});
 }
 
 // Click event to query Quandl for stock information and display said information on the page
@@ -100,9 +98,10 @@ $("#symbolsubmit").on("click", function(event) {
 	symbol = $("#symbolsearch").val().toUpperCase().trim();
 	// Put entire Quandl query into variable and log it to the console
 	stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-	console.log(stringapi);
+		console.log(stringapi);
 	// Check if the user selected a specific exchange or not
 	if (exchange === "") {
+		// Track queries made in for loop
 		queryCount = 0;
 		// If the user did not specify an exchange, check each of them for the stock requested
 		for (i = 0; i < exchangeList.length; i++) {
@@ -126,7 +125,7 @@ $("#symbolsubmit").on("click", function(event) {
 		// If no stock found in any exchange, display error message on page; queryCount variable
 		// ensures error message isn't displayed prematurely
 		if ($("#stockName").find("h3").length === 0 && queryCount === exchangeList.length) {
-					$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
+			$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
 		}
 		// When finished querying, empty exchange string
 		exchange = "";
@@ -147,8 +146,8 @@ $("#symbolsubmit").on("click", function(event) {
 			})
 			// Any fail status e.g. a 404 error results in error display
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
-			emptyStockDisplay();
-			stockChart();
+				emptyStockDisplay();
+				stockChart();
 				$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
 			});
 	}
@@ -168,6 +167,11 @@ function displayStock(response) {
 	$("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
 	$("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][1]).appendTo("#stockPrice");
 	$("<h4>").attr('class', 'stockCurrentDate').html('Date: ' + response.dataset.data[0][0]).appendTo("#stockDate");
+	$("<button>").attr({
+		type: 'button',
+		class: 'btn btn-info'
+		id: 'watchStock'
+	}).html("Save to Watchlist").appendTo("#save-btn-col");
 
 	// Populate stock chart
 	var label = [];
@@ -248,6 +252,7 @@ function emptyStockDisplay() {
 	$("#stockSymbol").empty();
 	$("#stockPrice").empty();
 	$("#stockDate").empty();
+	$("#save-btn-col").empty();
 }
 
 // Function to delete and reinitialize the stock chart
@@ -255,4 +260,33 @@ function stockChart() {
 	$(".chart-container").empty();
 	var newCanvas = $("<canvas id='chart'>");
 	$(".chart-container").append(newCanvas);
+}
+
+// Function to create stock watchlist
+function createWatchlist() {
+	$("<table>").attr({
+		class: 'table',
+		id: 'watchlist-table'
+	}).appendTo("#watchlist-col");
+	$("<thead>").appendTo("#watchlist-table");
+	$("<tr>").attr('id', 'theadRow') appendTo("thead");
+	$("<th>").attr('id', 'stockNameTH').html('Stock Name') appendTo("#theadRow");
+	$("<th>").attr('id', 'symbolTH').html('Symbol').appendTo("#theadRow");
+	$("<th>").attr('id', 'exchangeTH').html('Exchange').appendTo("#theadRow");
+	$("<th>").attr('id', 'savedPriceTH').html('Price When First Saved').appendTo("#theadRow");
+	$("<th>").attr('id', 'currentPriceTH').html('Current Price').appendTo("#theadRow");
+	$("<th>").attr('id', 'changeTH').html('Change').appendTo("#theadRow");
+	$("<tbody>").appendTo("#watchlist-table");
+	$("<tr>").attr('id', 'tbodyRow').appendTo("<tbody>");
+}
+
+// Function to add a new stock to the watchlist
+function addToWatchlist() {
+	var savedName = $("#stockNameDisplay").val();
+	var savedSymbol = $("#stockSymbolDisplay").val();
+	var savedPrice = $("#stockCurrentPrice").val();
+	$("#tbodyRow").append("<td class='stockNameTD'>" + savedName +
+	"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + exchange
+	+ "</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>"
+	+	savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>");
 }
