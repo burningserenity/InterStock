@@ -22,11 +22,13 @@ BÖRSE FRANKFURT STOCK EXCHANGE (FSE) Located in Frankfurt, Germany, the FRA is 
 
 (CCP) Eligible; Instrument Group (MDAX) - The index is calculated by Deutsche Börse.
 It includes the 50 Prime Standard shares from sectors excluding technology.
-Airbus SE (ex EADS)     (ISIN NL0000235190 | WKN 938914 | symbol AIR)
+
+    1) Airbus SE (ex EADS)(ISIN NL0000235190 | WKN 938914 | symbol AIR)
+
 
 (CCP) Eligible; Instrument Group (TECDAX) - 30 largest German companies from the technology sector. In terms of order book turnover and market capitalization the company's rank below those included in the DAX.
 
-Nemetschek SE (ISIN DE0006452907 | WKN 645290 | symbol NEM) 
+    1) Nemetschek SE (ISIN DE0006452907 | WKN 645290 | symbol NEM) 
     
 
 BÖRSE STUTTGART (SSE) Germany's second-largest securities market (after the Frankfurt Stock Exchange), the Stuttgart Stock Exchange handles around 40% of all securities trades in the country. The trading indices are within the DAX, DAXplus, CDAX, DivDAX, LDAX, MDAX, SDAX, TecDAX, VDAX and EuroStoxx 50, but within a DB + (Indices) or (Deutsche Bank) Stock asking & bidding price. BS(SSE) offers Euwax Sentiment – 
@@ -34,34 +36,33 @@ Euwax Sentiment is a private investor index which reflects private investor beha
 
 Comparing with Frankfurt (FSE) DAX by spread, unit price and minimum units purchase. 
 
-Adidas Stock  (WKN A1EWWW | ISIN DE000A1EWWW0)  
-Volkswagen Stock ( WKN 766403 | ISIN DE0007664039)                        
-Allianz Stock (WKN 840400 | ISIN DE0008404005)
+    1) Adidas Stock  (WKN A1EWWW | ISIN DE000A1EWWW0)  
+    2) Volkswagen Stock ( WKN 766403 | ISIN DE0007664039)                        
+    3) Allianz Stock (WKN 840400 | ISIN DE0008404005)
 
 Comparing with Frankfurt (FSE) MDAX by spread, unit price and minimum units purchase. 
 
-Aurubis Stock (WKN 676650 | ISIN DE0006766504)                     
+   1) Aurubis Stock (WKN 676650 | ISIN DE0006766504)                     
 
 Comparing with Frankfurt (FSE) TECDAX by spread, unit price and minimum units purchase. 
 
-Nemetschek Stock (WKN 645290 | ISIN DE0006452907) 
+   1) Nemetschek Stock (WKN 645290 | ISIN DE0006452907) 
 
 London Stock Exchange (LSE) With a  US$3 trillion Market loss and drop from being the World's 2nd largest Market. Since the 2002 Brussels EU political and economic union of 28 member states. In today's market capitalisation of US$3.61 trillion making it the 5th-largest stock exchange in the world by this measurement The London Stock Exchange runs several markets for listing, giving an opportunity for different sized companies on the International Market to list. International companies can list a number of products in London including shares in ADR’s offering different and cost-effective ways to raise capital. With trading Regions throughout The Americas, Nordics, Asia, Eastern and Western Europe. Investors can look to the LSE  for "dual listing" and "cross listing,"  companies. That must meet the requirements to be listed on the other exchange(s), such as company size and share liquidity for long term investments. 
 
 Comparing Stock Market volume with Regions of origin. Top 30 DAX.  
 
-Adidas (0OLD ADIDAS AG ADIDAS N ORD SHS)
-Volkswagen (0P6N VOLKSWAGEN AG VOLKSWAGEN ORD SHS)
-Allianz (0M6S ALLIANZ SE ALLIANZ ORD SHS)
- 
-London Stock Exchange (LSE) Continued 
+   1) Adidas (0OLD ADIDAS AG ADIDAS N ORD SHS)
+   2) Volkswagen (0P6N VOLKSWAGEN AG VOLKSWAGEN ORD SHS)
+   3) Allianz (0M6S ALLIANZ SE ALLIANZ ORD SHS) 
+ 
 Comparing Stock Market volume with Regions of origin. Top 50 MDAX.
 
-Airbus (0K7F AURUBIS AG AURUBIS ORD SHS) 
+  1) Airbus (0K7F AURUBIS AG AURUBIS ORD SHS) 
 
 Comparing Stock Market volume with Regions of origin. Top 30 TECDAX. 
 
-Nemetschek (0FDT NEMETSCHEK SE NEMETSCHEK ORD SHS)
+  1) Nemetschek (0FDT NEMETSCHEK SE NEMETSCHEK ORD SHS)
 
 
 Liquidating Connections for the above Stock Exchanges    
