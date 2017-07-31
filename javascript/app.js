@@ -13,20 +13,45 @@ firebase.initializeApp(config);
 
 var database = firebase.database;
 
-//API Variable for Quandl
+// Quandl API
+// Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
+// Tokyo Stock Exchange, Japan: TSE
+// National Stock Exchange of India: NSE
+// Frankfurt Stock Exchange, Germany: FSE
+//  Boerse Stuttgart, Germany: SSE
+//  London Stock Exchange, England: LSE
+//  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
+//  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
+
+// API Variables for Quandl
 var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/';
-
-//API Variable for
-
-var API_KEY_NEWS = 'fd8cd0087c7249fb8f5fdcd0cfda2e95';
-var queryURL_NEWS = 'https://newsapi.org/v1/articles?source=';
-
 var exchange = "";
 var exchangeList = [
 	'TSE', 'NSE', 'FSE', 'SSE', 'LSE', 'EURONEXT', 'BSE'
 ];
 var symbol = "";
+
+// News API
+// Example: https://newsapi.org/v1/articles?source=bloomberg&apiKey=fd8cd0087c7249fb8f5fdcd0cfda2e95
+// Bloomberg: bloomberg
+// Business Insider: business-insider
+// Business Insider UK: business-insider-uk
+// CNBC: cnbc
+// Financial Times: financial-times
+// Fortune: fortune
+// The Economist: the-economist
+// The Wall Street Journal: the-wall-street-journal
+
+//API Variables for NewsAPI
+var API_KEY_NEWS = 'fd8cd0087c7249fb8f5fdcd0cfda2e95';
+var queryURL_NEWS = 'https://newsapi.org/v1/articles?source=';
+var newsSrc = "";
+var newsSrcList = [
+	'bloomberg', 'business-insider', 'business-insider-uk', 'cnbc', 'financial-times', 'fortune',
+	'the-economist',	'the-wall-street-journal'
+];
+
 
 //mobilizing the carousel
 $('.carousel[data-type="multi"] .item').each(function() {
@@ -45,37 +70,21 @@ $('.carousel[data-type="multi"] .item').each(function() {
 	}
 });
 
-// Quandl API
-// Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
-// Tokyo Stock Exchange, Japan: TSE
-// National Stock Exchange of India: NSE
-// Frankfurt Stock Exchange, Germany: FSE
-//  Boerse Stuttgart, Germany: SSE
-//  London Stock Exchange, England: LSE
-//  Euronext Stock Exchange: EURONEXT -> This one is international and we can return the country with this one!
-//  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
+
 
 function newsforcarousel() {
 
 	var stringapi2 = "";
 
-	stringapi2 = queryURL_NEWS + '?' + symbol + '.json?api_key=' + API_KEY_NEWS,
+	stringapi2 = queryURL_NEWS + '?' + newsSrc + '&apiKey=' + API_KEY_NEWS
 
 		console.log(stringapi2);
 
 	$.ajax({
-			url: queryURL_NEWS + exchange + '/' + symbol + '.json?api_key=' + API_KEY_NEWS,
+			url: stringapi2,
 			method: "GET"
 		}).done(function(response) {
 			console.log(response);
-			displayStock(response);
-		})
-		.fail(function(XMLHttpRequest, textStatus, errorThrown) {
-			$("#stockName").empty();
-			$("#stockSymbol").empty();
-			$("#stockPrice").empty();
-			$("#stockDate").empty();
-			$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
 		});
 }
 
