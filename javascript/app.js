@@ -25,8 +25,51 @@ var database = firebase.database;
 var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/';
 var exchange = "";
+var currency;
 var exchangeList = [
-	'TSE', 'NSE', 'FSE', 'SSE', 'LSE', 'EURONEXT', 'BSE'
+	TSE = {
+		name: 'Tokyo Stock Exchange',
+		symbol: 'TSE',
+		currencyName: 'Yen',
+		currencyCode: 'JPY',
+		currencySign: '¥'
+	}, NSE = {
+		name: 'National Stock Exchange of India',
+		symbol: 'NSE',
+		currencyName: 'Indian Rupee',
+		currencyCode: 'INR',
+		currencySign: '₹'
+	}, FSE = {
+		name: 'Boerse Frankfurt',
+		symbol: 'FSE',
+		currencyName: 'Euro',
+		currencyCode: 'EUR',
+		currencySign: '€'
+	}, SSE = {
+		name: 'Boerse Stuttgart',
+		symbol: 'SSE',
+		currencyName: 'Euro',
+		currencyCode: 'EUR',
+		currencySign: '€'
+	}, LSE = {
+		name: 'London Stock Exchange',
+		symbol: 'LSE',
+		currencyName: 'Pound Sterling',
+		currencyCode: 'GBP',
+		currencySign: '£'
+	}, EURONEXT = {
+		name: 'Euronext',
+		symbol: 'EURONEXT',
+		currencyName: 'Euro',
+		currencyCode: 'EUR',
+		currencySign: '€'
+	}, BSE = {
+		name: 'Bombay Stock Exchange',
+		symbol: 'BSE',
+		currencyName: 'Indian Rupee',
+		currencyCode: 'INR',
+		currencySign: '₹'
+	}
 ];
 var symbol = "";
 var queryCount = 0;
@@ -105,7 +148,7 @@ $("#symbolsubmit").on("click", function(event) {
 		queryCount = 0;
 		// If the user did not specify an exchange, check each of them for the stock requested
 		for (i = 0; i < exchangeList.length; i++) {
-			exchange = exchangeList[i];
+			exchange = exchangeList[i].symbol;
 			// On the Quandl API, queries to the Bombay Stock Exchange must be prefixed with "BOM"
 			if (exchange === "BSE") {
 				symbol = "BOM" + symbol;
@@ -162,14 +205,20 @@ $("#emailSubmit").on("click", function(event) {
 // Function for displaying found stock information
 function displayStock(response) {
 	emptyStockDisplay();
+	for (i = 0; i < exchangeList.length; i++) {
+		if (exchangeList[i].symbol === response.dataset.database_code) {
+			currency = exchangeList[i].currencySign;
+		}
+	}
 	$(".hideWell").css("visibility", "visible");
 	$("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
+	$("<h4>").attr('class', 'stockExchangeDisplay').html('Exchange: ' + response.dataset.database_code).appendTo("#exchangeSymbol");
 	$("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
-	$("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][1]).appendTo("#stockPrice");
+	$("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price: ' + currency + response.dataset.data[0][1]).appendTo("#stockPrice");
 	$("<h4>").attr('class', 'stockCurrentDate').html('Date: ' + response.dataset.data[0][0]).appendTo("#stockDate");
 	$("<button>").attr({
 		type: 'button',
-		class: 'btn btn-info'
+		class: 'btn btn-info',
 		id: 'watchStock'
 	}).html("Save to Watchlist").appendTo("#save-btn-col");
 
@@ -249,6 +298,7 @@ function delayfunc() {}
 // Function to clear the stock display
 function emptyStockDisplay() {
 	$("#stockName").empty();
+	$("#exchangeSymbol").empty();
 	$("#stockSymbol").empty();
 	$("#stockPrice").empty();
 	$("#stockDate").empty();
@@ -269,8 +319,8 @@ function createWatchlist() {
 		id: 'watchlist-table'
 	}).appendTo("#watchlist-col");
 	$("<thead>").appendTo("#watchlist-table");
-	$("<tr>").attr('id', 'theadRow') appendTo("thead");
-	$("<th>").attr('id', 'stockNameTH').html('Stock Name') appendTo("#theadRow");
+	$("<tr>").attr('id', 'theadRow').appendTo("thead");
+	$("<th>").attr('id', 'stockNameTH').html('Stock Name').appendTo("#theadRow");
 	$("<th>").attr('id', 'symbolTH').html('Symbol').appendTo("#theadRow");
 	$("<th>").attr('id', 'exchangeTH').html('Exchange').appendTo("#theadRow");
 	$("<th>").attr('id', 'savedPriceTH').html('Price When First Saved').appendTo("#theadRow");
