@@ -88,24 +88,24 @@ function newsforcarousel() {
 		});
 }
 
+// Click event to query Quandl for stock information and display said information on the page
 $("#symbolsubmit").on("click", function(event) {
-	$("#stockName").empty();
-	$("#stockSymbol").empty();
-	$("#stockPrice").empty();
-	$("#stockDate").empty();
-	// FOR CLEAN CHART OF THE SCREEN
-	$(".chart-container").empty();
-	var newCanvas = $("<canvas id='chart'>");
-	$(".chart-container").append(newCanvas);
+	emptyStockDisplay();
+	// Remove and add stock chart
+	stockChart();
+	// Empty string to hold Quandl query
 	var stringapi = "";
-	symbol = $("#symbolsearch").val().trim();
-
+	// Get stock symbol from user input
+	symbol = $("#symbolsearch").val().toUpperCase().trim();
+	// Put entire Quandl query into variable and log it to the console
 	stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-
-		console.log(stringapi);
+	console.log(stringapi);
+	// Check if the user selected a specific exchange or not
 	if (exchange === "") {
+		// If the user did not specify an exchange, check each of them for the stock requested
 		for (i = 0; i < exchangeList.length; i++) {
 			exchange = exchangeList[i];
+			// On the Quandl API, queries to the Bombay Stock Exchange must be prefixed with "BOM"
 			if (exchange === "BSE") {
 				symbol = "BOM" + symbol;
 			}
@@ -114,15 +114,22 @@ $("#symbolsubmit").on("click", function(event) {
 				method: "GET"
 			}).done(function(response) {
 				console.log(response);
+				// Display found stock on the page
 				displayStock(response);
 			});
-			var delay = setTimeout(delayfunc(), 100);
+			// Delay used to prevent CORS errors
+			var delay = setTimeout(delayfunc(), 700);
 		}
+		// If no stock found in any exchange, display error message on page
 		if ($("#stockName").find("h3").length === 0) {
 					$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
 		}
+		// When finished querying, empty exchange string
 		exchange = "";
-	} else {
+	}
+	// If the user did specify an exchange, query only that exchange
+	else {
+		// Same as before
 		if (exchange === "BSE") {
 			symbol = "BOM" + symbol;
 		}
@@ -131,40 +138,34 @@ $("#symbolsubmit").on("click", function(event) {
 				method: "GET"
 			}).done(function(response) {
 				console.log(response);
+				// Display stock on page, if found
 				displayStock(response);
 			})
+			// Any fail status e.g. a 404 error results in error display
 			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
-				$("#stockName").empty();
-				$("#stockSymbol").empty();
-				$("#stockPrice").empty();
-				$("#stockDate").empty();
-				// FOR CLEAN CHART OF THE SCREEN
-				$(".chart-container").empty();
-				var newCanvas = $("<canvas id='chart'>");
-				$(".chart-container").append(newCanvas);
-				// END CLEAN THE CHAR
+			emptyStockDisplay();
+			stockChart();
 				$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
 			});
 	}
 });
 
 
-
+// TODO: Add Firebase support for saving stocks the user wishes to watch
 $("#emailSubmit").on("click", function(event) {
 	var userEmail = $("#email").val();
 });
 
+// Function for displaying found stock information
 function displayStock(response) {
-	$("#stockName").empty();
-	$("#stockSymbol").empty();
-	$("#stockPrice").empty();
-	$("#stockDate").empty();
+	emptyStockDisplay();
 	$(".hideWell").css("visibility", "visible");
 	$("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
 	$("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
 	$("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][1]).appendTo("#stockPrice");
 	$("<h4>").attr('class', 'stockCurrentDate').html('Date: ' + response.dataset.data[0][0]).appendTo("#stockDate");
 
+	// Populate stock chart
 	var label = [];
 	var data = [];
 
@@ -209,12 +210,7 @@ function displayStock(response) {
 		}
 	};
 
-	//FOR CLEAN THE SCREEN OF CHART
-	$(".chart-container").empty();
-
-	var newCanvas = $("<canvas id='chart'>");
-	$(".chart-container").append(newCanvas);
-	//END CLEAN THE CHART
+	stockChart();
 
 	Chart.Line('chart', {
 		options: options,
@@ -223,6 +219,7 @@ function displayStock(response) {
 
 }
 
+// Click function to assign an exchange to be queried and display it on the Navbar
 $('#countryDrop li').click(function() {
 	var $this = $(this);
 	var $clone = $this.clone();
@@ -233,9 +230,25 @@ $('#countryDrop li').click(function() {
 	$clone.appendTo("#listItemHolder");
 });
 
-
+// Gets the user's email address
 $("#emailSubmit").on("click", function(event) {
 	var userEmail = $("#email").val();
 });
 
+// Does nothing on purpose
 function delayfunc() {}
+
+// Function to clear the stock display
+function emptyStockDisplay() {
+	$("#stockName").empty();
+	$("#stockSymbol").empty();
+	$("#stockPrice").empty();
+	$("#stockDate").empty();
+}
+
+// Function to delete and reinitialize the stock chart
+function stockChart() {
+	$(".chart-container").empty();
+	var newCanvas = $("<canvas id='chart'>");
+	$(".chart-container").append(newCanvas);
+}
