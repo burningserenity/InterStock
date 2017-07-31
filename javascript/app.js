@@ -166,7 +166,8 @@ function displayStock(response) {
 	$(".hideWell").css("visibility", "visible");
 	$("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
 	$("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
-	$("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price (USD): ' + '$' + response.dataset.data[0][1]).appendTo("#stockPrice");
+	//The currency price for each stock depending on the stock exchage country.
+	$("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price: '+ response.dataset.data[0][1]).appendTo("#stockPrice");
 	$("<h4>").attr('class', 'stockCurrentDate').html('Date: ' + response.dataset.data[0][0]).appendTo("#stockDate");
 
 	// Populate stock chart
