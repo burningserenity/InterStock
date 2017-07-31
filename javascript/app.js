@@ -31,6 +31,7 @@ var exchangeList = [
 	'TSE', 'NSE', 'FSE', 'SSE', 'LSE', 'EURONEXT', 'BSE'
 ];
 var symbol = "";
+var queryCount = 0;
 
 // News API
 // Example: https://newsapi.org/v1/articles?source=bloomberg&apiKey=fd8cd0087c7249fb8f5fdcd0cfda2e95
@@ -102,6 +103,7 @@ $("#symbolsubmit").on("click", function(event) {
 	console.log(stringapi);
 	// Check if the user selected a specific exchange or not
 	if (exchange === "") {
+		queryCount = 0;
 		// If the user did not specify an exchange, check each of them for the stock requested
 		for (i = 0; i < exchangeList.length; i++) {
 			exchange = exchangeList[i];
@@ -116,12 +118,14 @@ $("#symbolsubmit").on("click", function(event) {
 				console.log(response);
 				// Display found stock on the page
 				displayStock(response);
+				queryCount++;
 			});
 			// Delay used to prevent CORS errors
-			var delay = setTimeout(delayfunc(), 700);
+			var delay = setTimeout(delayfunc(), 1500);
 		}
-		// If no stock found in any exchange, display error message on page
-		if ($("#stockName").find("h3").length === 0) {
+		// If no stock found in any exchange, display error message on page; queryCount variable
+		// ensures error message isn't displayed prematurely
+		if ($("#stockName").find("h3").length === 0 && queryCount === exchangeList.length) {
 					$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
 		}
 		// When finished querying, empty exchange string
