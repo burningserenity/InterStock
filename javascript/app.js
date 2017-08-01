@@ -101,7 +101,7 @@ var newsSrc = "";
 
 // leave only four (4) source 'cause there are 4 squares for News 08-01-2017
 var newsSrcList = [
-	'bloomberg', 'business-insider-uk', 'cnbc', 'the-economist'];
+	'bloomberg', 'business-insider-uk', 'cnbc', 'reuters'];
 
 var newsresult = [];
 
@@ -160,34 +160,6 @@ function newsforcarousel() {
 	   return newsresult;
 }
 
-// Function to display News into carousel 08-01-2017
-function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e){
-
-	var source = newscar4.charAt(0).toUpperCase()+newscar4.slice(1);
-
-	switch(e){
-
-	  case 0:
-		$(".img1").css("content", "url("+newscar+")");
-		$(".hnews1").attr('href',newscar2);
-		$(".news1").html('<h4>'+newscar3+'</h4>');
-		$(".srcnews1").html('<p>By '+source+'</p>');
-	  case 1:
-	    $(".img2").css("content", "url("+newscar+")");	
-        $(".hnews2").attr('href',newscar2);
-        $(".news2").html('<h4>'+newscar3+'</h4>');
-        $(".srcnews2").html('<p>By '+source+'</p>');
-      case 2:
-	    $(".img3").css("content", "url("+newscar+")");
-        $(".hnews3").attr('href',newscar2);
-        $(".news3").html('<h4>'+newscar3+'</h4>');
-         $(".srcnews3").html('<p>By '+source+'</p>');
-	   case 3:
-	   	$(".img4").css("content", "url("+newscar+")"); 
-	    $(".hnews4").attr('href',newscar2);
-	    $(".news4").html('<h4>'+newscar3+'</h4>');
-	    $(".srcnews4").html('<p>By '+source+'</p>');
-	}
 
 // Function to display News into carousel 08-01-2017
 function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
@@ -370,15 +342,15 @@ function displayStock(response) {
 		options: options,
 		data: data
 	});
+};	
 
-	$("#watchStock").on("click", function (event) {
+$("#watchStock").on("click", function (event) {
 		console.log("clicked");
 		if ($("#watchlist-col").find("table").length === 0) {
 			createWatchlist();
 		}
 		addToWatchlist();
 	});
-}
 
 // Page Document Ready 08/01/2017
 $(document).ready(function () {
@@ -499,4 +471,4 @@ $("#confirmsignup").on("click", function(event) {
 	if ($("#password").val() === $("#reenterpassword").val()) {
 		userPassword = $("#password").val();
 	}
-})
+});
