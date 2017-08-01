@@ -48,10 +48,10 @@ var queryCount = 0;
 var API_KEY_NEWS = 'fd8cd0087c7249fb8f5fdcd0cfda2e95';
 var queryURL_NEWS = 'https://newsapi.org/v1/articles?source=';
 var newsSrc = "";
+// leave only four (4) source 'cause there are 4 squares for News 08-01-2017
 var newsSrcList = [
-	'bloomberg', 'business-insider', 'business-insider-uk', 'cnbc', 'financial-times', 'fortune',
-	'the-economist',	'the-wall-street-journal'
-];
+	'bloomberg', 'business-insider-uk', 'cnbc', 'the-economist'];
+var newsresult = [];
 
 
 //mobilizing the carousel
@@ -72,22 +72,74 @@ $('.carousel[data-type="multi"] .item').each(function() {
 });
 
 
-
+// Function to AJAX call to API News into carousel 08-01-2017
 function newsforcarousel() {
 
 	var stringapi2 = "";
+	newsresult = [];
+	var p = 0;	
+	
+	for (var i = 0; i < newsSrcList.length; i++) {
+		
+      newsSrc = newsSrcList[i];
 
-	stringapi2 = queryURL_NEWS + '?' + newsSrc + '&apiKey=' + API_KEY_NEWS
 
-		console.log(stringapi2);
+      stringapi2 = queryURL_NEWS + newsSrc + '&apiKey=' + API_KEY_NEWS
+	
+      console.log(stringapi2);
 
-	$.ajax({
-			url: stringapi2,
-			method: "GET"
-		}).done(function(response) {
-			console.log(response);
-		});
+	   $.ajax({
+		    	url: stringapi2,
+		    	dataType: "json",
+			    method: "GET"
+             }).done(function(response) {
+	     	      
+	     	     displaycarouselnews(response.articles[i].urlToImage,
+	     	     	response.articles[i].url,
+	     	     	response.articles[i].title,
+	     	     	response.source,p);
+	     	     p ++;
+
+
+             });
+
+	   }
+  
+	   console.log(newsresult);
+	   return newsresult;
 }
+
+// Function to display News into carousel 08-01-2017
+function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e){
+
+	var source = newscar4.charAt(0).toUpperCase()+newscar4.slice(1);
+
+	switch(e){
+
+	  case 0:
+		$(".img1").css("content", "url("+newscar+")");
+		$(".hnews1").attr('href',newscar2);
+		$(".news1").html('<h4>'+newscar3+'</h4>');
+		$(".srcnews1").html('<p>By '+source+'</p>');
+	  case 1:
+	    $(".img2").css("content", "url("+newscar+")");	
+        $(".hnews2").attr('href',newscar2);
+        $(".news2").html('<h4>'+newscar3+'</h4>');
+        $(".srcnews2").html('<p>By '+source+'</p>');
+      case 2:
+	    $(".img3").css("content", "url("+newscar+")");
+        $(".hnews3").attr('href',newscar2);
+        $(".news3").html('<h4>'+newscar3+'</h4>');
+         $(".srcnews3").html('<p>By '+source+'</p>');
+	   case 3:
+	   	$(".img4").css("content", "url("+newscar+")"); 
+	    $(".hnews4").attr('href',newscar2);
+	    $(".news4").html('<h4>'+newscar3+'</h4>');
+	    $(".srcnews4").html('<p>By '+source+'</p>');
+	}
+
+}
+//END
 
 // Click event to query Quandl for stock information and display said information on the page
 $("#symbolsubmit").on("click", function(event) {
@@ -173,9 +225,10 @@ function displayStock(response) {
 	// Populate stock chart
 	var label = [];
 	var data = [];
-
-	for (var i = 10; i > 0; i--) {
-
+    
+    // Adjusted because the graph wasn't taking the last date. 08/01/2017 
+	for (var i = 9; i >= 0; i--) {
+	//end
 		label.push(response.dataset.data[i][0]);
 		data.push(response.dataset.data[i][1]);
 	}
@@ -257,3 +310,15 @@ function stockChart() {
 	var newCanvas = $("<canvas id='chart'>");
 	$(".chart-container").append(newCanvas);
 }
+
+// Page Document Ready 08/01/2017
+$(document).ready(function() {    
+
+  newsforcarousel();
+  
+  setInterval(function () {
+   newsforcarousel(); 
+   },180000);  
+ 
+});
+//
