@@ -202,7 +202,7 @@
      div.img2 {
          width: 60%;
          height: 60%;
-         content: url("../images//Business-Insider.png");
+         content: url("../images/Business-Insider.png");
          display: block;
          margin: auto;
      }
@@ -217,7 +217,7 @@
 
      div.img4 {
          width: 60%;
-         height: 60%;
+         height: 55%;
          content: url("../images/International-Trade.jpg");
          display: block;
          margin: auto;
