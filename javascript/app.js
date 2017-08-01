@@ -208,14 +208,15 @@ $("#symbolsubmit").on("click", function(event) {
 		queryCount = 0;
 		// If the user did not specify an exchange, check each of them for the stock requested
 		for (i = 0; i < exchangeList.length; i++) {
-			exchange = exchangeList[i];
+			exchange = exchangeList[i].symbol;
 			// On the Quandl API, queries to the Bombay Stock Exchange must be prefixed with "BOM"
 			if (exchange === "BSE") {
 				symbol = "BOM" + symbol;
 			}
 			$.ajax({
 				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-				method: "GET"
+				method: "GET",
+				'data-type': 'jsonp'
 			}).done(function(response) {
 				console.log(response);
 				// Display found stock on the page
@@ -223,7 +224,6 @@ $("#symbolsubmit").on("click", function(event) {
 				queryCount++;
 			});
 			// Delay used to prevent CORS errors
-			var delay = setTimeout(delayfunc(), 1500);
 		}
 		// If no stock found in any exchange, display error message on page; queryCount variable
 		// ensures error message isn't displayed prematurely
@@ -241,7 +241,8 @@ $("#symbolsubmit").on("click", function(event) {
 		}
 		$.ajax({
 				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-				method: "GET"
+				method: "GET",
+				'data-type': 'jsonp'
 			}).done(function(response) {
 				console.log(response);
 				// Display stock on page, if found
