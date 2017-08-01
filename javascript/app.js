@@ -140,7 +140,7 @@ function newsforcarousel() {
 
 		$.ajax({
 			url: stringapi2,
-			dataType: "json",
+			'data-type': "jsonp",
 			method: "GET"
 		}).done(function(response) {
 
@@ -223,7 +223,6 @@ $("#symbolsubmit").on("click", function(event) {
 				displayStock(response);
 				queryCount++;
 			});
-			// Delay used to prevent CORS errors
 		}
 		// If no stock found in any exchange, display error message on page; queryCount variable
 		// ensures error message isn't displayed prematurely
