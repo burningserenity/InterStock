@@ -233,7 +233,8 @@ modal-footer {
      div.img4 {
          width: 60%;
          height: 55%;
-         padding: 3px;
+
+
          content: url("../images/International-Trade.jpg");
          display: block;
          margin: auto;
