@@ -10,6 +10,7 @@ var config = {
 
 firebase.initializeApp(config);
 var database = firebase.database;
+var auth = firebase.auth;
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -139,6 +140,7 @@ function newsforcarousel() {
 
 // Click event to query Quandl for stock information and display said information on the page
 $("#symbolsubmit").on("click", function(event) {
+	event.preventDefault();
 	emptyStockDisplay();
 	// Remove and add stock chart
 	stockChart();
@@ -366,4 +368,30 @@ function addToWatchlist() {
 		"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
 		"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
 		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td></tr>");
+}
+
+// Function to register a new user
+function registerUser() {
+	var userEmail = $("#email").val();
+	if ($("#password") !== $("#repeatPassword")) {
+		// turn stuff red and notify the user they don't match
+	}
+	else {
+		var userPassword = $("#password");
+		auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+  		// Handle Errors here.
+  		var errorCode = error.code;
+  		var errorMessage = error.message;
+  		// ...
+		});
+	}
+}
+
+function loginUser() {
+	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // ...
+	});
 }
