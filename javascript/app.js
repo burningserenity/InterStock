@@ -418,7 +418,7 @@ function addToWatchlist() {
 	var savedSymbol = $(".stockSymbolDisplay").attr('data-value');
 	var savedPrice = $(".stockCurrentPrice").attr('data-value');
 	$("tbody").append("<tr><td class='stockNameTD'>" + savedName +
-		"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + exchange +
+		"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
 		"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
 		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td></tr>");
 }
