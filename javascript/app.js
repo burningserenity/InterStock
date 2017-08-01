@@ -373,11 +373,11 @@ function addToWatchlist() {
 // Function to register a new user
 function registerUser() {
 	var userEmail = $("#email").val();
-	if ($("#password") !== $("#repeatPassword")) {
+	if ($("#password").val() !== $("#repeatPassword").val()) {
 		// turn stuff red and notify the user they don't match
 	}
 	else {
-		var userPassword = $("#password");
+		var userPassword = $("#passwordinput").val();
 		auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
   		// Handle Errors here.
   		var errorCode = error.code;
