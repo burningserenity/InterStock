@@ -130,7 +130,8 @@ function newsforcarousel() {
 
 	$.ajax({
 		url: stringapi2,
-		method: "GET"
+		method: "GET",
+		'data-type': "jsonp"
 	}).done(function(response) {
 		console.log(response);
 	});
@@ -161,7 +162,8 @@ $("#symbolsubmit").on("click", function(event) {
 			}
 			$.ajax({
 				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-				method: "GET"
+				method: "GET",
+				'data-type': "jsonp"
 			}).done(function(response) {
 				console.log(response);
 				// Display found stock on the page
@@ -185,7 +187,8 @@ $("#symbolsubmit").on("click", function(event) {
 		}
 		$.ajax({
 				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-				method: "GET"
+				method: "GET",
+				'data-type': "jsonp"
 			}).done(function(response) {
 				console.log(response);
 				// Display stock on page, if found
