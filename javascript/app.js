@@ -340,15 +340,15 @@ function displayStock(response) {
 		options: options,
 		data: data
 	});
-}
 
-$("#watchStock").on("click", function(event) {
-	console.log("clicked");
-	if ($("#watchlist-col").find("table").length === 0) {
-		createWatchlist();
-	}
-	addToWatchlist();
-});
+	$("#watchStock").on("click", function(event) {
+		console.log("clicked");
+		if ($("#watchlist-col").find("table").length === 0) {
+			createWatchlist();
+		}
+		addToWatchlist();
+	});
+}
 
 // Page Document Ready 08/01/2017
 $(document).ready(function() {
@@ -410,19 +410,18 @@ function createWatchlist() {
 	$("<th>").attr('id', 'currentPriceTH').html('Current Price').appendTo("#theadRow");
 	$("<th>").attr('id', 'changeTH').html('Change').appendTo("#theadRow");
 	$("<tbody>").appendTo("#watchlist-table");
-	$("<tr>").attr('id', 'tbodyRow').appendTo("<tbody>");
 }
 
 // Function to add a new stock to the watchlist
 function addToWatchlist() {
-	var savedName = $("#stockNameDisplay").val();
-	var savedSymbol = $("#stockSymbolDisplay").val();
-	var savedPrice = $("#stockCurrentPrice").val();
-	$("#tbodyRow").append("<td class='stockNameTD'>" + savedName +
+	var savedName = $(".stockNameDisplay").attr('data-value');
+	var savedExchange = $(".stockExchangeDisplay").attr('data-value');
+	var savedSymbol = $(".stockSymbolDisplay").attr('data-value');
+	var savedPrice = $(".stockCurrentPrice").attr('data-value');
+	$("tbody").append("<tr><td class='stockNameTD'>" + savedName +
 		"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + exchange +
 		"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
-		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>");
-
+		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td></tr>");
 }
 
 function loginUser() {
