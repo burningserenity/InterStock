@@ -11,6 +11,8 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database;
 var auth = firebase.auth;
+var userEmail;
+var userPassword;
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -374,7 +376,8 @@ $('#countryDrop li').click(function() {
 
 // Gets the user's email address
 $("#emailSubmit").on("click", function(event) {
-	var userEmail = $("#email").val();
+	userEmail = $("#email").val();
+	userPassword = $("#passwordinput").val();
 });
 
 // Function to clear the stock display
@@ -447,3 +450,10 @@ auth().onAuthStateChanged(function(user) {
 		// No user is signed in.
 	}
 });
+
+$("#confirmsignup").on("click", function(event) {
+	userEmail = $("#signUpEmail").val();
+	if ($("#password").val() === $("#reenterpassword").val()) {
+		userPassword = $("#password").val();
+	}
+})
