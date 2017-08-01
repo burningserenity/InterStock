@@ -9,9 +9,8 @@ var config = {
 };
 
 firebase.initializeApp(config);
-
-
 var database = firebase.database;
+var auth = firebase.auth;
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -27,8 +26,57 @@ var database = firebase.database;
 var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/';
 var exchange = "";
+var currency;
 var exchangeList = [
-	'TSE', 'NSE', 'FSE', 'SSE', 'LSE', 'EURONEXT', 'BSE'
+	TSE = {
+		name: 'Tokyo Stock Exchange',
+		symbol: 'TSE',
+		currencyName: 'Yen',
+		currencyCode: 'JPY',
+		currencySign: '¥'
+	},
+	NSE = {
+		name: 'National Stock Exchange of India',
+		symbol: 'NSE',
+		currencyName: 'Indian Rupee',
+		currencyCode: 'INR',
+		currencySign: '₹'
+	},
+	FSE = {
+		name: 'Boerse Frankfurt',
+		symbol: 'FSE',
+		currencyName: 'Euro',
+		currencyCode: 'EUR',
+		currencySign: '€'
+	},
+	SSE = {
+		name: 'Boerse Stuttgart',
+		symbol: 'SSE',
+		currencyName: 'Euro',
+		currencyCode: 'EUR',
+		currencySign: '€'
+	},
+	LSE = {
+		name: 'London Stock Exchange',
+		symbol: 'LSE',
+		currencyName: 'Pound Sterling',
+		currencyCode: 'GBP',
+		currencySign: '£'
+	},
+	EURONEXT = {
+		name: 'Euronext',
+		symbol: 'EURONEXT',
+		currencyName: 'Euro',
+		currencyCode: 'EUR',
+		currencySign: '€'
+	},
+	BSE = {
+		name: 'Bombay Stock Exchange',
+		symbol: 'BSE',
+		currencyName: 'Indian Rupee',
+		currencyCode: 'INR',
+		currencySign: '₹'
+	}
 ];
 var symbol = "";
 var queryCount = 0;
@@ -48,6 +96,7 @@ var queryCount = 0;
 var API_KEY_NEWS = 'fd8cd0087c7249fb8f5fdcd0cfda2e95';
 var queryURL_NEWS = 'https://newsapi.org/v1/articles?source=';
 var newsSrc = "";
+
 // leave only four (4) source 'cause there are 4 squares for News 08-01-2017
 var newsSrcList = [
 	'bloomberg', 'business-insider-uk', 'cnbc', 'the-economist'];
@@ -206,109 +255,51 @@ $("#symbolsubmit").on("click", function(event) {
 	}
 });
 
-
-// TODO: Add Firebase support for saving stocks the user wishes to watch
-$("#emailSubmit").on("click", function(event) {
-	var userEmail = $("#email").val();
-});
-
-// Function for displaying found stock information
-function displayStock(response) {
-	emptyStockDisplay();
-	$(".hideWell").css("visibility", "visible");
-	$("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
-	$("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
-	//The currency price for each stock depending on the stock exchage country.
-	$("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price: '+ response.dataset.data[0][1]).appendTo("#stockPrice");
-	$("<h4>").attr('class', 'stockCurrentDate').html('Date: ' + response.dataset.data[0][0]).appendTo("#stockDate");
-
-	// Populate stock chart
-	var label = [];
-	var data = [];
-    
-    // Adjusted because the graph wasn't taking the last date. 08/01/2017 
-	for (var i = 9; i >= 0; i--) {
-	//end
-		label.push(response.dataset.data[i][0]);
-		data.push(response.dataset.data[i][1]);
-	}
-
-	console.log(label);
-	console.log(data);
-
-	var data = {
-		//labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-		labels: label,
-		datasets: [{
-			label: "Price",
-			backgroundColor: "rgba(0, 0, 0, 0)",
-			borderColor: "rgba(0, 57, 122, 1)",
-			borderWidth: 2,
-			hoverBackgroundColor: "rgba(255,99,132,0.4)",
-			hoverBorderColor: "rgba(255,99,132,1)",
-			data: data,
+    var data = {
+        //labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+        labels: label,
+        datasets: [{
+            label: "Price",
+            backgroundColor: "rgba(0, 0, 0, 0)",
+            borderColor: "rgba(0, 57, 122, 1)",
+            borderWidth: 2,
+            hoverBackgroundColor: "rgba(255,99,132,0.4)",
+            hoverBorderColor: "rgba(255,99,132,1)",
+            data: data,
 		}]
-	};
+    };
 
-	var options = {
-		maintainAspectRatio: false,
-		scales: {
-			yAxes: [{
-				stacked: true,
-				gridLines: {
-					display: true,
-					color: "rgba(0, 0, 255, 0.3)"
-				}
+    var options = {
+        maintainAspectRatio: false,
+        scales: {
+            yAxes: [{
+                stacked: true,
+                gridLines: {
+                    display: true,
+                    color: "rgba(0, 0, 255, 0.3)"
+                }
 			}],
-			xAxes: [{
-				gridLines: {
-					display: false
-				}
+            xAxes: [{
+                gridLines: {
+                    display: false
+                }
 			}]
-		}
-	};
+        }
+    };
 
-	stockChart();
-
+    stockChart();
 	Chart.Line('chart', {
 		options: options,
 		data: data
 	});
-
-}
-
-// Click function to assign an exchange to be queried and display it on the Navbar
-$('#countryDrop li').click(function() {
-	var $this = $(this);
-	var $clone = $this.clone();
-	exchange = $this.attr("data-value");
-	console.log(exchange);
-	$("#listItemHolder").css('visibility', 'visible');
-	$("#listItemHolder").empty();
-	$clone.appendTo("#listItemHolder");
-});
-
-// Gets the user's email address
-$("#emailSubmit").on("click", function(event) {
-	var userEmail = $("#email").val();
-});
-
-// Does nothing on purpose
-function delayfunc() {}
-
-// Function to clear the stock display
-function emptyStockDisplay() {
-	$("#stockName").empty();
-	$("#stockSymbol").empty();
-	$("#stockPrice").empty();
-	$("#stockDate").empty();
-}
-
-// Function to delete and reinitialize the stock chart
-function stockChart() {
-	$(".chart-container").empty();
-	var newCanvas = $("<canvas id='chart'>");
-	$(".chart-container").append(newCanvas);
+  
+	$("#watchStock").on("click", function(event) {
+		console.log("clicked");
+		if ($("#watchlist-col").find("table").length === 0) {
+			createWatchlist();
+		}
+		addToWatchlist();
+	});
 }
 
 // Page Document Ready 08/01/2017
@@ -321,4 +312,92 @@ $(document).ready(function() {
    },180000);  
  
 });
-//
+
+// Click function to assign an exchange to be queried and display it on the Navbar
+$('#countryDrop li').click(function () {
+    var $this = $(this);
+    var $clone = $this.clone();
+    exchange = $this.attr("data-value");
+    console.log(exchange);
+    $("#listItemHolder").css('visibility', 'visible');
+    $("#listItemHolder").empty();
+    $clone.appendTo("#listItemHolder");
+});
+
+
+// Gets the user's email address
+$("#emailSubmit").on("click", function (event) {
+    var userEmail = $("#email").val();
+});
+
+// Function to clear the stock display
+function emptyStockDisplay() {
+    $("#stockName").empty();
+    $("#exchangeSymbol").empty();
+    $("#stockSymbol").empty();
+    $("#stockPrice").empty();
+    $("#stockDate").empty();
+    $("#save-btn-col").empty();
+}
+
+// Function to delete and reinitialize the stock chart
+function stockChart() {
+    $(".chart-container").empty();
+    var newCanvas = $("<canvas id='chart'>");
+    $(".chart-container").append(newCanvas);
+}
+
+// Function to create stock watchlist
+function createWatchlist() {
+    $("<table>").attr({
+        class: 'table',
+        id: 'watchlist-table'
+    }).appendTo("#watchlist-col");
+    $("<thead>").appendTo("#watchlist-table");
+    $("<tr>").attr('id', 'theadRow').appendTo("thead");
+    $("<th>").attr('id', 'stockNameTH').html('Stock Name').appendTo("#theadRow");
+    $("<th>").attr('id', 'symbolTH').html('Symbol').appendTo("#theadRow");
+    $("<th>").attr('id', 'exchangeTH').html('Exchange').appendTo("#theadRow");
+    $("<th>").attr('id', 'savedPriceTH').html('Price When First Saved').appendTo("#theadRow");
+    $("<th>").attr('id', 'currentPriceTH').html('Current Price').appendTo("#theadRow");
+    $("<th>").attr('id', 'changeTH').html('Change').appendTo("#theadRow");
+    $("<tbody>").appendTo("#watchlist-table");
+    $("<tr>").attr('id', 'tbodyRow').appendTo("<tbody>");
+}
+
+// Function to add a new stock to the watchlist
+function addToWatchlist() {
+    var savedName = $("#stockNameDisplay").val();
+    var savedSymbol = $("#stockSymbolDisplay").val();
+    var savedPrice = $("#stockCurrentPrice").val();
+    $("#tbodyRow").append("<td class='stockNameTD'>" + savedName +
+        "</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + exchange +
+        "</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
+        savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>");
+
+}
+
+function loginUser() {
+	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // ...
+	});
+}
+
+function logoutUser() {
+	auth().signOut().then(function() {
+  // Sign-out successful.
+	}).catch(function(error) {
+  	// An error happened.
+	});
+}
+
+auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+  } else {
+    // No user is signed in.
+  }
+});
