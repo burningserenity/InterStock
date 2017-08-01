@@ -10,6 +10,7 @@ var config = {
 
 firebase.initializeApp(config);
 var database = firebase.database;
+var auth = firebase.auth;
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -28,53 +29,53 @@ var exchange = "";
 var currency;
 var exchangeList = [
 	TSE = {
-        name: 'Tokyo Stock Exchange',
-        symbol: 'TSE',
-        currencyName: 'Yen',
-        currencyCode: 'JPY',
-        currencySign: '¥'
+		name: 'Tokyo Stock Exchange',
+		symbol: 'TSE',
+		currencyName: 'Yen',
+		currencyCode: 'JPY',
+		currencySign: '¥'
 	},
-    NSE = {
-        name: 'National Stock Exchange of India',
-        symbol: 'NSE',
-        currencyName: 'Indian Rupee',
-        currencyCode: 'INR',
-        currencySign: '₹'
+	NSE = {
+		name: 'National Stock Exchange of India',
+		symbol: 'NSE',
+		currencyName: 'Indian Rupee',
+		currencyCode: 'INR',
+		currencySign: '₹'
 	},
-    FSE = {
-        name: 'Boerse Frankfurt',
-        symbol: 'FSE',
-        currencyName: 'Euro',
-        currencyCode: 'EUR',
-        currencySign: '€'
+	FSE = {
+		name: 'Boerse Frankfurt',
+		symbol: 'FSE',
+		currencyName: 'Euro',
+		currencyCode: 'EUR',
+		currencySign: '€'
 	},
-    SSE = {
-        name: 'Boerse Stuttgart',
-        symbol: 'SSE',
-        currencyName: 'Euro',
-        currencyCode: 'EUR',
-        currencySign: '€'
+	SSE = {
+		name: 'Boerse Stuttgart',
+		symbol: 'SSE',
+		currencyName: 'Euro',
+		currencyCode: 'EUR',
+		currencySign: '€'
 	},
-    LSE = {
-        name: 'London Stock Exchange',
-        symbol: 'LSE',
-        currencyName: 'Pound Sterling',
-        currencyCode: 'GBP',
-        currencySign: '£'
+	LSE = {
+		name: 'London Stock Exchange',
+		symbol: 'LSE',
+		currencyName: 'Pound Sterling',
+		currencyCode: 'GBP',
+		currencySign: '£'
 	},
-    EURONEXT = {
-        name: 'Euronext',
-        symbol: 'EURONEXT',
-        currencyName: 'Euro',
-        currencyCode: 'EUR',
-        currencySign: '€'
+	EURONEXT = {
+		name: 'Euronext',
+		symbol: 'EURONEXT',
+		currencyName: 'Euro',
+		currencyCode: 'EUR',
+		currencySign: '€'
 	},
-    BSE = {
-        name: 'Bombay Stock Exchange',
-        symbol: 'BSE',
-        currencyName: 'Indian Rupee',
-        currencyCode: 'INR',
-        currencySign: '₹'
+	BSE = {
+		name: 'Bombay Stock Exchange',
+		symbol: 'BSE',
+		currencyName: 'Indian Rupee',
+		currencyCode: 'INR',
+		currencySign: '₹'
 	}
 ];
 var symbol = "";
@@ -274,12 +275,18 @@ function displayStock(response) {
     };
 
     stockChart();
-
-    Chart.Line('chart', {
-        options: options,
-        data: data
-    });
-
+	Chart.Line('chart', {
+		options: options,
+		data: data
+	});
+  
+	$("#watchStock").on("click", function(event) {
+		console.log("clicked");
+		if ($("#watchlist-col").find("table").length === 0) {
+			createWatchlist();
+		}
+		addToWatchlist();
+	});
 }
 
 // Click function to assign an exchange to be queried and display it on the Navbar
@@ -293,13 +300,11 @@ $('#countryDrop li').click(function () {
     $clone.appendTo("#listItemHolder");
 });
 
+
 // Gets the user's email address
 $("#emailSubmit").on("click", function (event) {
     var userEmail = $("#email").val();
 });
-
-// Does nothing on purpose
-function delayfunc() {}
 
 // Function to clear the stock display
 function emptyStockDisplay() {
@@ -345,4 +350,30 @@ function addToWatchlist() {
         "</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + exchange +
         "</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
         savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>");
+
 }
+
+function loginUser() {
+	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  // ...
+	});
+}
+
+function logoutUser() {
+	auth().signOut().then(function() {
+  // Sign-out successful.
+	}).catch(function(error) {
+  	// An error happened.
+	});
+}
+
+auth().onAuthStateChanged(function(user) {
+  if (user) {
+    // User is signed in.
+  } else {
+    // No user is signed in.
+  }
+});

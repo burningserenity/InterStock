@@ -22,9 +22,9 @@
          height: 100%;
      }
 
-    #watchStock {
-      margin-top: 25px;
-    }
+     #watchStock {
+         margin-top: 25px;
+     }
 
      #listItemHolder {
          background-color: #eeeeee;
@@ -40,6 +40,16 @@
          visibility: hidden;
      }
 
+
+input {
+    align-content: center;
+}
+modal-footer {
+    
+    text-align: center;
+}
+     
+
      .logo {
          height: 28px;
          width: 55px;
@@ -53,6 +63,11 @@
      .col-centered {
          float: none;
          margin: 0 auto;
+     }
+
+     #theadRow {
+         background-color: #2a52be;
+         color: white;
      }
 
      .carousel-control {
@@ -218,6 +233,8 @@
      div.img4 {
          width: 60%;
          height: 55%;
+
+
          content: url("../images/International-Trade.jpg");
          display: block;
          margin: auto;
