@@ -33,37 +33,43 @@ var exchangeList = [
 		currencyName: 'Yen',
 		currencyCode: 'JPY',
 		currencySign: '¥'
-	}, NSE = {
+	},
+	NSE = {
 		name: 'National Stock Exchange of India',
 		symbol: 'NSE',
 		currencyName: 'Indian Rupee',
 		currencyCode: 'INR',
 		currencySign: '₹'
-	}, FSE = {
+	},
+	FSE = {
 		name: 'Boerse Frankfurt',
 		symbol: 'FSE',
 		currencyName: 'Euro',
 		currencyCode: 'EUR',
 		currencySign: '€'
-	}, SSE = {
+	},
+	SSE = {
 		name: 'Boerse Stuttgart',
 		symbol: 'SSE',
 		currencyName: 'Euro',
 		currencyCode: 'EUR',
 		currencySign: '€'
-	}, LSE = {
+	},
+	LSE = {
 		name: 'London Stock Exchange',
 		symbol: 'LSE',
 		currencyName: 'Pound Sterling',
 		currencyCode: 'GBP',
 		currencySign: '£'
-	}, EURONEXT = {
+	},
+	EURONEXT = {
 		name: 'Euronext',
 		symbol: 'EURONEXT',
 		currencyName: 'Euro',
 		currencyCode: 'EUR',
 		currencySign: '€'
-	}, BSE = {
+	},
+	BSE = {
 		name: 'Bombay Stock Exchange',
 		symbol: 'BSE',
 		currencyName: 'Indian Rupee',
@@ -211,11 +217,26 @@ function displayStock(response) {
 		}
 	}
 	$(".hideWell").css("visibility", "visible");
-	$("<h3>").attr('class', 'stockNameDisplay').html('Name: ' + response.dataset.name).appendTo("#stockName");
-	$("<h4>").attr('class', 'stockExchangeDisplay').html('Exchange: ' + response.dataset.database_code).appendTo("#exchangeSymbol");
-	$("<h4>").attr('class', 'stockSymbolDisplay').html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
-	$("<h4>").attr('class', 'stockCurrentPrice').html('Last Closing Price: ' + currency + response.dataset.data[0][1]).appendTo("#stockPrice");
-	$("<h4>").attr('class', 'stockCurrentDate').html('Date: ' + response.dataset.data[0][0]).appendTo("#stockDate");
+	$("<h3>").attr({
+		class: 'stockNameDisplay',
+		'data-value': response.dataset.name
+	}).html('Name: ' + response.dataset.name).appendTo("#stockName");
+	$("<h4>").attr({
+		class: 'stockExchangeDisplay',
+		'data-value': response.dataset.database_code
+	}).html('Exchange: ' + response.dataset.database_code).appendTo("#exchangeSymbol");
+	$("<h4>").attr({
+		class: 'stockSymbolDisplay',
+		'data-value': response.dataset.dataset_code
+	}).html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
+	$("<h4>").attr({
+		class: 'stockCurrentPrice',
+		'data-value': response.dataset.data[0][1]
+	}).html('Last Closing Price: ' + currency + response.dataset.data[0][1]).appendTo("#stockPrice");
+	$("<h4>").attr({
+		class: 'stockCurrentDate',
+		'data-value': response.dataset.data[0][0]
+	}).html('Date: ' + response.dataset.data[0][0]).appendTo("#stockDate");
 	$("<button>").attr({
 		type: 'button',
 		class: 'btn btn-info',
@@ -273,6 +294,13 @@ function displayStock(response) {
 		options: options,
 		data: data
 	});
+	$("#watchStock").on("click", function(event) {
+		console.log("clicked");
+		if ($("#watchlist-col").find("table").length === 0) {
+			createWatchlist();
+		}
+		addToWatchlist();
+	});
 
 }
 
@@ -286,6 +314,7 @@ $('#countryDrop li').click(function() {
 	$("#listItemHolder").empty();
 	$clone.appendTo("#listItemHolder");
 });
+
 
 // Gets the user's email address
 $("#emailSubmit").on("click", function(event) {
@@ -327,16 +356,16 @@ function createWatchlist() {
 	$("<th>").attr('id', 'currentPriceTH').html('Current Price').appendTo("#theadRow");
 	$("<th>").attr('id', 'changeTH').html('Change').appendTo("#theadRow");
 	$("<tbody>").appendTo("#watchlist-table");
-	$("<tr>").attr('id', 'tbodyRow').appendTo("<tbody>");
 }
 
 // Function to add a new stock to the watchlist
 function addToWatchlist() {
-	var savedName = $("#stockNameDisplay").val();
-	var savedSymbol = $("#stockSymbolDisplay").val();
-	var savedPrice = $("#stockCurrentPrice").val();
-	$("#tbodyRow").append("<td class='stockNameTD'>" + savedName +
-	"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + exchange
-	+ "</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>"
-	+	savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>");
+	var savedName = $(".stockNameDisplay").attr('data-value');
+	var savedExchange = $(".stockExchangeDisplay").attr('data-value');
+	var savedSymbol = $(".stockSymbolDisplay").attr('data-value');
+	var savedPrice = $(".stockCurrentPrice").attr('data-value');
+	$("tbody").append("<tr><td class='stockNameTD'>" + savedName +
+		"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
+		"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
+		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td></tr>");
 }
