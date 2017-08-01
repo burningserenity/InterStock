@@ -105,7 +105,7 @@ var newsresult = [];
 
 
 //mobilizing the carousel
-$('.carousel[data-type="multi"] .item').each(function() {
+$('.carousel[data-type="multi"] .item').each(function () {
 	var next = $(this).next();
 	if (!next.length) {
 		next = $(this).siblings(':first');
@@ -142,7 +142,7 @@ function newsforcarousel() {
 			url: stringapi2,
 			'data-type': "jsonp",
 			method: "GET"
-		}).done(function(response) {
+		}).done(function (response) {
 
 			displaycarouselnews(response.articles[i].urlToImage,
 				response.articles[i].url,
@@ -170,29 +170,29 @@ function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
 			$(".img1").css("content", "url(" + newscar + ")");
 			$(".hnews1").attr('href', newscar2);
 			$(".news1").html('<h4>' + newscar3 + '</h4>');
-			$(".srcnews1").html('<p>By ' + source + '</p>');
+			$(".srcnews1").html('<p>' + source + '</p>');
 		case 1:
 			$(".img2").css("content", "url(" + newscar + ")");
 			$(".hnews2").attr('href', newscar2);
 			$(".news2").html('<h4>' + newscar3 + '</h4>');
-			$(".srcnews2").html('<p>By ' + source + '</p>');
+			$(".srcnews2").html('<p>' + source + '</p>');
 		case 2:
 			$(".img3").css("content", "url(" + newscar + ")");
 			$(".hnews3").attr('href', newscar2);
 			$(".news3").html('<h4>' + newscar3 + '</h4>');
-			$(".srcnews3").html('<p>By ' + source + '</p>');
+			$(".srcnews3").html('<p>' + source + '</p>');
 		case 3:
 			$(".img4").css("content", "url(" + newscar + ")");
 			$(".hnews4").attr('href', newscar2);
 			$(".news4").html('<h4>' + newscar3 + '</h4>');
-			$(".srcnews4").html('<p>By ' + source + '</p>');
+			$(".srcnews4").html('<p>' + source + '</p>');
 	}
 
 }
 //END
 
 // Click event to query Quandl for stock information and display said information on the page
-$("#symbolsubmit").on("click", function(event) {
+$("#symbolsubmit").on("click", function (event) {
 	emptyStockDisplay();
 	// Remove and add stock chart
 	stockChart();
@@ -217,7 +217,7 @@ $("#symbolsubmit").on("click", function(event) {
 				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 				method: "GET",
 				'data-type': 'jsonp'
-			}).done(function(response) {
+			}).done(function (response) {
 				console.log(response);
 				// Display found stock on the page
 				displayStock(response);
@@ -242,13 +242,13 @@ $("#symbolsubmit").on("click", function(event) {
 				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 				method: "GET",
 				'data-type': 'jsonp'
-			}).done(function(response) {
+			}).done(function (response) {
 				console.log(response);
 				// Display stock on page, if found
 				displayStock(response);
 			})
 			// Any fail status e.g. a 404 error results in error display
-			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
+			.fail(function (XMLHttpRequest, textStatus, errorThrown) {
 				emptyStockDisplay();
 				stockChart();
 				$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
@@ -340,7 +340,7 @@ function displayStock(response) {
 		data: data
 	});
 
-	$("#watchStock").on("click", function(event) {
+	$("#watchStock").on("click", function (event) {
 		console.log("clicked");
 		if ($("#watchlist-col").find("table").length === 0) {
 			createWatchlist();
@@ -350,18 +350,18 @@ function displayStock(response) {
 }
 
 // Page Document Ready 08/01/2017
-$(document).ready(function() {
+$(document).ready(function () {
 
 	newsforcarousel();
 
-	setInterval(function() {
+	setInterval(function () {
 		newsforcarousel();
 	}, 180000);
 
 });
 
 // Click function to assign an exchange to be queried and display it on the Navbar
-$('#countryDrop li').click(function() {
+$('#countryDrop li').click(function () {
 	var $this = $(this);
 	var $clone = $this.clone();
 	exchange = $this.attr("data-value");
@@ -373,7 +373,7 @@ $('#countryDrop li').click(function() {
 
 
 // Gets the user's email address
-$("#emailSubmit").on("click", function(event) {
+$("#emailSubmit").on("click", function (event) {
 	var userEmail = $("#email").val();
 });
 
@@ -424,7 +424,7 @@ function addToWatchlist() {
 }
 
 function loginUser() {
-	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function (error) {
 		// Handle Errors here.
 		var errorCode = error.code;
 		var errorMessage = error.message;
@@ -433,14 +433,14 @@ function loginUser() {
 }
 
 function logoutUser() {
-	auth().signOut().then(function() {
+	auth().signOut().then(function () {
 		// Sign-out successful.
-	}).catch(function(error) {
+	}).catch(function (error) {
 		// An error happened.
 	});
 }
 
-auth().onAuthStateChanged(function(user) {
+auth().onAuthStateChanged(function (user) {
 	if (user) {
 		// User is signed in.
 	} else {
