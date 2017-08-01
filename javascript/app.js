@@ -101,7 +101,7 @@ var newsSrc = "";
 
 // leave only four (4) source 'cause there are 4 squares for News 08-01-2017
 var newsSrcList = [
-	'bloomberg', 'business-insider-uk', 'cnbc', 'reuters'];
+	'bloomberg', 'business-insider-uk', 'cnbc', 'the-economist'];
 
 var newsresult = [];
 
@@ -342,7 +342,8 @@ function displayStock(response) {
 		options: options,
 		data: data
 	});
-};	
+
+ }	
 
 $("#watchStock").on("click", function (event) {
 		console.log("clicked");
