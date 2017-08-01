@@ -39,6 +39,14 @@
          background: white;
          visibility: hidden;
      }
+
+input {
+    align-content: center;
+}
+modal-footer {
+    
+    text-align: center;
+}
      
      .logo {
          height: 28px;

@@ -17,7 +17,7 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -82,7 +82,7 @@
     </nav>
 
     <!-- Modal -->
-    <div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <br>
@@ -98,11 +98,11 @@
                             <form class="form-horizontal">
                                 <fieldset>
                                     <!-- Sign In Form -->
-                               <!-- Text input-->
+                                    <!-- Text input-->
                                     <div class="control-group">
                                         <label class="control-label" for="Email">Email:</label>
                                         <div class="controls">
-                                            <input id="Email" name="Email" class="form-control" type="text" placeholder="JoeSixpack@sixpacksrus.com" class="input-large" required="">
+                                            <input id="Email" name="Email" class="form-control input-large" type="text" placeholder="email@MyEmail.com" required="">
                                         </div>
                                     </div>
 
@@ -110,13 +110,13 @@
                                     <div class="control-group">
                                         <label class="control-label" for="passwordinput">Password:</label>
                                         <div class="controls">
-                                            <input required="" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium">
+                                            <input required="" id="passwordinput" name="passwordinput" class="form-control input-medium" type="password" placeholder="********">
                                         </div>
                                     </div>
 
                                     <!-- Multiple Checkboxes (inline) -->
                                     <div class="control-group">
-                                        <label class="control-label" for="rememberme"></label>
+                                        <label class="control-label" for="rememberme-0"></label>
                                         <div class="controls">
                                             <label class="checkbox inline" for="rememberme-0">
                   <input type="checkbox" name="rememberme" id="rememberme-0" value="Remember me">
@@ -127,9 +127,9 @@
 
                                     <!-- Button -->
                                     <div class="control-group">
-                                        <label class="control-label" for="signin"></label>
+                                        <label class="control-label" for="signin1"></label>
                                         <div class="controls">
-                                            <button id="signin" name="signin" class="btn btn-success">Sign In</button>
+                                            <button id="signin1" name="signin" class="btn btn-success">Sign In</button>
                                         </div>
                                     </div>
                                 </fieldset>
@@ -143,7 +143,7 @@
                                     <div class="control-group">
                                         <label class="control-label" for="Email">Email:</label>
                                         <div class="controls">
-                                            <input id="Email" name="Email" class="form-control" type="text" placeholder="JoeSixpack@sixpacksrus.com" class="input-large" required="">
+                                            <input id="signUpEmail" name="Email" class="form-control input-large" type="text" placeholder="email@MyEmail.com" required="">
                                         </div>
                                     </div>
 
@@ -151,7 +151,7 @@
                                     <div class="control-group">
                                         <label class="control-label" for="password">Password:</label>
                                         <div class="controls">
-                                            <input id="password" name="password" class="form-control" type="password" placeholder="********" class="input-large" required="">
+                                            <input id="password" name="password" class="form-control input-large" type="password" placeholder="********" required="">
                                             <em>1-8 Characters</em>
                                         </div>
                                     </div>
@@ -160,7 +160,7 @@
                                     <div class="control-group">
                                         <label class="control-label" for="reenterpassword">Re-Enter Password:</label>
                                         <div class="controls">
-                                            <input id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required="">
+                                            <input id="reenterpassword" class="form-control input-large" name="reenterpassword" type="password" placeholder="********" required="">
                                         </div>
                                     </div>
 
@@ -180,9 +180,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <center>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </center>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -301,11 +299,11 @@
         </div>
     </div>
 
-        <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-        <script src="javascript/app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="javascript/app.js"></script>
 
 </body>
 
