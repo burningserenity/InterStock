@@ -168,8 +168,6 @@ $("#symbolsubmit").on("click", function(event) {
 				displayStock(response);
 				queryCount++;
 			});
-			// Delay used to prevent CORS errors
-			var delay = setTimeout(delayfunc(), 1500);
 		}
 		// If no stock found in any exchange, display error message on page; queryCount variable
 		// ensures error message isn't displayed prematurely
@@ -231,7 +229,7 @@ function displayStock(response) {
 	}).html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
 	$("<h4>").attr({
 		class: 'stockCurrentPrice',
-		'data-value': response.dataset.data[0][1]
+		'data-value': currency + response.dataset.data[0][1]
 	}).html('Last Closing Price: ' + currency + response.dataset.data[0][1]).appendTo("#stockPrice");
 	$("<h4>").attr({
 		class: 'stockCurrentDate',
@@ -321,9 +319,6 @@ $("#emailSubmit").on("click", function(event) {
 	var userEmail = $("#email").val();
 });
 
-// Does nothing on purpose
-function delayfunc() {}
-
 // Function to clear the stock display
 function emptyStockDisplay() {
 	$("#stockName").empty();
@@ -352,7 +347,7 @@ function createWatchlist() {
 	$("<th>").attr('id', 'stockNameTH').html('Stock Name').appendTo("#theadRow");
 	$("<th>").attr('id', 'symbolTH').html('Symbol').appendTo("#theadRow");
 	$("<th>").attr('id', 'exchangeTH').html('Exchange').appendTo("#theadRow");
-	$("<th>").attr('id', 'savedPriceTH').html('Price When First Saved').appendTo("#theadRow");
+	$("<th>").attr('id', 'savedPriceTH').html('Saved Price').appendTo("#theadRow");
 	$("<th>").attr('id', 'currentPriceTH').html('Current Price').appendTo("#theadRow");
 	$("<th>").attr('id', 'changeTH').html('Change').appendTo("#theadRow");
 	$("<tbody>").appendTo("#watchlist-table");
