@@ -1,9 +1,9 @@
-     .content {
-         background-image: url("../images/ticker-image-blue.jpg");
+ .content {
+         background-image: url("./images/ticker-image-blue.jpg");
          width: 100%;
          height: 40%;
      }
-     
+
      .jumbotron {
          background: rgba(0, 0, 0, 0.4);
          /* background: black; */
@@ -11,18 +11,21 @@
          font-weight: bolder;
          margin: 20px 20% 20px 20%;
      }
-     
+
      .navbar-header,
      #countryDrop {
          color: white;
      }
-     
+
      body {
          padding-top: 50px;
          height: 100%;
-         background-image: url("../images/ticker-image-blue.jpg");
      }
-     
+
+    #watchStock {
+      margin-top: 25px;
+    }
+
      #listItemHolder {
          background-color: #eeeeee;
          padding: 12px;
@@ -31,38 +34,32 @@
          border: 2px double gray;
          visibility: hidden;
      }
-     
+
      .hideWell {
-         background: transparent;
-         background: rgba(0, 0, 0, 0.4);
+         background: white;
          visibility: hidden;
      }
-     
-     .well {
-         background: transparent;
-         background: rgba(0, 0, 0, 0.4);
-     }
-     
+
      .logo {
-         height: 19px;
-         width: 23px;
+         height: 28px;
+         width: 55px;
      }
-     
+
      .starter-template {
          padding: 40px 15px;
          text-align: center;
      }
-     
+
      .col-centered {
          float: none;
          margin: 0 auto;
      }
-     
+
      .carousel-control {
          width: 8%;
          width: 0px;
      }
-     
+
      .carousel-control.left,
      .carousel-control.right {
          margin-right: 40px;
@@ -70,28 +67,28 @@
          background-image: none;
          opacity: 1;
      }
-     
+
      .carousel-control>a>span {
          color: black;
          font-size: 29px !important;
      }
-     
+
      .carousel-col {
          position: relative;
          min-height: 1px;
          padding: 5px;
          float: left;
      }
-     
+
      .active>div {
          display: none;
      }
-     
+
      .active>div:first-child {
          display: block;
      }
      /*xs*/
-     
+
      @media (max-width: 767px) {
          .carousel-inner .active.left {
              left: -50%;
@@ -113,7 +110,7 @@
          }
      }
      /*sm*/
-     
+
      @media (min-width: 768px) and (max-width: 991px) {
          .carousel-inner .active.left {
              left: -50%;
@@ -135,7 +132,7 @@
          }
      }
      /*md*/
-     
+
      @media (min-width: 992px) and (max-width: 1199px) {
          .carousel-inner .active.left {
              left: -33%;
@@ -160,7 +157,7 @@
          }
      }
      /*lg*/
-     
+
      @media (min-width: 1200px) {
          .carousel-inner .active.left {
              left: -25%;
@@ -187,17 +184,51 @@
              display: block;
          }
      }
-     
+
      .block {
          width: 400px;
          height: 280px;
+         background: white;
      }
-     
-     .block {
-                  background: white;
-/*         background: rgba(0, 0, 0, 0.4);*/
+
+     div.img1 {
+         width: 60%;
+         height: 60%;
+         content: url("./images/Bloomberg.png");
+         display: block;
+         margin: auto;
+             
      }
-     
+
+     div.img2 {
+         width: 60%;
+         height: 60%;
+         content: url("./images/Business-Insider.png");
+         display: block;
+         margin: auto;
+     }
+
+     div.img3 {
+         width: 60%;
+         height: 60%;
+         content: url("./images/The-Economist.png");
+         display: block;
+         margin: auto;
+     }
+
+     div.img4 {
+         width: 60%;
+         height: 60%;
+         content: url("./images/International.jpg");
+         display: block;
+         margin: auto;
+     }
+
      .carousel {
          text-align: center;
-     }
+}
+
+h4 {
+    font-style: all;
+    font-weight: bold;
+}

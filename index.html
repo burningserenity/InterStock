@@ -7,7 +7,7 @@
     <title>InterStock Group Project</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="style.css">
 
     <!--[if IE]>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -32,35 +32,37 @@
                 <ul class="nav navbar-nav">
 
                     <li class="dropdown" id="countryDrop">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Countries <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Exchanges <b class="caret"></b></a>
                         <ul class="dropdown-menu">
 
                             <li data-value="FSE">
-                                <a href="#"><img src="images/Boerse_Frankfurt.png" alt="Frankfurt Stock Exchange" class="logo"> | Frankfurt Stock Exchange (FSE)</a>
+                                <a href="#"><img src="Boerse_Frankfurt.png" alt="Frankfurt Stock Exchange" class="logo"> | Frankfurt Stock Exchange (FSE)</a>
                             </li>
                             <li data-value="SSE">
-                                <a href="#"><img src="images/Boerse_Stuttgart_logo.png" alt="Boerse Stuttgart" class="logo"> | Boerse Stuttgart (SSE)</a>
+                                <a href="#"><img src="Boerse_Stu.png" alt="Boerse Stuttgart" class="logo"> | Boerse Stuttgart (SSE)</a>
                             </li>
                             <li data-value="LSE">
-                                <a href="#"><img src="images/london-stock-exchange-logo.png" alt="London Stock Exchange" class="logo"> | London Stock Exchange (LSE)</a>
+                                <a href="#"><img src="london-stock-exchange-logo.png" alt="London Stock Exchange" class="logo"> | London Stock Exchange (LSE)</a>
                             </li>
                             <li data-value="TSE">
-                                <a href="#"><img src="images/Tokyo_Stock_Exchange.svg" alt="Tokyo Stock Exchange" class="logo"> | Tokyo Stock Exchange (TSE)</a>
+                                <a href="#"><img src="Tokyo_Stock_Exchange.svg" alt="Tokyo Stock Exchange" class="logo"> | Tokyo Stock Exchange (TSE)</a>
                             </li>
                             <li data-value="NSE">
-                                <a href="#"><img src="images/national-stock-exchange-india.jpeg" alt="National Stock Exchange of India" class="logo"> | National Stock Exchange of India (NSE)</a>
+                                <a href="#"><img src="national-stock-exchange-india.jpeg" alt="National Stock Exchange of India" class="logo"> | National Stock Exchange of India (NSE)</a>
                             </li>
                             <li data-value="BSE">
-                                <a href="#"><img src="images/2000px-Bombay_Stock_Exchange_logo.svg.png" alt="Bombay Stock Exchange" class="logo"> | Bombay Stock Exchange (BSE)</a>
+                                <a href="#"><img src="2000px-Bombay.png" alt="Bombay Stock Exchange" class="logo"> | Bombay Stock Exchange (BSE)</a>
                             </li>
                             <li data-value="EURONEXT">
-                                <a href="#"><img src="images/xeuronext.png.pagespeed.ic.aFgFwi7vte.png" alt="Euronext Stock Exchange" class="logo"> | Euronext Stock Exchange (EURONEXT)</a>
+                                <a href="#"><img src="xeuronext.png." alt="Euronext Stock Exchange" class="logo"> | Euronext Stock Exchange (EURONEXT)</a>
+                            </li>
+                            <li data-value="">
+                                <a href="#"><img src="globe.jpg" alt="Earth" class="logo"> | Unfiltered Search</a>
                             </li>
                         </ul>
                     </li>
                     <li id="listItemHolder"></li>
                 </ul>
-
 
                 <form class="navbar-form navbar-right">
                     <div class="form-group">
@@ -99,24 +101,104 @@
                 </div>
             </div>
         </div>
-      </div>
-
-    <div class="container content">
-    <div class="jumbotron">
-      
-        <div class="transparentLayer">
-            <h1>InterStock</h1>
-      <p>Up to the minute global stock information at your finger tips when you want it.</p>
-      </div>
     </div>
+    <!-- Carousel Modal-1 -->
 
-  </div>
-    <div class="well hideWell">
+    <div class= "modal fade" id="myModal-1" tabindex="-1" role="dialog" aria-labelledby="myLabel">        
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">        
+                    <h4 class="modal-title" id="myLabel">Bloomberg News:</h4>
+                </div>
+                <div class="modal-body-1">
+                   
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>       
+                </div>
+           </div>
+        </div>
+    </div>
+    <!-- Carousel Modal-2 -->
+
+    <div class= "modal fade" id="myModal-2" tabindex="-1" role="dialog" aria-labelledby="myLabel">        
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">        
+                    <h4 class="modal-title" id="myLabel">Business Insider:</h4>
+                </div>
+                <div class="modal-body-2">
+                   
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>       
+                </div>
+           </div>
+        </div>
+    </div>
+    <!-- Carousel Modal-3 -->
+
+    <div class= "modal fade" id="myModal-3" tabindex="-1" role="dialog" aria-labelledby="myLabel">        
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">        
+                    <h4 class="modal-title" id="myLabel">The Economist:</h4>
+                </div>
+                <div class="modal-body-3">
+                   
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>       
+                </div>
+           </div>
+        </div>
+    </div>
+    <!-- Carousel Modal-4 -->
+
+    <div class= "modal fade" id="myModal-4" tabindex="-1" role="dialog" aria-labelledby="myLabel">        
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                    <div class="modal-header">    
+                    <h4 class="modal-title" id="myLabel">International Trade Admin.:</h4>
+                </div>
+                <div class="modal-body-4">
+                   
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>       
+                </div>
+           </div>
+        </div>
+    </div>
+    
+    <div class="container content">
+        <div class="jumbotron">
+
+            <div class="transparentLayer">
+                <h1>InterStock</h1>
+                <p>Up to the minute global stock information at your finger tips when you want it.</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="well well-lg hideWell">
         <div class="container">
             <div class="row">
                 <div class="col-xs-11 col-md-10 col-centered">
                     <div class="row">
                         <div class="col-md-12 col-xs-12" id="stockName">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12" id="exchangeSymbol">
                         </div>
                     </div>
                     <div class="row">
@@ -127,11 +209,28 @@
                         <div class="col-md-12 col-xs-12" id="stockPrice">
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12" id="stockDate">
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="chart"></canvas>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12" id="save-btn-col">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="container userContainer">
+        <div class="row">
+            <div class="col-md-12 col-xs-12" id="watchlist-col">
+            </div>
+        </div>
+    </div>
 
     <div class="container" id="carouselContainer">
         <div class="row">
@@ -141,62 +240,67 @@
                     <div class="carousel-inner">
                         <div class="item active">
                             <div class="carousel-col">
-                                <div class="block img-responsive">
-                                    <h3>News Headline</h3>
-                                    <p>Text from API</p>
+                                <div class="block img-responsive"> 
+                                    <h3>Bloomberg</h3>
+                                    <p data-toggle="modal" data-target="#myModal-1">Click Here</p>
+                                    <div class="img1"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="item">
                             <div class="carousel-col">
                                 <div class="block img-responsive">
-                                    <h3>News Headline</h3>
-                                    <p>Text from API</p>
+                                    <h3>Business Insider</h3>
+                                    <p data-toggle="modal" data-target="#myModal-2">Click Here</p>
+                                    <div class="img2"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="item">
                             <div class="carousel-col">
                                 <div class="block img-responsive">
-                                    <h3>News Headline</h3>
-                                    <p>Text from API</p>
+                                    <h3>The Economist</h3>
+                                    <p data-toggle="modal" data-target="#myModal-3">Click Here</p>
+                                    <div class="img3"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="item">
                             <div class="carousel-col">
                                 <div class="block img-responsive">
-                                    <h3>News Headline</h3>
-                                    <p>Text from API</p>
+                                    <h3>Int. Trade Admin.</h3>
+                                    <p data-toggle="modal" data-target="#myModal-4">Click Here</p>
+                                    <div class="img4"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                    <!-- Controls -->
-                    <div class="left carousel-control">
-                        <a href="#carousel" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                    </div>
-                    <div class="right carousel-control">
-                        <a href="#carousel" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
+                <!-- Controls -->
+                <div class="left carousel-control">
+                    <a href="#carousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
                 </div>
-
+                <div class="right carousel-control">
+                    <a href="#carousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
             </div>
+
         </div>
+    </div>
+
 
     <script src="https://www.gstatic.com/firebasejs/4.1.5/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="javascript/app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script src="app.js"></script>
 </body>
 
 </html>
-
