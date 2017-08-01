@@ -112,6 +112,7 @@
      .active>div:first-child {
          display: block;
      }
+
      /*xs*/
 
      @media (max-width: 767px) {
