@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>InterStock Group Project</title>
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
 	<link rel="stylesheet" href="css/style.css">
@@ -81,37 +82,117 @@
 	</nav>
 
 	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document">
+	<div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+		<div class="modal-dialog modal-sm">
 			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="myModalLabel">Enter Email Address</h4>
+				<br>
+				<div class="bs-example bs-example-tabs">
+					<ul id="myTab" class="nav nav-tabs">
+						<li class="active"><a href="#signin" data-toggle="tab">Sign In</a></li>
+						<li class=""><a href="#signup" data-toggle="tab">Register</a></li>
+					</ul>
 				</div>
 				<div class="modal-body">
-					Enter your email address to save your preferences.
-					<div class="form-group">
-						<label for="email">Email Address:</label>
-						<input type="email" class="form-control" id="email" placeholder="yourname@email.com">
+					<div id="myTabContent" class="tab-content">
+						<div class="tab-pane fade active in" id="signin">
+							<form class="form-horizontal">
+								<fieldset>
+									<!-- Sign In Form -->
+									<!-- Text input-->
+									<div class="control-group">
+										<label class="control-label" for="Email">Email:</label>
+										<div class="controls">
+											<input id="Email" name="Email" class="form-control input-large" type="text" placeholder="email@MyEmail.com" required="">
+										</div>
+									</div>
+
+									<!-- Password input-->
+									<div class="control-group">
+										<label class="control-label" for="passwordinput">Password:</label>
+										<div class="controls">
+											<input required="" id="passwordinput" name="passwordinput" class="form-control input-medium" type="password" placeholder="********">
+										</div>
+									</div>
+
+									<!-- Multiple Checkboxes (inline) -->
+									<div class="control-group">
+										<label class="control-label" for="rememberme-0"></label>
+										<div class="controls">
+											<label class="checkbox inline" for="rememberme-0">
+                  <input type="checkbox" name="rememberme" id="rememberme-0" value="Remember me">
+                  Remember me
+                </label>
+										</div>
+									</div>
+
+
+									<!-- Button -->
+									<div class="control-group">
+										<label class="control-label" for="signin1"></label>
+										<div class="controls">
+											<button id="signin1" name="signin" class="btn btn-success">Sign In</button>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
+						<div class="tab-pane fade" id="signup">
+							<form class="form-horizontal">
+								<fieldset>
+									<!-- Sign Up Form -->
+									<!-- Text input-->
+									<div class="control-group">
+										<label class="control-label" for="Email">Email:</label>
+										<div class="controls">
+											<input id="signUpEmail" name="Email" class="form-control input-large" type="text" placeholder="email@MyEmail.com" required="">
+										</div>
+									</div>
+
+									<!-- Password input-->
+									<div class="control-group">
+										<label class="control-label" for="password">Password:</label>
+										<div class="controls">
+											<input id="password" name="password" class="form-control input-large" type="password" placeholder="********" required="">
+											<em>1-8 Characters</em>
+										</div>
+									</div>
+
+									<!-- Text input-->
+									<div class="control-group">
+										<label class="control-label" for="reenterpassword">Re-Enter Password:</label>
+										<div class="controls">
+											<input id="reenterpassword" class="form-control input-large" name="reenterpassword" type="password" placeholder="********" required="">
+										</div>
+									</div>
+
+									<!-- Multiple Radios (inline) -->
+									<br>
+
+									<!-- Button -->
+									<div class="control-group">
+										<label class="control-label" for="confirmsignup"></label>
+										<div class="controls">
+											<button id="confirmsignup" name="confirmsignup" class="btn btn-success">Sign Up</button>
+										</div>
+									</div>
+								</fieldset>
+							</form>
+						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" id="emailSubmit">Save</button>
 				</div>
 			</div>
 		</div>
 	</div>
-
 	<div class="container content">
 		<div class="jumbotron">
-
 			<div class="transparentLayer">
 				<h1>InterStock</h1>
-				<p>Up to the minute global stock information at your finger tips when you want it.</p>
+				<p>Never miss the closing bell again. Last closing price data at your finger tips.</p>
 			</div>
 		</div>
-
 	</div>
 	<div class="well well-lg hideWell">
 		<div class="container">
@@ -119,6 +200,10 @@
 				<div class="col-xs-11 col-md-10 col-centered">
 					<div class="row">
 						<div class="col-md-12 col-xs-12" id="stockName">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12" id="exchangeSymbol">
 						</div>
 					</div>
 					<div class="row">
@@ -136,12 +221,20 @@
 					<div class="chart-container">
 						<canvas id="chart"></canvas>
 					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12" id="save-btn-col">
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-
-
+	<div class="container userContainer">
+		<div class="row">
+			<div class="col-md-12 col-xs-12" id="watchlist-col">
+			</div>
+		</div>
+	</div>
 	<div class="container" id="carouselContainer">
 		<div class="row">
 			<div class="col-xs-11 col-md-10 col-lg-12 col-centered" id="displayContainer">
@@ -160,6 +253,15 @@
 									   <div class = "srcnews1"></div>
 								<a href="" target="_blank" class = "hnews1">
 	   							<div class="img1"></div>
+									<!-- Add a href element to news 08-01-2017-->
+									<a href="" target="_blank" class="hnews1">
+										<!-- Add a class for title of news 08-01-2017-->
+										<div class="news1"></div>
+									</a>
+									<!-- Add a class to source of news 08-01-2017-->
+									<div class="srcnews1"></div>
+									<a href="" target="_blank" class="hnews1">
+										<div class="img1"></div>
 									</a>
 								</div>
 							</div>
@@ -176,6 +278,15 @@
 									  <div class = "srcnews2"></div>
 									<a href="" target="_blank" class = "hnews2">
 									<div class="img2"></div>
+									<!-- Add a href element to news 08-01-2017-->
+									<a href="" target="_blank" class="hnews2">
+										<!-- Add a class to title of news 08-01-2017-->
+										<div class="news2"></div>
+									</a>
+									<!-- Add a class to source of news 08-01-2017-->
+									<div class="srcnews2"></div>
+									<a href="" target="_blank" class="hnews2">
+										<div class="img2"></div>
 									</a>
 								</div>
 							</div>
@@ -191,6 +302,15 @@
 									  <div class = "srcnews3"></div>
 									<a href="" target="_blank" class = "hnews3">
 						    			<div class="img3"></div>
+									<!-- Add a href element to news 08-01-2017-->
+									<a href="" target="_blank" class="hnews3">
+										<!-- Add a class to title of news 08-01-2017-->
+										<div class="news3"></div>
+									</a>
+									<!-- Add a class to source of news 08-01-2017-->
+									<div class="srcnews3"></div>
+									<a href="" target="_blank" class="hnews3">
+										<div class="img3"></div>
 									</a>
 								</div>
 							</div>
@@ -207,6 +327,15 @@
 									  <div class = "srcnews4"></div>
 									<a href="" target="_blank" class = "hnews4">		
 									<div class="img4"></div>
+									<!-- Add a href element to news 08-01-2017-->
+									<a href="" target="_blank" class="hnews4">
+										<!-- Add a class to title of news 08-01-2017-->
+										<div class="news4"></div>
+										<!-- Add a class to source of news 08-01-2017-->
+									</a>
+									<div class="srcnews4"></div>
+									<a href="" target="_blank" class="hnews4">
+										<div class="img4"></div>
 									</a>
 								</div>
 							</div>
@@ -228,7 +357,6 @@
                     </a>
 				</div>
 			</div>
-
 		</div>
 	</div>
 
@@ -237,6 +365,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	<script src="javascript/app.js"></script>
+
 </body>
 
 </html>
