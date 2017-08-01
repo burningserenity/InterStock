@@ -342,7 +342,7 @@ function stockChart() {
 // Function to create stock watchlist
 function createWatchlist() {
 	$("<table>").attr({
-		class: 'table',
+		class: 'table table-striped',
 		id: 'watchlist-table'
 	}).appendTo("#watchlist-col");
 	$("<thead>").appendTo("#watchlist-table");
