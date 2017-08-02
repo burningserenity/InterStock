@@ -11,8 +11,8 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database;
 var auth = firebase.auth;
-var userEmail;
-var userPassword;
+var userEmail = "";
+var userPassword = "";
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -101,13 +101,13 @@ var newsSrc = "";
 
 // leave only four (4) source 'cause there are 4 squares for News 08-01-2017
 var newsSrcList = [
-	'bloomberg', 'business-insider-uk', 'cnbc', 'the-economist'];
-
+	'bloomberg', 'business-insider-uk', 'cnbc', 'the-economist'
+];
 var newsresult = [];
 
 
 //mobilizing the carousel
-$('.carousel[data-type="multi"] .item').each(function () {
+$('.carousel[data-type="multi"] .item').each(function() {
 	var next = $(this).next();
 	if (!next.length) {
 		next = $(this).siblings(':first');
@@ -129,37 +129,37 @@ function newsforcarousel() {
 
 	var stringapi2 = "";
 	newsresult = [];
-	var p = 0;	
-	
+	var p = 0;
+
 	for (var i = 0; i < newsSrcList.length; i++) {
-		
-      newsSrc = newsSrcList[i];
+
+		newsSrc = newsSrcList[i];
 
 
-      stringapi2 = queryURL_NEWS + newsSrc + '&apiKey=' + API_KEY_NEWS
-	
-      console.log(stringapi2);
+		stringapi2 = queryURL_NEWS + newsSrc + '&apiKey=' + API_KEY_NEWS
 
-	   $.ajax({
-		    	url: stringapi2,
-		    	dataType: "json",
-			    method: "GET"
-             }).done(function(response) {
-	     	      
-	     	     displaycarouselnews(response.articles[i].urlToImage,
-	     	     	response.articles[i].url,
-	     	     	response.articles[i].title,
-	     	     	response.source,p);
-	     	     p ++;
+		console.log(stringapi2);
 
-            });
+		$.ajax({
+			url: stringapi2,
+			'data-type': "jsonp",
+			method: "GET"
+		}).done(function(response) {
 
-	   }
-  
-	   console.log(newsresult);
-	   return newsresult;
+			displaycarouselnews(response.articles[i].urlToImage,
+				response.articles[i].url,
+				response.articles[i].title,
+				response.source, p);
+			p++;
+
+
+		});
+
+	}
+
+	console.log(newsresult);
+	return newsresult;
 }
-
 
 // Function to display News into carousel 08-01-2017
 function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
@@ -220,7 +220,7 @@ $("#symbolsubmit").on("click", function(event) {
 				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 				method: "GET",
 				'data-type': 'jsonp'
-			}).done(function (response) {
+			}).done(function(response) {
 				console.log(response);
 				// Display found stock on the page
 				displayStock(response);
@@ -245,13 +245,13 @@ $("#symbolsubmit").on("click", function(event) {
 				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
 				method: "GET",
 				'data-type': 'jsonp'
-			}).done(function (response) {
+			}).done(function(response) {
 				console.log(response);
 				// Display stock on page, if found
 				displayStock(response);
 			})
 			// Any fail status e.g. a 404 error results in error display
-			.fail(function (XMLHttpRequest, textStatus, errorThrown) {
+			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
 				emptyStockDisplay();
 				stockChart();
 				$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
@@ -296,10 +296,10 @@ function displayStock(response) {
 	// Populate stock chart
 	var label = [];
 	var data = [];
-    
-    // Adjusted because the graph wasn't taking the last date. 08/01/2017 
+
+	// Retrieve the most current price in the graph
 	for (var i = 9; i >= 0; i--) {
-	//end
+    //
 		label.push(response.dataset.data[i][0]);
 		data.push(response.dataset.data[i][1]);
 	}
@@ -344,29 +344,28 @@ function displayStock(response) {
 		data: data
 	});
 
- }	
-
-$("#watchStock").on("click", function (event) {
+	$("#watchStock").on("click", function(event) {
 		console.log("clicked");
 		if ($("#watchlist-col").find("table").length === 0) {
 			createWatchlist();
 		}
 		addToWatchlist();
 	});
+}
 
 // Page Document Ready 08/01/2017
-$(document).ready(function () {
+$(document).ready(function() {
 
 	newsforcarousel();
 
-	setInterval(function () {
+	setInterval(function() {
 		newsforcarousel();
 	}, 180000);
 
 });
 
 // Click function to assign an exchange to be queried and display it on the Navbar
-$('#countryDrop li').click(function () {
+$('#countryDrop li').click(function() {
 	var $this = $(this);
 	var $clone = $this.clone();
 	exchange = $this.attr("data-value");
@@ -401,18 +400,6 @@ function stockChart() {
 	$(".chart-container").append(newCanvas);
 }
 
-// Page Document Ready 08/01/2017
-$(document).ready(function() {    
-
-  newsforcarousel();
-  
-  setInterval(function () {
-   newsforcarousel(); 
-   },180000);  
- 
-});
-//
-
 // Function to create stock watchlist
 function createWatchlist() {
 	$("<table>").attr({
@@ -441,8 +428,6 @@ function addToWatchlist() {
 		"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
 		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td></tr>");
 }
-
-
 
 function registerUser() {
 	$("#modalError").text("");
@@ -486,23 +471,19 @@ function loginUser() {
 			$("#inputpassword").css('border-color', 'red');
 			$("#modalError").text("Wrong password");
 		}
-		var errorCode = error.code;
-		var errorMessage = error.message;
-		// ...
-
 	});
 	$("#myModal").modal('hide');
 }
 
 function logoutUser() {
-	auth().signOut().then(function () {
+	auth().signOut().then(function() {
 		// Sign-out successful.
-	}).catch(function (error) {
+	}).catch(function(error) {
 		// An error happened.
 	});
 }
 
-auth().onAuthStateChanged(function (user) {
+auth().onAuthStateChanged(function(user) {
 	if (user) {
 	} else {
 	}
@@ -512,7 +493,9 @@ $("#confirmsignup").on("click", function(event) {
 	userEmail = $("#signUpEmail").val();
 	if ($("#password").val() === $("#reenterpassword").val()) {
 		userPassword = $("#password").val();
-	}else {
+	}
+
+	else {
 		$("#password").css('border-color', 'red').val("");
 		$("#reenterpassword").css('border-color', 'red').val("");
 		$("#modalRegisterError").text("Passwords do not match");
