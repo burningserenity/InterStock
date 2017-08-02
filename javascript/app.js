@@ -169,22 +169,22 @@ function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
 	switch (e) {
 
 		case 0:
-			$(".img1").css("content", "url(" + newscar + ")");
+			$(".img1").attr("src", newscar);
 			$(".hnews1").attr('href', newscar2);
 			$(".news1").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews1").html('<p>' + source + '</p>');
 		case 1:
-			$(".img2").css("content", "url(" + newscar + ")");
+			$(".img2").attr("src", newscar);
 			$(".hnews2").attr('href', newscar2);
 			$(".news2").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews2").html('<p>' + source + '</p>');
 		case 2:
-			$(".img3").css("content", "url(" + newscar + ")");
+			$(".img3").attr("src", newscar);
 			$(".hnews3").attr('href', newscar2);
 			$(".news3").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews3").html('<p>' + source + '</p>');
 		case 3:
-			$(".img4").css("content", "url(" + newscar + ")");
+			$(".img4").attr("src",newscar);
 			$(".hnews4").attr('href', newscar2);
 			$(".news4").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews4").html('<p>' + source + '</p>');

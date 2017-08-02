@@ -78,6 +78,8 @@
          display: -webkit-box;
          -webkit-line-clamp: 2;
          -webkit-box-orient: vertical;
+         -o-ellipsis-lastline: 2;
+         -moz-box-orient: vertical;
      }
 
      .carousel-control {
@@ -217,29 +219,28 @@
          background: white;
      }
 
-     div.img1 {
-         width: 78%;
-         height: 70%;
-         display: block;
-         margin: auto;
-         background-color: lightblue;
-     }
-
-     div.img2 {
+     .img1 {
          width: 78%;
          height: 70%;
          display: block;
          margin: auto;
      }
 
-     div.img3 {
+     .img2 {
          width: 78%;
          height: 70%;
          display: block;
          margin: auto;
      }
 
-     div.img4 {
+     .img3 {
+         width: 78%;
+         height: 70%;
+         display: block;
+         margin: auto;
+     }
+
+     .img4 {
          width: 78%;
          height: 70%;
          display: block;
