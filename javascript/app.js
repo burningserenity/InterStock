@@ -297,8 +297,9 @@ function displayStock(response) {
 	var label = [];
 	var data = [];
 
-	for (var i = 10; i > 0; i--) {
-
+	// Retrieve the most current price in the graph
+	for (var i = 9; i >= 0; i--) {
+    //
 		label.push(response.dataset.data[i][0]);
 		data.push(response.dataset.data[i][1]);
 	}
@@ -448,12 +449,16 @@ function registerUser() {
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("User already registered with that email address");
 		}
+		else {
+			$("#myModal").modal('hide');
+		}
 	});
-	$("#myModal").modal('hide');
 }
 
 function loginUser() {
 	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+		var errorCode = error.code;
+		var errorMessage = error.message;
 		if (errorCode === 'auth/invalid-email') {
 			$("#Email").css('border-color', 'red');
 			$("#modalError").text("Please enter a valid email address");
@@ -466,10 +471,8 @@ function loginUser() {
 			$("#inputpassword").css('border-color', 'red');
 			$("#modalError").text("Wrong password");
 		}
-		var errorCode = error.code;
-		var errorMessage = error.message;
-		// ...
 	});
+	$("#myModal").modal('hide');
 }
 
 function logoutUser() {
@@ -518,4 +521,9 @@ $("#confirmsignup").on("click", function(event) {
 	}
 });
 
-$("#signin1").on
+$("#signin1").on("click", function(event) {
+	event.preventDefault();
+	userEmail = $("#Email").val();
+	userPassword = $("#passwordinput").val();
+	loginUser(userEmail, userPassword);
+});

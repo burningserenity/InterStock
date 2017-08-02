@@ -258,10 +258,11 @@
      .carousel {
          text-align: center;
      }
-     
-     .srcnews1,
-     .srcnews2,
-     .srcnews3,
-     .srcnews4 {
-         text-transform: uppercase;
-     }
+
+        .srcnews1,
+        .srcnews2,
+        .srcnews3,
+        .srcnews4 {
+        text-transform: uppercase;
+         }
+
