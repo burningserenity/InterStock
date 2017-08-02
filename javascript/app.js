@@ -448,9 +448,6 @@ function registerUser() {
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("User already registered with that email address");
 		}
-		else {
-			$("#myModal").modal('hide');
-		}
 	});
 }
 
@@ -471,7 +468,6 @@ function loginUser() {
 			$("#modalError").text("Wrong password");
 		}
 	});
-	$("#myModal").modal('hide');
 }
 
 function logoutUser() {
