@@ -113,6 +113,15 @@
          display: block;
      }
 
+     #modalError {
+       background-color: inherit;
+       color: red;
+     }
+
+      #modalRegisterError {
+       background-color: inherit;
+       color: red;
+     }
      /*xs*/
 
      @media (max-width: 767px) {

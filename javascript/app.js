@@ -429,17 +429,43 @@ function addToWatchlist() {
 }
 
 function registerUser() {
+	$("#modalError").text("");
+	$("#modalRegisterError").text("");
+	$("#signUpEmail").css('border-color', '#CCC');
+	$("#password").css('border-color', '#CCC');
+	$("#reenterpassword").css('border-color', '#CCC');
+	$("#inputpassword").css('border-color', '#CCC');
+	$("#Email").css('border-color', '#CCC');
 	auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 		// Handle Errors here.
 		var errorCode = error.code;
 		var errorMessage = error.message;
-		// ...
+		if (errorCode === 'auth/invalid-email') {
+			$("#signUpEmail").css('border-color', 'red');
+			$("#modalRegisterError").text("Please enter a valid email address");
+		}
+		else if (errorCode === 'auth/email-already-in-use'){
+			$("#signUpEmail").css('border-color', 'red');
+			$("#modalRegisterError").text("User already registered with that email address");
+		}
 	});
+	$("#myModal").modal('hide');
 }
 
 function loginUser() {
 	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
-		// Handle Errors here.
+		if (errorCode === 'auth/invalid-email') {
+			$("#Email").css('border-color', 'red');
+			$("#modalError").text("Please enter a valid email address");
+		}
+		else if (errorCode === 'auth/user-not-found') {
+			$("#Email").css('border-color', 'red');
+			$("#modalError").text("No user with that email address exists");
+		}
+		else if (errorCode === 'auth/wrong-password') {
+			$("#inputpassword").css('border-color', 'red');
+			$("#modalError").text("Wrong password");
+		}
 		var errorCode = error.code;
 		var errorMessage = error.message;
 		// ...
@@ -456,9 +482,7 @@ function logoutUser() {
 
 auth().onAuthStateChanged(function(user) {
 	if (user) {
-		// User is signed in.
 	} else {
-		// No user is signed in.
 	}
 });
 
@@ -468,7 +492,14 @@ $("#confirmsignup").on("click", function(event) {
 		userPassword = $("#password").val();
 	}
 
+	else {
+		$("#password").css('border-color', 'red').val("");
+		$("#reenterpassword").css('border-color', 'red').val("");
+		$("#modalRegisterError").text("Passwords do not match");
+	}
+
 	if (userEmail !== "" && userPassword !== "") {
+		console.log("Match");
 		registerUser(userEmail, userPassword);
 	}
 	else if (userEmail === "") {
@@ -485,4 +516,6 @@ $("#confirmsignup").on("click", function(event) {
 		$("#password").css('border-color', '#CCC').val("");
 		$("#reenterpassword").css('border-color', '#CCC').val("");
 	}
-})
+});
+
+$("#signin1").on
