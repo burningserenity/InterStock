@@ -76,9 +76,9 @@
          text-overflow: ellipsis;
          overflow: hidden;
          position: relative;
-         line-height: 1.2em;
+         line-height: 1.4em;
 /*          3 times the line-height to show 3 lines */
-         height: 4em;
+         height: 4.2em;
      }
      
      .carousel-control {
