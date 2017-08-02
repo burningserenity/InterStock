@@ -10,7 +10,7 @@ var config = {
 
 firebase.initializeApp(config);
 var database = firebase.database;
-var auth = firebase.auth;
+var authen = firebase.authen;
 var userEmail = "";
 var userPassword = "";
 
@@ -411,7 +411,7 @@ function createWatchlist() {
 	$("<th>").attr('id', 'stockNameTH').html('Stock Name').appendTo("#theadRow");
 	$("<th>").attr('id', 'symbolTH').html('Symbol').appendTo("#theadRow");
 	$("<th>").attr('id', 'exchangeTH').html('Exchange').appendTo("#theadRow");
-	$("<th>").attr('id', 'savedPriceTH').html('Price When<br> First Saved').appendTo("#theadRow");
+	$("<th>").attr('id', 'savedPriceTH').html('Saved Price').appendTo("#theadRow");
 	$("<th>").attr('id', 'currentPriceTH').html('Current Price').appendTo("#theadRow");
 	$("<th>").attr('id', 'changeTH').html('Change').appendTo("#theadRow");
     $("<th>").attr('id', 'deleteRow').html('Remove').appendTo("#theadRow");
@@ -444,15 +444,15 @@ function registerUser() {
 	$("#reenterpassword").css('border-color', '#CCC');
 	$("#inputpassword").css('border-color', '#CCC');
 	$("#Email").css('border-color', '#CCC');
-	auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+	authen().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 		// Handle Errors here.
 		var errorCode = error.code;
 		var errorMessage = error.message;
-		if (errorCode === 'auth/invalid-email') {
+		if (errorCode === 'authen/invalid-email') {
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("Please enter a valid email address");
 		}
-		else if (errorCode === 'auth/email-already-in-use'){
+		else if (errorCode === 'authen/email-already-in-use'){
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("User already registered with that email address");
 		}
@@ -460,18 +460,18 @@ function registerUser() {
 }
 
 function loginUser() {
-	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+	authen().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 		var errorCode = error.code;
 		var errorMessage = error.message;
-		if (errorCode === 'auth/invalid-email') {
+		if (errorCode === 'authen/invalid-email') {
 			$("#Email").css('border-color', 'red');
 			$("#modalError").text("Please enter a valid email address");
 		}
-		else if (errorCode === 'auth/user-not-found') {
+		else if (errorCode === 'authen/user-not-found') {
 			$("#Email").css('border-color', 'red');
 			$("#modalError").text("No user with that email address exists");
 		}
-		else if (errorCode === 'auth/wrong-password') {
+		else if (errorCode === 'authen/wrong-password') {
 			$("#inputpassword").css('border-color', 'red');
 			$("#modalError").text("Wrong password");
 		}
@@ -480,14 +480,14 @@ function loginUser() {
 }
 
 function logoutUser() {
-	auth().signOut().then(function() {
+	authen().signOut().then(function() {
 		// Sign-out successful.
 	}).catch(function(error) {
 		// An error happened.
 	});
 }
 
-auth().onAuthStateChanged(function(user) {
+authen().onauthenStateChanged(function(user) {
 	if (user) {
 	} else {
 	}
@@ -531,7 +531,7 @@ $("#signin1").on("click", function(event) {
 	userEmail = $("#Email").val();
 	userPassword = $("#passwordinput").val();
 	loginUser(userEmail, userPassword);
-	if (userEmail === auth().currentUser.email) {
+	if (userEmail === authen().currentUser.email) {
 		$("#Email").css('border-color', 'red');
 		$("#modalError").text("You are already logged in");
 		$("#passwordinput").val("");
