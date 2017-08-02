@@ -469,6 +469,7 @@ function loginUser() {
 			$("#modalError").text("Wrong password");
 		}
 	});
+	$("#passwordinput").val("");
 }
 
 function logoutUser() {
@@ -483,6 +484,7 @@ auth().onAuthStateChanged(function(user) {
 	if (user) {
 	} else {
 	}
+	$("#myModal").modal('hide');
 });
 
 $("#confirmsignup").on("click", function(event) {
@@ -522,4 +524,9 @@ $("#signin1").on("click", function(event) {
 	userEmail = $("#Email").val();
 	userPassword = $("#passwordinput").val();
 	loginUser(userEmail, userPassword);
+	if (userEmail === auth().currentUser.email) {
+		$("#Email").css('border-color', 'red');
+		$("#modalError").text("You are already logged in");
+		$("#passwordinput").val("");
+	}
 });
