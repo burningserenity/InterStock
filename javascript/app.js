@@ -411,9 +411,10 @@ function createWatchlist() {
 	$("<th>").attr('id', 'stockNameTH').html('Stock Name').appendTo("#theadRow");
 	$("<th>").attr('id', 'symbolTH').html('Symbol').appendTo("#theadRow");
 	$("<th>").attr('id', 'exchangeTH').html('Exchange').appendTo("#theadRow");
-	$("<th>").attr('id', 'savedPriceTH').html('Price When First Saved').appendTo("#theadRow");
+	$("<th>").attr('id', 'savedPriceTH').html('Price When<br> First Saved').appendTo("#theadRow");
 	$("<th>").attr('id', 'currentPriceTH').html('Current Price').appendTo("#theadRow");
 	$("<th>").attr('id', 'changeTH').html('Change').appendTo("#theadRow");
+    $("<th>").attr('id', 'deleteRow').html('Remove').appendTo("#theadRow");
 	$("<tbody>").appendTo("#watchlist-table");
 }
 
@@ -423,11 +424,17 @@ function addToWatchlist() {
 	var savedExchange = $(".stockExchangeDisplay").attr('data-value');
 	var savedSymbol = $(".stockSymbolDisplay").attr('data-value');
 	var savedPrice = $(".stockCurrentPrice").attr('data-value');
-	$("tbody").append("<tr><td class='stockNameTD'>" + savedName +
+	$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
 		"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
 		"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
-		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td></tr>");
+		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+
 }
+//remove row from watch-list
+$(document).on('click', ".deleteBtn", function () {
+ $(this).closest('tr').remove();
+});
+
 
 function registerUser() {
 	$("#modalError").text("");
