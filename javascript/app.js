@@ -538,16 +538,21 @@ $("#confirmsignup").on("click", function(event) {
 
 $("#signin1").on("click", function(event) {
 	event.preventDefault();
-	userEmail = $("#Email").val();
+    userEmail = $("#Email").val();
 	userPassword = $("#passwordinput").val();
 	loginUser(userEmail, userPassword);
-    $("#Email").appendTo("#loggedInUser");
 	if (userEmail === auth().currentUser.email) {
 		$("#Email").css('border-color', 'red');
 		$("#modalError").text("You are already logged in");
 		$("#passwordinput").val("");
 	}
 });
+
+//function to display username/email in the nav bar
+$("#signin1").on("click", function(event){    
+    var $email = auth().currentUser.email;
+    $("<ul id='loggedInUser'>").text("Logged In As: " + $email).css('visibility', 'visible').appendTo('#loggedIn');
+    })
 
 function writeUserData(userEmail) {
   firebase.database().ref('users/' + userEmail).push({
