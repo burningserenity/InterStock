@@ -664,3 +664,7 @@ $("#signin1").on("click", function(event) {
 	}
 
 });
+
+auth().onAuthStateChanged(function(user) {
+	$("#myModal").modal('hide');
+});
