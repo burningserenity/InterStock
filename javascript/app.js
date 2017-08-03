@@ -660,7 +660,9 @@ $("#signin1").on("click", function(event) {
 		$("#passwordinput").val("");
 	}
   else {
-    $("<ul id='loggedInUser'>").text("Logged In As: " + userEmail).css('visibility', 'visible').appendTo('#loggedIn');
+    $('<button class="btn btn-default dropdown-toggle" type="button" id="loggedIn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">').text("Logged In As: " + userEmail).css('visibility', 'visible').appendTo('.userButton');
+    $('<ul class="dropdown-menu userButtonMenu" aria-labelledby="dropdownMenu1"></ul>').css("visibility", "visible").appendTo('#loggedIn');
+    $('<li id="logout">').text("Logout").css("visibility", "visible").appendTo('.userButtonMenu');
   }
 });
 
