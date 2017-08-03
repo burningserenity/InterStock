@@ -665,7 +665,7 @@ auth().onAuthStateChanged(function(user) {
 	if (user) {
 		// $('<ul id="userNav" class="nav navbar-nav">').css('visibility', 'visible').appendTo('.userButton');
 		$('<li id="userDrop" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret">').appendTo(".userButton");
-		$('<p>').text("Logged In As: " + auth().currentUser.email).appendTo("userDrop");
+		$('<p>').text("Logged In As: " + auth().currentUser.email).appendTo(".userButton");
 		$('<ul id="userDropMenu" class="dropdown-menu">').css("visibility", "visible").appendTo('#userDrop');
 		$('<li id="logout">').css("visibility", "visible").appendTo('#userDropMenu');
 		$("<a id='logoutBtn' href='#'>").text("Logout").css("visibility", "visible").appendTo("#logout");

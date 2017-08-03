@@ -51,6 +51,10 @@
     background: white;
 }
 
+p {
+    color: white;
+}
+
      .hideWell {
          background: white;
          visibility: hidden;
