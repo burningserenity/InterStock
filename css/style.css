@@ -35,8 +35,7 @@
          visibility: hidden;
      }
 
-#loggedInUser,
-
+#loggedInUser
 {
     margin-left: 3px;
     margin-top: 3px;
@@ -50,6 +49,10 @@
 .logoutList{
 
     background: white;
+}
+
+p {
+    color: white;
 }
 
      .hideWell {

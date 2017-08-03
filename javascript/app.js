@@ -663,9 +663,9 @@ auth().onAuthStateChanged(function(user) {
 	$("#myModal").modal('hide');
 	checkwatchlistuser();
 	if (user) {
-		$('<ul id="userNav" class="nav navbar-nav">').css('visibility', 'visible').appendTo('.userButton');
-		$("<li id='userDrop' class='dropdown'>").appendTo("#userNav");
-		$("<a class='dropdown-toggle' data-toggle='dropdown' href='#' aria-expanded='false'>").text("Logged In As: " + auth().currentUser.email).appendTo("userDrop");
+		// $('<ul id="userNav" class="nav navbar-nav">').css('visibility', 'visible').appendTo('.userButton');
+		$('<li id="userDrop" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret">').appendTo(".userButton");
+		$('<p>').text("Logged In As: " + auth().currentUser.email).appendTo(".userButton");
 		$('<ul id="userDropMenu" class="dropdown-menu">').css("visibility", "visible").appendTo('#userDrop');
 		$('<li id="logout">').css("visibility", "visible").appendTo('#userDropMenu');
 		$("<a id='logoutBtn' href='#'>").text("Logout").css("visibility", "visible").appendTo("#logout");
