@@ -614,6 +614,7 @@ function loginUser() {
 function logoutUser() {
 	auth().signOut().then(function() {
 		// Sign-out successful.
+		$(".userButton").empty();
 	}).catch(function(error) {
 		// An error happened.
 	});
@@ -662,8 +663,22 @@ auth().onAuthStateChanged(function(user) {
 	$("#myModal").modal('hide');
 	checkwatchlistuser();
 	if (user) {
-		$('<button class="btn btn-default dropdown-toggle" type="button" id="loggedIn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">').text("Logged In As: " + auth().currentUser.email).css('visibility', 'visible').appendTo('.userButton');
-		$('<ul class="dropdown-menu userButtonMenu" aria-labelledby="dropdownMenu1"></ul>').css("visibility", "visible").appendTo('#loggedIn');
-		$('<li id="logout">').text("Logout").css("visibility", "visible").appendTo('.userButtonMenu');
+		$('<ul id="userNav" class="nav navbar-nav">').css('visibility', 'visible').appendTo('.userButton');
+		$("<li id='userDrop' class='dropdown'>").appendTo("#userNav");
+		$("<a class='dropdown-toggle' data-toggle='dropdown' href='#' aria-expanded='false'>").text("Logged In As: " + auth().currentUser.email).appendTo("userDrop");
+		$('<ul id="userDropMenu" class="dropdown-menu">').css("visibility", "visible").appendTo('#userDrop');
+		$('<li id="logout">').css("visibility", "visible").appendTo('#userDropMenu');
+		$("<a id='logoutBtn' href='#'>").text("Logout").css("visibility", "visible").appendTo("#logout");
+	}
+	else {
+		$("#listItemHolder").empty();
+		exchange = "";
+		emptyStockDisplay();
+		$("tbody").empty()
 	}
 });
+
+$("#logoutBtn").on("click", function(event) {
+	event.preventDefault;
+	logoutUser();
+})
