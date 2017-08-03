@@ -436,24 +436,24 @@ function retrieveWatchlist(user) {
 			var nameVal = childSnapshot.val().StockName;
 			var priceVal = childSnapshot.val().Stockrecordprice;
 			var symbolVal = childSnapshot.val().StockSymbol;
-				createWatchlist();
-				console.log(exchangeVal + " " + nameVal + " " + priceVal + " " + symbolVal);
-				$.ajax({
-					url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
-					method: "GET",
-					'data-type': 'jsonp'
-				}).done(function(response) {
-					console.log(response.dataset.data[0][1]);
-					var newPrice = response.dataset.data[0][1];
-					var currencyVal = priceVal.slice(0, 1);
-					var usePrice = priceVal.slice(1, priceVal.length);
-					var difference = newPrice - parseFloat(usePrice);
-					$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + nameVal +
-						"</td> + <td class='symbolTD'>" + symbolVal + "</td> <td class='exchangeTD'>" + exchangeVal +
-						"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
-						currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
-						"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-				});
+			createWatchlist();
+			console.log(exchangeVal + " " + nameVal + " " + priceVal + " " + symbolVal);
+			$.ajax({
+				url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
+				method: "GET",
+				'data-type': 'jsonp'
+			}).done(function(response) {
+				console.log(response.dataset.data[0][1]);
+				var newPrice = response.dataset.data[0][1];
+				var currencyVal = priceVal.slice(0, 1);
+				var usePrice = priceVal.slice(1, priceVal.length);
+				var difference = newPrice - parseFloat(usePrice);
+				$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + nameVal +
+					"</td> + <td class='symbolTD'>" + symbolVal + "</td> <td class='exchangeTD'>" + exchangeVal +
+					"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
+					currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
+					"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+			});
 		});
 	});
 }
@@ -483,18 +483,18 @@ function addToWatchlist() {
 
 function checkwatchlistuser() {
 	var user = auth().currentUser;
-		if (user) {
-			console.log(user.uid);
-			var ref = firebase.database().ref('users/' + user.uid);
-			ref.once("value")
-				.then(function(snapshot) {
-					//console.log(snapshot.hasChildren());
-					if (snapshot.hasChildren()) {
-						createWatchlist();
-						retrieveWatchlist(user.uid);
-					}
-				});
-		}
+	if (user) {
+		console.log(user.uid);
+		var ref = firebase.database().ref('users/' + user.uid);
+		ref.once("value")
+			.then(function(snapshot) {
+				//console.log(snapshot.hasChildren());
+				if (snapshot.hasChildren()) {
+					createWatchlist();
+					retrieveWatchlist(user.uid);
+				}
+			});
+	}
 
 }
 
@@ -648,7 +648,7 @@ $("#confirmsignup").on("click", function(event) {
 
 $("#signin1").on("click", function(event) {
 	event.preventDefault();
-    userEmail = $("#Email").val();
+	userEmail = $("#Email").val();
 	userPassword = $("#passwordinput").val();
 	loginUser(userEmail, userPassword);
 	if (userEmail === auth().currentUser.email) {
@@ -656,14 +656,14 @@ $("#signin1").on("click", function(event) {
 		$("#modalError").text("You are already logged in");
 		$("#passwordinput").val("");
 	}
-  else {
-    $('<button class="btn btn-default dropdown-toggle" type="button" id="loggedIn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">').text("Logged In As: " + userEmail).css('visibility', 'visible').appendTo('.userButton');
-    $('<ul class="dropdown-menu userButtonMenu" aria-labelledby="dropdownMenu1"></ul>').css("visibility", "visible").appendTo('#loggedIn');
-    $('<li id="logout">').text("Logout").css("visibility", "visible").appendTo('.userButtonMenu');
-  }
 });
 
 auth().onAuthStateChanged(function(user) {
 	$("#myModal").modal('hide');
 	checkwatchlistuser();
+	if (user) {
+		$('<button class="btn btn-default dropdown-toggle" type="button" id="loggedIn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">').text("Logged In As: " + auth().currentUser.email).css('visibility', 'visible').appendTo('.userButton');
+		$('<ul class="dropdown-menu userButtonMenu" aria-labelledby="dropdownMenu1"></ul>').css("visibility", "visible").appendTo('#loggedIn');
+		$('<li id="logout">').text("Logout").css("visibility", "visible").appendTo('.userButtonMenu');
+	}
 });
