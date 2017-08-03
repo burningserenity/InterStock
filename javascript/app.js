@@ -439,6 +439,7 @@ function retrieveWatchlist(user){
             savedName = childSnapshot.val().StockName;
             savedExchange = childSnapshot.val().StockExchange;
             savedPrice = childSnapshot.val().Stockrecordprice;
+            console.log(savedPrice);
               
             $.ajax({
 							url: queryURL + savedExchange + '/' + savedSymbol + '.json?api_key=' + API_KEY,
@@ -604,7 +605,7 @@ function registerUser(username,userEmail,userPassword) {
                recordDate: firebase.database.ServerValue.TIMESTAMP
             });
             console.log("Grab user");
-    }
+    })
 	}).catch(function(error) {
 		// Handle Errors here.
 		var errorCode = error.code;
