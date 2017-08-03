@@ -466,7 +466,6 @@ function registerUser() {
 			$("#modalRegisterError").text("User already registered with that email address");
 		}
 	});
-	user = auth().currentUser.uid;
 }
 
 function loginUser() {
@@ -484,7 +483,7 @@ function loginUser() {
 			$("#modalError").text("Wrong password");
 		}
 	});
-	isNewUser = true;
+	isNewUser = false;
 	user = auth().currentUser.uid;
 	$("#passwordinput").val("");
 }
