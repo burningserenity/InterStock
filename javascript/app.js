@@ -430,7 +430,12 @@ function retrieveWatchlist(user){
 
             snapshot.forEach(function(childSnapshot){
 
-            var ckey = childSnapshot.key;
+            savedSymbol = "";
+            savedName = "";;
+            savedExchange = "";;
+            savedPrice = "";;
+            var ckey = "";
+
             console.log(ckey);
             if (ckey === "UserEmail" || ckey === "UserName" || ckey === "recordDate"){
             	console.log("there isn't records");
@@ -443,21 +448,26 @@ function retrieveWatchlist(user){
             console.log(savedPrice);
               
             $.ajax({
-							url: queryURL + savedExchange + '/' + savedSymbol + '.json?api_key=' + API_KEY,
-							method: "GET",
-							'data-type': 'jsonp'
-						  }).done(function(response) {
-							console.log(response.dataset.data[0][1]);
-							var newPrice = response.dataset.data[0][1];
-							var currencyVal = savedPrice.slice(0, 1);
-							var usePrice = savedPrice.slice(1, savedPrice.length);
-							var difference = newPrice - parseFloat(usePrice);
-							$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
-								"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
-								"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
-								currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
-								"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-						});
+				url: queryURL + savedExchange + '/' + savedSymbol + '.json?api_key=' + API_KEY,
+				method: "GET",
+				'data-type': 'jsonp'
+				}).done(function(response) {
+					console.log(response.dataset.data[0][1]);
+				    var newPrice = response.dataset.data[0][1];
+				    var currencyVal = savedPrice.slice(0, 1);
+				    var usePrice = savedPrice.slice(1, savedPrice.length);
+				    var difference = newPrice - parseFloat(usePrice);
+				    $("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
+				 	"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
+					"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
+					currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
+					"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+					savedSymbol = "";
+                    savedName = "";
+                    savedExchange = "";
+                    savedPrice = "";
+                    var ckey = "";
+				});
  			}
 
   	   });	    
