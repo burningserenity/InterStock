@@ -454,7 +454,9 @@ function registerUser() {
 	$("#inputpassword").css('border-color', '#CCC');
 	$("#Email").css('border-color', '#CCC');
 	isNewUser = true;
-	auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+	auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+		return auth().createUserWithEmailAndPassword(userEmail, userPassword);
+	}).catch(function(error) {
 		// Handle Errors here.
 		var errorCode = error.code;
 		var errorMessage = error.message;
@@ -469,23 +471,45 @@ function registerUser() {
 }
 
 function loginUser() {
-	firebase.auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
-		var errorCode = error.code;
-		var errorMessage = error.message;
-		if (errorCode === 'auth/invalid-email') {
-			$("#Email").css('border-color', 'red');
-			$("#modalError").text("Please enter a valid email address");
-		} else if (errorCode === 'auth/user-not-found') {
-			$("#Email").css('border-color', 'red');
-			$("#modalError").text("No user with that email address exists");
-		} else if (errorCode === 'auth/wrong-password') {
-			$("#inputpassword").css('border-color', 'red');
-			$("#modalError").text("Wrong password");
-		}
-	});
-	isNewUser = false;
-	user = auth().currentUser.uid;
-	$("#passwordinput").val("");
+	if ($("#rememberme-0").is(':checked')) {
+		firebase.auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			if (errorCode === 'auth/invalid-email') {
+				$("#Email").css('border-color', 'red');
+				$("#modalError").text("Please enter a valid email address");
+			} else if (errorCode === 'auth/user-not-found') {
+				$("#Email").css('border-color', 'red');
+				$("#modalError").text("No user with that email address exists");
+			} else if (errorCode === 'auth/wrong-password') {
+				$("#inputpassword").css('border-color', 'red');
+				$("#modalError").text("Wrong password");
+			}
+		});
+	} else {
+		auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+			return auth().signInWithEmailAndPassword(userEmail, userPassword);
+		}).catch(function(error) {
+				// Handle Errors here.
+				var errorCode = error.code;
+				var errorMessage = error.message;
+				if (errorCode === 'auth/invalid-email') {
+					$("#Email").css('border-color', 'red');
+					$("#modalError").text("Please enter a valid email address");
+				} else if (errorCode === 'auth/user-not-found') {
+					$("#Email").css('border-color', 'red');
+					$("#modalError").text("No user with that email address exists");
+				} else if (errorCode === 'auth/wrong-password') {
+					$("#inputpassword").css('border-color', 'red');
+					$("#modalError").text("Wrong password");
+				}
+		});
+	}
+
+
+isNewUser = false;
+user = auth().currentUser.uid;
+$("#passwordinput").val("");
 }
 
 function logoutUser() {
