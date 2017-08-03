@@ -441,6 +441,24 @@ function addToWatchlist() {
 }
 //remove row from watch-list
 $(document).on('click', ".deleteBtn", function() {
+	user = auth().currentUser;
+	var userDir = database().ref().child("users").child(user.uid).orderByKey();
+	userDir.once("value").then(function(snapshot) {
+		snapshot.forEach(function(childSnapshot) {
+
+			var key = childSnapshot.key;
+			var childData = childSnapshot.val(); // childData will be the actual contents of the child
+
+			var exchangeVal = childSnapshot.val().savedExchange;
+			var nameVal = childSnapshot.val().savedName;
+			var priceVal = childSnapshot.val().savedPrice;
+			var symbolVal = childSnapshot.val().savedSymbol;
+
+			if (exchangeVal == $(this).closest('tr').find('td').val()) {
+				userDir.childSnapshot.val().remove;
+			}
+		})
+	})
 	$(this).closest('tr').remove();
 });
 
@@ -490,26 +508,26 @@ function loginUser() {
 		auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
 			return auth().signInWithEmailAndPassword(userEmail, userPassword);
 		}).catch(function(error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				if (errorCode === 'auth/invalid-email') {
-					$("#Email").css('border-color', 'red');
-					$("#modalError").text("Please enter a valid email address");
-				} else if (errorCode === 'auth/user-not-found') {
-					$("#Email").css('border-color', 'red');
-					$("#modalError").text("No user with that email address exists");
-				} else if (errorCode === 'auth/wrong-password') {
-					$("#inputpassword").css('border-color', 'red');
-					$("#modalError").text("Wrong password");
-				}
+			// Handle Errors here.
+			var errorCode = error.code;
+			var errorMessage = error.message;
+			if (errorCode === 'auth/invalid-email') {
+				$("#Email").css('border-color', 'red');
+				$("#modalError").text("Please enter a valid email address");
+			} else if (errorCode === 'auth/user-not-found') {
+				$("#Email").css('border-color', 'red');
+				$("#modalError").text("No user with that email address exists");
+			} else if (errorCode === 'auth/wrong-password') {
+				$("#inputpassword").css('border-color', 'red');
+				$("#modalError").text("Wrong password");
+			}
 		});
 	}
 
 
-isNewUser = false;
-user = auth().currentUser.uid;
-$("#passwordinput").val("");
+	isNewUser = false;
+	user = auth().currentUser.uid;
+	$("#passwordinput").val("");
 }
 
 function logoutUser() {
