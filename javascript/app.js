@@ -11,8 +11,10 @@ var config = {
 firebase.initializeApp(config);
 var database = firebase.database;
 var auth = firebase.auth;
+var user;
 var userEmail = "";
 var userPassword = "";
+var isNewUser = false;
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -184,7 +186,7 @@ function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
 			$(".news3").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews3").html('<p>' + source + '</p>');
 		case 3:
-			$(".img4").attr("src",newscar);
+			$(".img4").attr("src", newscar);
 			$(".hnews4").attr('href', newscar2);
 			$(".news4").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews4").html('<p>' + source + '</p>');
@@ -299,7 +301,7 @@ function displayStock(response) {
 
 	// Retrieve the most current price in the graph
 	for (var i = 9; i >= 0; i--) {
-    //
+		//
 		label.push(response.dataset.data[i][0]);
 		data.push(response.dataset.data[i][1]);
 	}
@@ -414,12 +416,13 @@ function createWatchlist() {
 	$("<th>").attr('id', 'savedPriceTH').html('Price When<br> First Saved').appendTo("#theadRow");
 	$("<th>").attr('id', 'currentPriceTH').html('Current Price').appendTo("#theadRow");
 	$("<th>").attr('id', 'changeTH').html('Change').appendTo("#theadRow");
-    $("<th>").attr('id', 'deleteRow').html('Remove').appendTo("#theadRow");
+	$("<th>").attr('id', 'deleteRow').html('Remove').appendTo("#theadRow");
 	$("<tbody>").appendTo("#watchlist-table");
 }
 
 // Function to add a new stock to the watchlist
 function addToWatchlist() {
+	user = auth().currentUser;
 	var savedName = $(".stockNameDisplay").attr('data-value');
 	var savedExchange = $(".stockExchangeDisplay").attr('data-value');
 	var savedSymbol = $(".stockSymbolDisplay").attr('data-value');
@@ -428,11 +431,17 @@ function addToWatchlist() {
 		"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
 		"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
 		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-
+	// Add information to Firebase
+	database().ref().child("users").child(user.uid).push({
+		savedName: savedName,
+		savedExchange: savedExchange,
+		savedSymbol: savedSymbol,
+		savedPrice: savedPrice
+	});
 }
 //remove row from watch-list
-$(document).on('click', ".deleteBtn", function () {
- $(this).closest('tr').remove();
+$(document).on('click', ".deleteBtn", function() {
+	$(this).closest('tr').remove();
 });
 
 
@@ -444,6 +453,7 @@ function registerUser() {
 	$("#reenterpassword").css('border-color', '#CCC');
 	$("#inputpassword").css('border-color', '#CCC');
 	$("#Email").css('border-color', '#CCC');
+	isNewUser = true;
 	auth().createUserWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 		// Handle Errors here.
 		var errorCode = error.code;
@@ -451,8 +461,7 @@ function registerUser() {
 		if (errorCode === 'auth/invalid-email') {
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("Please enter a valid email address");
-		}
-		else if (errorCode === 'auth/email-already-in-use'){
+		} else if (errorCode === 'auth/email-already-in-use') {
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("User already registered with that email address");
 		}
@@ -466,16 +475,16 @@ function loginUser() {
 		if (errorCode === 'auth/invalid-email') {
 			$("#Email").css('border-color', 'red');
 			$("#modalError").text("Please enter a valid email address");
-		}
-		else if (errorCode === 'auth/user-not-found') {
+		} else if (errorCode === 'auth/user-not-found') {
 			$("#Email").css('border-color', 'red');
 			$("#modalError").text("No user with that email address exists");
-		}
-		else if (errorCode === 'auth/wrong-password') {
+		} else if (errorCode === 'auth/wrong-password') {
 			$("#inputpassword").css('border-color', 'red');
 			$("#modalError").text("Wrong password");
 		}
 	});
+	isNewUser = false;
+	user = auth().currentUser.uid;
 	$("#passwordinput").val("");
 }
 
@@ -489,8 +498,14 @@ function logoutUser() {
 
 auth().onAuthStateChanged(function(user) {
 	if (user) {
-	} else {
-	}
+		console.log(user.uid);
+		if (isNewUser) {
+			console.log("true");
+			database().ref().child("users").child(user.uid).set({
+				email: auth().currentUser.email
+			});
+		}
+	} else {}
 	$("#myModal").modal('hide');
 });
 
@@ -498,9 +513,7 @@ $("#confirmsignup").on("click", function(event) {
 	userEmail = $("#signUpEmail").val();
 	if ($("#password").val() === $("#reenterpassword").val()) {
 		userPassword = $("#password").val();
-	}
-
-	else {
+	} else {
 		$("#password").css('border-color', 'red').val("");
 		$("#reenterpassword").css('border-color', 'red').val("");
 		$("#modalRegisterError").text("Passwords do not match");
@@ -509,18 +522,15 @@ $("#confirmsignup").on("click", function(event) {
 	if (userEmail !== "" && userPassword !== "") {
 		console.log("Match");
 		registerUser(userEmail, userPassword);
-	}
-	else if (userEmail === "") {
+	} else if (userEmail === "") {
 		$("#signUpEmail").css('border-color', 'red');
-	}
-	else if (userEmail !== "") {
+	} else if (userEmail !== "") {
 		$("#signUpEmail").css('border-color', '#CCC');
 	}
 	if (userPassword === "") {
 		$("#password").css('border-color', 'red').val("");
 		$("#reenterpassword").css('border-color', 'red').val("");
-	}
-	else if (userPassword !== "") {
+	} else if (userPassword !== "") {
 		$("#password").css('border-color', '#CCC').val("");
 		$("#reenterpassword").css('border-color', '#CCC').val("");
 	}
