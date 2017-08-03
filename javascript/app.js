@@ -460,7 +460,7 @@ function registerUser() {
 }
 
 function loginUser() {
-	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+	firebase.auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 		var errorCode = error.code;
 		var errorMessage = error.message;
 		if (errorCode === 'auth/invalid-email') {
@@ -531,9 +531,18 @@ $("#signin1").on("click", function(event) {
 	userEmail = $("#Email").val();
 	userPassword = $("#passwordinput").val();
 	loginUser(userEmail, userPassword);
+    $("#Email").appendTo("#loggedInUser");
 	if (userEmail === auth().currentUser.email) {
 		$("#Email").css('border-color', 'red');
 		$("#modalError").text("You are already logged in");
 		$("#passwordinput").val("");
 	}
 });
+
+function writeUserData(userEmail) {
+  firebase.database().ref('users/' + userEmail).push({
+    email: email,
+      uid: uid
+  });
+}
+
