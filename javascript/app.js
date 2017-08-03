@@ -358,13 +358,15 @@ function displayStock(response) {
 	});
 }
 
+
+
 // Page Document Ready 08/01/2017
 $(document).ready(function() {
 
 	newsforcarousel();
 	checkwatchlistuser();
 	setInterval(function() {
-		newsforcarousel();
+	newsforcarousel();
 	}, 180000);
 
 });
@@ -407,6 +409,7 @@ function stockChart() {
 
 // Function to create stock watchlist
 function createWatchlist() {
+	$("#watchlist-col").empty();
 	$("<table>").attr({
 		class: 'table table-striped',
 		id: 'watchlist-table'
@@ -520,22 +523,20 @@ function checkwatchlist(user,savedName,stockexchange,savedSymbol,savedPrice){
   };
 
 
-//remove row from watch-list
+//Button Function for Removing rows from watch-list 08-03-2017
 $(document).on('click', ".deleteBtn", function (event) {
-  event.preventDefault();
-  var key1 ="";
-  var key2 = "";
-  //$(this).closest('tr').each(function (index1){
-
-    key1= $(this).closest('tr').find('td.symbolTD').html();
-    key2= $(this).closest('tr').find('td.exchangeTD').html();
-   console.log("La Key:"+key2+key1);
+   event.preventDefault();
+   var key1 ="";
+   var key2 = "";
+   key1= $(this).closest('tr').find('td.symbolTD').html();
+   key2= $(this).closest('tr').find('td.exchangeTD').html();
    
- firebase.database().ref('users/'+auth().currentUser.uid).child(key2+key1).remove();
- $(this).closest('tr').remove();
+   firebase.database().ref('users/'+auth().currentUser.uid).child(key2+key1).remove();
+   $(this).closest('tr').remove();
 });
+//
 
-
+// Change Register user adding name user and timestamp for future 08-03-2017
 function registerUser(username,userEmail,userPassword) {
 	$("#modalError").text("");
 	$("#modalRegisterError").text("");
@@ -573,6 +574,8 @@ function registerUser(username,userEmail,userPassword) {
 	});
 }
 
+//
+
 function loginUser() {
 	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 		var errorCode = error.code;
@@ -591,6 +594,7 @@ function loginUser() {
 		}
 	});
 	$("#passwordinput").val("");
+	checkwatchlistuser();
 }
 
 function logoutUser() {
