@@ -670,8 +670,12 @@ auth().onAuthStateChanged(function(user) {
 		$('<ul id="userDropMenu" class="dropdown-menu">').css("visibility", "visible").appendTo('#userDrop');
 		$('<li id="logout">').css("visibility", "visible").appendTo('#userDropMenu');
 		$("<a id='logoutBtn' href='#'>").text("Logout").css("visibility", "visible").appendTo("#logout");
-	}
-	else {
+		$("#logoutBtn").on("click", function(event) {
+			event.preventDefault();
+			console.log("logout");
+			logoutUser();
+		});
+	} else {
 		$("#listItemHolder").empty();
 		exchange = "";
 		emptyStockDisplay();
@@ -679,7 +683,8 @@ auth().onAuthStateChanged(function(user) {
 	}
 });
 
-$("#logoutBtn").on("click", function(event) {
-	event.preventDefault;
-	logoutUser();
-})
+// $("#logoutBtn").on("click", function(event) {
+// 	event.preventDefault();
+// 	console.log("logout");
+// 	logoutUser();
+// });
