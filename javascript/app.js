@@ -448,10 +448,11 @@ function retrieveWatchlist(user) {
 				var currencyVal = priceVal.slice(0, 1);
 				var usePrice = priceVal.slice(1, priceVal.length);
 				var difference = newPrice - parseFloat(usePrice);
+				var useDiff = difference.toFixed(2);
 				$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + nameVal +
 					"</td> + <td class='symbolTD'>" + symbolVal + "</td> <td class='exchangeTD'>" + exchangeVal +
 					"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
-					currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
+					currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + useDiff +
 					"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
 			});
 		});
