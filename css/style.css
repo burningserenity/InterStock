@@ -1,4 +1,4 @@
-     .content {
+  .content {
          background-image: url("../images/ticker-image-blue.jpg");
          width: 100%;
          height: 40%;
@@ -85,9 +85,6 @@
          overflow: hidden;
          position: relative;
          line-height: 1.4em;
-/*          3 times the line-height to show 3 lines */
-/*         Why? It looks terrible, IMO. - Nick */
-         /*height: 4.2em;*/
      }
 
      .carousel-control {
@@ -267,7 +264,6 @@
      .carousel {
          text-align: center;
      }
-
         .srcnews1,
         .srcnews2,
         .srcnews3,
