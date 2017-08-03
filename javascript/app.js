@@ -651,7 +651,7 @@ $("#confirmsignup").on("click", function(event) {
 
 $("#signin1").on("click", function(event) {
 	event.preventDefault();
-	userEmail = $("#Email").val();
+    userEmail = $("#Email").val();
 	userPassword = $("#passwordinput").val();
 	loginUser(userEmail, userPassword);
 	if (userEmail === auth().currentUser.email) {
@@ -659,7 +659,9 @@ $("#signin1").on("click", function(event) {
 		$("#modalError").text("You are already logged in");
 		$("#passwordinput").val("");
 	}
-
+  else {
+    $("<ul id='loggedInUser'>").text("Logged In As: " + userEmail).css('visibility', 'visible').appendTo('#loggedIn');
+  }
 });
 
 auth().onAuthStateChanged(function(user) {

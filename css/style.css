@@ -34,6 +34,14 @@
          border: 2px double gray;
          visibility: hidden;
      }
+#loggedIn,
+#loggedInUser {
+    margin-left: 3px;
+    margin-top: 3px;
+    color: white;
+    visibility: hidden;
+    float: right;
+}
 
      .hideWell {
          background: white;
