@@ -504,6 +504,20 @@ auth().onAuthStateChanged(function(user) {
 			database().ref().child("users").child(user.uid).set({
 				email: auth().currentUser.email
 			});
+		} else {
+			var userDir = database().ref().child("users").child(user.uid).orderByKey();
+			userDir.once("value").then(function(snapshot) {
+				snapshot.forEach(function(childSnapshot) {
+					var key = childSnapshot.key;
+					var childData = childSnapshot.val(); // childData will be the actual contents of the child
+
+					var exchangeVal = childSnapshot.val().savedExchange;
+					var nameVal = childSnapshot.val().savedName;
+					var priceVal = childSnapshot.val().savedPrice;
+					var symbolVal = childSnapshot.val().savedSymbol;
+					console.log(exchangeVal + " " + nameVal + " " + priceVal + " " + symbolVal);
+				});
+			});
 		}
 	} else {}
 	$("#myModal").modal('hide');
@@ -541,7 +555,7 @@ $("#signin1").on("click", function(event) {
 	userEmail = $("#Email").val();
 	userPassword = $("#passwordinput").val();
 	loginUser(userEmail, userPassword);
-    $("#Email").appendTo("#loggedInUser");
+	$("#Email").appendTo("#loggedInUser");
 	if (userEmail === auth().currentUser.email) {
 		$("#Email").css('border-color', 'red');
 		$("#modalError").text("You are already logged in");
@@ -550,9 +564,8 @@ $("#signin1").on("click", function(event) {
 });
 
 function writeUserData(userEmail) {
-  firebase.database().ref('users/' + userEmail).push({
-    email: email,
-      uid: uid
-  });
+	firebase.database().ref('users/' + userEmail).push({
+		email: email,
+		uid: uid
+	});
 }
-
