@@ -9,12 +9,15 @@ var config = {
 };
 
 firebase.initializeApp(config);
+
 var database = firebase.database;
+
 var auth = firebase.auth;
-var user;
+
+var username = "";
 var userEmail = "";
 var userPassword = "";
-var isNewUser = false;
+var recordexist = false;
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -134,14 +137,10 @@ function newsforcarousel() {
 	var p = 0;
 
 	for (var i = 0; i < newsSrcList.length; i++) {
-
 		newsSrc = newsSrcList[i];
 
-
-		stringapi2 = queryURL_NEWS + newsSrc + '&apiKey=' + API_KEY_NEWS
-
-		console.log(stringapi2);
-
+		stringapi2 = queryURL_NEWS + newsSrc + '&apiKey=' + API_KEY_NEWS;
+    
 		$.ajax({
 			url: stringapi2,
 			'data-type': "jsonp",
@@ -186,7 +185,8 @@ function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
 			$(".news3").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews3").html('<p>' + source + '</p>');
 		case 3:
-			$(".img4").attr("src", newscar);
+
+			$(".img4").attr("src",newscar);
 			$(".hnews4").attr('href', newscar2);
 			$(".news4").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews4").html('<p>' + source + '</p>');
@@ -206,8 +206,9 @@ $("#symbolsubmit").on("click", function(event) {
 	// Get stock symbol from user input
 	symbol = $("#symbolsearch").val().toUpperCase().trim();
 	// Put entire Quandl query into variable and log it to the console
-	stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-		console.log(stringapi);
+
+	stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY;
+
 	// Check if the user selected a specific exchange or not
 	if (exchange === "") {
 		queryCount = 0;
@@ -223,7 +224,7 @@ $("#symbolsubmit").on("click", function(event) {
 				method: "GET",
 				'data-type': 'jsonp'
 			}).done(function(response) {
-				console.log(response);
+				//console.log(response);
 				// Display found stock on the page
 				displayStock(response);
 				queryCount++;
@@ -301,7 +302,6 @@ function displayStock(response) {
 
 	// Retrieve the most current price in the graph
 	for (var i = 9; i >= 0; i--) {
-		//
 		label.push(response.dataset.data[i][0]);
 		data.push(response.dataset.data[i][1]);
 	}
@@ -355,13 +355,15 @@ function displayStock(response) {
 	});
 }
 
+
+
 // Page Document Ready 08/01/2017
 $(document).ready(function() {
 
 	newsforcarousel();
-
+	checkwatchlistuser();
 	setInterval(function() {
-		newsforcarousel();
+	newsforcarousel();
 	}, 180000);
 
 });
@@ -404,6 +406,7 @@ function stockChart() {
 
 // Function to create stock watchlist
 function createWatchlist() {
+	$("#watchlist-col").empty();
 	$("<table>").attr({
 		class: 'table table-striped',
 		id: 'watchlist-table'
@@ -416,118 +419,211 @@ function createWatchlist() {
 	$("<th>").attr('id', 'savedPriceTH').html('Price When<br> First Saved').appendTo("#theadRow");
 	$("<th>").attr('id', 'currentPriceTH').html('Current Price').appendTo("#theadRow");
 	$("<th>").attr('id', 'changeTH').html('Change').appendTo("#theadRow");
-	$("<th>").attr('id', 'deleteRow').html('Remove').appendTo("#theadRow");
+    $("<th>").attr('id', 'deleteRow').html('Remove').appendTo("#theadRow");
 	$("<tbody>").appendTo("#watchlist-table");
+};
+
+
+function retrieveWatchlist(user){
+
+	firebase.database().ref('users/'+user).orderByChild("StockSymbol").once('value').then( function(snapshot) {
+
+            snapshot.forEach(function(childSnapshot){
+
+            var ckey = childSnapshot.key;
+            console.log(ckey);
+            if (ckey === "UserEmail" || ckey === "UserName" || ckey === "recordDate"){
+            	console.log("there isn't records");
+            }
+            else{
+            savedSymbol = childSnapshot.val().StockSymbol;
+            savedName = childSnapshot.val().StockName;
+            savedExchange = childSnapshot.val().StockExchange;
+            savedPrice = childSnapshot.val().Stockrecordprice;
+              
+            $.ajax({
+							url: queryURL + savedExchange + '/' + savedSymbol + '.json?api_key=' + API_KEY,
+							method: "GET",
+							'data-type': 'jsonp'
+						  }).done(function(response) {
+							console.log(response.dataset.data[0][1]);
+							var newPrice = response.dataset.data[0][1];
+							var currencyVal = savedPrice.slice(0, 1);
+							var usePrice = savedPrice.slice(1, savedPrice.length);
+							var difference = newPrice - parseFloat(usePrice);
+							$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
+								"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
+								"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
+								currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
+								"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+						});
+ 			}
+
+  	   });	    
+});
 }
 
-// Function to add a new stock to the watchlist
+
 function addToWatchlist() {
-	user = auth().currentUser;
 	var savedName = $(".stockNameDisplay").attr('data-value');
 	var savedExchange = $(".stockExchangeDisplay").attr('data-value');
 	var savedSymbol = $(".stockSymbolDisplay").attr('data-value');
 	var savedPrice = $(".stockCurrentPrice").attr('data-value');
-	$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
-		"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
-		"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
-		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-	// Add information to Firebase
-	database().ref().child("users").child(user.uid).push({
-		savedName: savedName,
-		savedExchange: savedExchange,
-		savedSymbol: savedSymbol,
-		savedPrice: savedPrice
-	});
-}
-//remove row from watch-list
-$(document).on('click', ".deleteBtn", function() {
-	user = auth().currentUser;
-	var userDir = database().ref().child("users").child(user.uid).orderByKey();
-	userDir.once("value").then(function(snapshot) {
-		snapshot.forEach(function(childSnapshot) {
+	var result;
+	
+	var authData = auth().currentUser;
+	   console.log(authData.uid);
+     if (authData){
+     	 checkwatchlist(authData.uid,savedName,savedExchange,savedSymbol,savedPrice);
+     	  console.log(recordexist);
+   	 }	
+  	 else{
+  	 	 $("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
+			"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
+			"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
+			savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+  		    alert("Log in or data will save until session ends");
+  	 }	
+     //	
+  }
 
-			var key = childSnapshot.key;
-			var childData = childSnapshot.val(); // childData will be the actual contents of the child
-
-			var exchangeVal = childSnapshot.val().savedExchange;
-			var nameVal = childSnapshot.val().savedName;
-			var priceVal = childSnapshot.val().savedPrice;
-			var symbolVal = childSnapshot.val().savedSymbol;
-
-			if (exchangeVal == $(this).closest('tr').find('td').val()) {
-				userDir.childSnapshot.val().remove;
-			}
-		})
-	})
-	$(this).closest('tr').remove();
+function checkwatchlistuser(){
+	auth().onAuthStateChanged(function(user) {
+	if (user) {
+	     console.log(user.uid);
+	    var ref = firebase.database().ref('users/'+user.uid);
+		ref.once("value")
+        .then(function(snapshot) {
+       		//console.log(snapshot.hasChildren());
+            if(snapshot.hasChildren()) {
+            	createWatchlist();
+            	retrieveWatchlist(user.uid);
+            }
+         });    
+	}
 });
+	
+}
+
+// Function to verify if user has a specific stock in watchlist
+function checkwatchlist(user,savedName,stockexchange,savedSymbol,savedPrice){
+   console.log('"users/'+user+'/'+stockexchange+savedSymbol+'"');
+   var ref = firebase.database().ref('users/'+user+'/'+stockexchange+savedSymbol);
+   ref.once('value').then(function(snapshot) { 
+   	    //console.log(snapshot.exists());
+   	 if (!snapshot.exists()){
+   	 	   firebase.database().ref('users').child(user).child(stockexchange+savedSymbol).set({
+             StockName: savedName,
+             StockExchange: stockexchange,
+             StockSymbol: savedSymbol,
+             Stockrecordprice: savedPrice,
+             stockrecordDate: firebase.database.ServerValue.TIMESTAMP
+            });
+		     result = false;
+		    $("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
+			"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + stockexchange +
+			"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
+		     savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+ 	  }
+   	 });
+  };
 
 
-function registerUser() {
+//Button Function for Removing rows from watch-list 08-03-2017
+$(document).on('click', ".deleteBtn", function (event) {
+   event.preventDefault();
+   var key1 ="";
+   var key2 = "";
+   key1= $(this).closest('tr').find('td.symbolTD').html();
+   key2= $(this).closest('tr').find('td.exchangeTD').html();
+   
+   firebase.database().ref('users/'+auth().currentUser.uid).child(key2+key1).remove();
+   $(this).closest('tr').remove();
+});
+//
+
+// Change Register user adding name user and timestamp for future 08-03-2017
+function registerUser(username,userEmail,userPassword) {
 	$("#modalError").text("");
 	$("#modalRegisterError").text("");
+	$("#signUpName").css('border-color', '#CCC');
 	$("#signUpEmail").css('border-color', '#CCC');
 	$("#password").css('border-color', '#CCC');
 	$("#reenterpassword").css('border-color', '#CCC');
 	$("#inputpassword").css('border-color', '#CCC');
 	$("#Email").css('border-color', '#CCC');
-	isNewUser = true;
-	auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
-		return auth().createUserWithEmailAndPassword(userEmail, userPassword);
+	console.log(username+" "+userEmail+" "+userPassword);
+  auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+	  return auth().createUserWithEmailAndPassword(userEmail, userPassword)
+	  .then(function(user){
+		  console.log(user.uid);
+		 	firebase.database().ref('users').child(user.uid).set({
+               UserName: username,
+               UserEmail: userEmail,
+               recordDate: firebase.database.ServerValue.TIMESTAMP
+            });
+            console.log("Grab user");
+    }
 	}).catch(function(error) {
 		// Handle Errors here.
 		var errorCode = error.code;
 		var errorMessage = error.message;
+		console.log(errorCode+" "+errorMessage);
 		if (errorCode === 'auth/invalid-email') {
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("Please enter a valid email address");
-		} else if (errorCode === 'auth/email-already-in-use') {
+		}
+		else if (errorCode === 'auth/email-already-in-use'){
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("User already registered with that email address");
 		}
+	
 	});
 }
 
+//
+
 function loginUser() {
-	if ($("#rememberme-0").is(':checked')) {
-		firebase.auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			if (errorCode === 'auth/invalid-email') {
-				$("#Email").css('border-color', 'red');
-				$("#modalError").text("Please enter a valid email address");
-			} else if (errorCode === 'auth/user-not-found') {
-				$("#Email").css('border-color', 'red');
-				$("#modalError").text("No user with that email address exists");
-			} else if (errorCode === 'auth/wrong-password') {
-				$("#inputpassword").css('border-color', 'red');
-				$("#modalError").text("Wrong password");
-			}
-		});
-	} else {
-		auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
-			return auth().signInWithEmailAndPassword(userEmail, userPassword);
-		}).catch(function(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			if (errorCode === 'auth/invalid-email') {
-				$("#Email").css('border-color', 'red');
-				$("#modalError").text("Please enter a valid email address");
-			} else if (errorCode === 'auth/user-not-found') {
-				$("#Email").css('border-color', 'red');
-				$("#modalError").text("No user with that email address exists");
-			} else if (errorCode === 'auth/wrong-password') {
-				$("#inputpassword").css('border-color', 'red');
-				$("#modalError").text("Wrong password");
-			}
-		});
-	}
-
-
-	isNewUser = false;
-	user = auth().currentUser.uid;
+if ($("#rememberme-0").is(':checked')) {
+	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+		var errorCode = error.code;
+		var errorMessage = error.message;
+		if (errorCode === 'auth/invalid-email') {
+			$("#Email").css('border-color', 'red');
+			$("#modalError").text("Please enter a valid email address");
+		}
+		else if (errorCode === 'auth/user-not-found') {
+			$("#Email").css('border-color', 'red');
+			$("#modalError").text("No user with that email address exists");
+		}
+		else if (errorCode === 'auth/wrong-password') {
+			$("#inputpassword").css('border-color', 'red');
+			$("#modalError").text("Wrong password");
+		}
+	});
+}
+else {
+  auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+    auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
+		  if (errorCode === 'auth/invalid-email') {
+			  $("#Email").css('border-color', 'red');
+			  $("#modalError").text("Please enter a valid email address");
+		  }
+		  else if (errorCode === 'auth/user-not-found') {
+			  $("#Email").css('border-color', 'red');
+			  $("#modalError").text("No user with that email address exists");
+		  }
+		  else if (errorCode === 'auth/wrong-password') {
+			  $("#inputpassword").css('border-color', 'red');
+			  $("#modalError").text("Wrong password");
+		  }
+	  });
+  });
+}
 	$("#passwordinput").val("");
+	checkwatchlistuser();
 }
 
 function logoutUser() {
@@ -537,79 +633,14 @@ function logoutUser() {
 		// An error happened.
 	});
 }
-
-auth().onAuthStateChanged(function(user) {
-	if (user) {
-		console.log(user.uid);
-		if (isNewUser) {
-			console.log("true");
-			database().ref().child("users").child(user.uid).set({
-				email: auth().currentUser.email
-			});
-		} else {
-			var userDir = database().ref().child("users").child(user.uid).orderByKey();
-			userDir.once("value").then(function(snapshot) {
-				snapshot.forEach(function(childSnapshot) {
-
-					var key = childSnapshot.key;
-					var childData = childSnapshot.val(); // childData will be the actual contents of the child
-
-					var exchangeVal = childSnapshot.val().savedExchange;
-					var nameVal = childSnapshot.val().savedName;
-					var priceVal = childSnapshot.val().savedPrice;
-					var symbolVal = childSnapshot.val().savedSymbol;
-					if (key !== 'email' && key !== '' && $("#watchlist-col").find("table").length === 0) {
-						createWatchlist();
-						console.log(exchangeVal + " " + nameVal + " " + priceVal + " " + symbolVal);
-						$.ajax({
-							url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
-							method: "GET",
-							'data-type': 'jsonp'
-						}).done(function(response) {
-							console.log(response.dataset.data[0][1]);
-							var newPrice = response.dataset.data[0][1];
-							var currencyVal = priceVal.slice(0, 1);
-							var usePrice = priceVal.slice(1, priceVal.length);
-							var difference = newPrice - parseFloat(usePrice);
-							$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + nameVal +
-								"</td> + <td class='symbolTD'>" + symbolVal + "</td> <td class='exchangeTD'>" + exchangeVal +
-								"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
-								currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
-								"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-						});
-					} else if (key !== 'email') {
-						console.log(exchangeVal + " " + nameVal + " " + priceVal + " " + symbolVal);
-						$.ajax({
-							url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
-							method: "GET",
-							'data-type': 'jsonp'
-						}).done(function(response) {
-							console.log(response.dataset.data[0][1]);
-							var newPrice = response.dataset.data[0][1];
-							var currencyVal = priceVal.slice(0, 1);
-							var usePrice = priceVal.slice(1, priceVal.length);
-							var difference = newPrice - parseFloat(usePrice);
-							$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + nameVal +
-								"</td> + <td class='symbolTD'>" + symbolVal + "</td> <td class='exchangeTD'>" + exchangeVal +
-								"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
-								currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
-								"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-						});
-					} else if (key === 'email') {
-						console.log('email');
-					}
-				});
-			});
-		}
-	} else {}
-	$("#myModal").modal('hide');
-});
-
 $("#confirmsignup").on("click", function(event) {
+	username = $("#signUpName").val();
 	userEmail = $("#signUpEmail").val();
 	if ($("#password").val() === $("#reenterpassword").val()) {
 		userPassword = $("#password").val();
-	} else {
+	}
+
+	else {
 		$("#password").css('border-color', 'red').val("");
 		$("#reenterpassword").css('border-color', 'red').val("");
 		$("#modalRegisterError").text("Passwords do not match");
@@ -617,16 +648,19 @@ $("#confirmsignup").on("click", function(event) {
 
 	if (userEmail !== "" && userPassword !== "") {
 		console.log("Match");
-		registerUser(userEmail, userPassword);
-	} else if (userEmail === "") {
+		registerUser(username,userEmail, userPassword);
+	}
+	else if (userEmail === "") {
 		$("#signUpEmail").css('border-color', 'red');
-	} else if (userEmail !== "") {
+	}
+	else if (userEmail !== "") {
 		$("#signUpEmail").css('border-color', '#CCC');
 	}
 	if (userPassword === "") {
 		$("#password").css('border-color', 'red').val("");
 		$("#reenterpassword").css('border-color', 'red').val("");
-	} else if (userPassword !== "") {
+	}
+	else if (userPassword !== "") {
 		$("#password").css('border-color', '#CCC').val("");
 		$("#reenterpassword").css('border-color', '#CCC').val("");
 	}
@@ -637,17 +671,10 @@ $("#signin1").on("click", function(event) {
 	userEmail = $("#Email").val();
 	userPassword = $("#passwordinput").val();
 	loginUser(userEmail, userPassword);
-	$("#Email").appendTo("#loggedInUser");
 	if (userEmail === auth().currentUser.email) {
 		$("#Email").css('border-color', 'red');
 		$("#modalError").text("You are already logged in");
 		$("#passwordinput").val("");
 	}
-});
 
-function writeUserData(userEmail) {
-	firebase.database().ref('users/' + userEmail).push({
-		email: email,
-		uid: uid
-	});
-}
+});
