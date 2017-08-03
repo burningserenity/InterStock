@@ -439,11 +439,23 @@ function retrieveWatchlist(user){
             savedName = childSnapshot.val().StockName;
             savedExchange = childSnapshot.val().StockExchange;
             savedPrice = childSnapshot.val().Stockrecordprice;
-
-            $("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
-			"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
-			"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
-			savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+              
+            $.ajax({
+							url: queryURL + savedExchange + '/' + savedSymbol + '.json?api_key=' + API_KEY,
+							method: "GET",
+							'data-type': 'jsonp'
+						  }).done(function(response) {
+							console.log(response.dataset.data[0][1]);
+							var newPrice = response.dataset.data[0][1];
+							var currencyVal = savedPrice.slice(0, 1);
+							var usePrice = savedPrice.slice(1, savedPrice.length);
+							var difference = newPrice - parseFloat(usePrice);
+							$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
+								"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
+								"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
+								currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
+								"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+						});
  			}
 
   	   });	    
@@ -488,9 +500,7 @@ function checkwatchlistuser(){
             	retrieveWatchlist(user.uid);
             }
          });    
-
 	}
-	
 });
 	
 }
@@ -584,16 +594,17 @@ function registerUser(username,userEmail,userPassword) {
 	$("#inputpassword").css('border-color', '#CCC');
 	$("#Email").css('border-color', '#CCC');
 	console.log(username+" "+userEmail+" "+userPassword);
-	auth().createUserWithEmailAndPassword(userEmail, userPassword)
-	.then(function(user){
-		console.log(user.uid);
+  auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+	  return auth().createUserWithEmailAndPassword(userEmail, userPassword)
+	  .then(function(user){
+		  console.log(user.uid);
 		 	firebase.database().ref('users').child(user.uid).set({
                UserName: username,
                UserEmail: userEmail,
                recordDate: firebase.database.ServerValue.TIMESTAMP
             });
             console.log("Grab user");
-		
+    }
 	}).catch(function(error) {
 		// Handle Errors here.
 		var errorCode = error.code;
@@ -614,7 +625,7 @@ function registerUser(username,userEmail,userPassword) {
 //
 
 function loginUser() {
-
+if ($("#rememberme-0").is(':checked')) {
 	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 		var errorCode = error.code;
 		var errorMessage = error.message;
@@ -631,7 +642,27 @@ function loginUser() {
 			$("#modalError").text("Wrong password");
 		}
 	});
-
+}
+else {
+  auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+    auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
+		  var errorCode = error.code;
+		  var errorMessage = error.message;
+		  if (errorCode === 'auth/invalid-email') {
+			  $("#Email").css('border-color', 'red');
+			  $("#modalError").text("Please enter a valid email address");
+		  }
+		  else if (errorCode === 'auth/user-not-found') {
+			  $("#Email").css('border-color', 'red');
+			  $("#modalError").text("No user with that email address exists");
+		  }
+		  else if (errorCode === 'auth/wrong-password') {
+			  $("#inputpassword").css('border-color', 'red');
+			  $("#modalError").text("Wrong password");
+		  }
+	  });
+  });
+}
 	$("#passwordinput").val("");
 	checkwatchlistuser();
 }
@@ -643,7 +674,6 @@ function logoutUser() {
 		// An error happened.
 	});
 }
-
 $("#confirmsignup").on("click", function(event) {
 	username = $("#signUpName").val();
 	userEmail = $("#signUpEmail").val();
