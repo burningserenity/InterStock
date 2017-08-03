@@ -422,6 +422,7 @@ function createWatchlist() {
 
 // Function to add a new stock to the watchlist
 function addToWatchlist() {
+	user = auth().currentUser;
 	var savedName = $(".stockNameDisplay").attr('data-value');
 	var savedExchange = $(".stockExchangeDisplay").attr('data-value');
 	var savedSymbol = $(".stockSymbolDisplay").attr('data-value');
@@ -431,7 +432,7 @@ function addToWatchlist() {
 		"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
 		savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
 	// Add information to Firebase
-	database().ref().push({
+	database().ref().child("users").child(user.uid).push({
 		savedName: savedName,
 		savedExchange: savedExchange,
 		savedSymbol: savedSymbol,
