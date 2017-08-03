@@ -475,7 +475,7 @@ function addToWatchlist() {
 		$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
 			"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
 			"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
-			savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+			savedPrice + "</td><td class='changeTD'>" + 'N/A' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
 		alert("Log in or data will save until session ends");
 	}
 	//
