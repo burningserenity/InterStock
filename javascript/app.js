@@ -551,8 +551,10 @@ $("#signin1").on("click", function(event) {
 //function to display username/email in the nav bar
 $("#signin1").on("click", function(event){    
     var $email = auth().currentUser.email;
-    $("<ul id='loggedInUser'>").text("Logged In As: " + $email).css('visibility', 'visible').appendTo('#loggedIn');
-    })
+    $('<button class="btn btn-default dropdown-toggle" type="button" id="loggedIn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">').text("Logged In As: " + $email).css('visibility', 'visible').appendTo('.userButton');
+    $('<ul class="dropdown-menu userButtonMenu" aria-labelledby="dropdownMenu1"></ul>').css("visibility", "visible").appendTo('#loggedIn');
+    $('<li id="logout">').text("Logout").css("visibility", "visible").appendTo('.userButtonMenu');
+    });
 
 function writeUserData(userEmail) {
   firebase.database().ref('users/' + userEmail).push({
