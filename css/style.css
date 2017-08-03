@@ -77,10 +77,6 @@
          overflow: hidden;
          position: relative;
          line-height: 1.4em;
-/*          3 times the line-height to show 3 lines */
-/*         Why? It looks terrible, IMO. - Nick */
-         /*height: 4.2em;*/
-
      }
 
      .carousel-control {
@@ -117,14 +113,13 @@
      }
 
      #modalError {
-       background-color: inherit;
-       color: red;
+         background-color: inherit;
+         color: red;
      }
 
      #modalRegisterError {
-       background-color: inherit;
-       color: red;
-
+         background-color: inherit;
+         color: red;
      }
      /*xs*/
 
@@ -266,4 +261,4 @@
         .srcnews3,
         .srcnews4 {
         text-transform: uppercase;
-        }
+         }

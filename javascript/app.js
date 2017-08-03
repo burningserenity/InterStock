@@ -13,11 +13,11 @@ firebase.initializeApp(config);
 var database = firebase.database;
 
 var auth = firebase.auth;
+
 var username = "";
 var userEmail = "";
 var userPassword = "";
 var recordexist = false;
-
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -137,14 +137,10 @@ function newsforcarousel() {
 	var p = 0;
 
 	for (var i = 0; i < newsSrcList.length; i++) {
-
 		newsSrc = newsSrcList[i];
 
-
 		stringapi2 = queryURL_NEWS + newsSrc + '&apiKey=' + API_KEY_NEWS;
-
-		//console.log(stringapi2);
-
+    
 		$.ajax({
 			url: stringapi2,
 			'data-type': "jsonp",
@@ -189,6 +185,7 @@ function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
 			$(".news3").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews3").html('<p>' + source + '</p>');
 		case 3:
+
 			$(".img4").attr("src",newscar);
 			$(".hnews4").attr('href', newscar2);
 			$(".news4").html('<h4>' + newscar3 + '</h4>');
@@ -209,8 +206,9 @@ $("#symbolsubmit").on("click", function(event) {
 	// Get stock symbol from user input
 	symbol = $("#symbolsearch").val().toUpperCase().trim();
 	// Put entire Quandl query into variable and log it to the console
+
 	stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY;
-		//console.log(stringapi);
+
 	// Check if the user selected a specific exchange or not
 	if (exchange === "") {
 		queryCount = 0;
@@ -304,7 +302,6 @@ function displayStock(response) {
 
 	// Retrieve the most current price in the graph
 	for (var i = 9; i >= 0; i--) {
-    //
 		label.push(response.dataset.data[i][0]);
 		data.push(response.dataset.data[i][1]);
 	}
@@ -452,7 +449,6 @@ function retrieveWatchlist(user){
 
   	   });	    
 });
-
 }
 
 
@@ -577,6 +573,7 @@ function registerUser(username,userEmail,userPassword) {
 //
 
 function loginUser() {
+
 	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 		var errorCode = error.code;
 		var errorMessage = error.message;
@@ -593,6 +590,7 @@ function loginUser() {
 			$("#modalError").text("Wrong password");
 		}
 	});
+
 	$("#passwordinput").val("");
 	checkwatchlistuser();
 }
@@ -604,13 +602,6 @@ function logoutUser() {
 		// An error happened.
 	});
 }
-
-auth().onAuthStateChanged(function(user) {
-	if (user) {
-	} else {
-	}
-	$("#myModal").modal('hide');
-});
 
 $("#confirmsignup").on("click", function(event) {
 	username = $("#signUpName").val();
@@ -655,4 +646,5 @@ $("#signin1").on("click", function(event) {
 		$("#modalError").text("You are already logged in");
 		$("#passwordinput").val("");
 	}
+
 });
