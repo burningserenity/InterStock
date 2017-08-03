@@ -361,7 +361,6 @@ function displayStock(response) {
 $(document).ready(function() {
 
 	newsforcarousel();
-	checkwatchlistuser();
 	setInterval(function() {
 		newsforcarousel();
 	}, 180000);
@@ -483,7 +482,7 @@ function addToWatchlist() {
 }
 
 function checkwatchlistuser() {
-	auth().onAuthStateChanged(function(user) {
+	var user = auth().currentUser;
 		if (user) {
 			console.log(user.uid);
 			var ref = firebase.database().ref('users/' + user.uid);
@@ -496,7 +495,6 @@ function checkwatchlistuser() {
 					}
 				});
 		}
-	});
 
 }
 
@@ -521,7 +519,7 @@ function checkwatchlist(user, savedName, stockexchange, savedSymbol, savedPrice)
 				savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
 		}
 	});
-};
+}
 
 
 //Button Function for Removing rows from watch-list 08-03-2017
@@ -611,7 +609,6 @@ function loginUser() {
 		});
 	}
 	$("#passwordinput").val("");
-	checkwatchlistuser();
 }
 
 function logoutUser() {
@@ -668,4 +665,5 @@ $("#signin1").on("click", function(event) {
 
 auth().onAuthStateChanged(function(user) {
 	$("#myModal").modal('hide');
+	checkwatchlistuser();
 });
