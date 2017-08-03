@@ -18,7 +18,6 @@ var userEmail = "";
 var userPassword = "";
 var recordexist = false;
 
-
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
 // Tokyo Stock Exchange, Japan: TSE
@@ -137,14 +136,10 @@ function newsforcarousel() {
 	var p = 0;
 
 	for (var i = 0; i < newsSrcList.length; i++) {
-
 		newsSrc = newsSrcList[i];
 
-
 		stringapi2 = queryURL_NEWS + newsSrc + '&apiKey=' + API_KEY_NEWS;
-
-		//console.log(stringapi2);
-
+    
 		$.ajax({
 			url: stringapi2,
 			'data-type': "jsonp",
@@ -189,6 +184,7 @@ function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
 			$(".news3").html('<h4>' + newscar3 + '</h4>');
 			$(".srcnews3").html('<p>' + source + '</p>');
 		case 3:
+
 			$(".img4").attr("src",newscar);
 			$(".hnews4").attr('href', newscar2);
 			$(".news4").html('<h4>' + newscar3 + '</h4>');
@@ -209,6 +205,7 @@ $("#symbolsubmit").on("click", function(event) {
 	// Get stock symbol from user input
 	symbol = $("#symbolsearch").val().toUpperCase().trim();
 	// Put entire Quandl query into variable and log it to the console
+
 	stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY;
 		//console.log(stringapi);
 	// Check if the user selected a specific exchange or not
@@ -304,7 +301,6 @@ function displayStock(response) {
 
 	// Retrieve the most current price in the graph
 	for (var i = 9; i >= 0; i--) {
-    //
 		label.push(response.dataset.data[i][0]);
 		data.push(response.dataset.data[i][1]);
 	}
@@ -358,13 +354,15 @@ function displayStock(response) {
 	});
 }
 
+
+
 // Page Document Ready 08/01/2017
 $(document).ready(function() {
 
 	newsforcarousel();
 	checkwatchlistuser();
 	setInterval(function() {
-		newsforcarousel();
+	newsforcarousel();
 	}, 180000);
 
 });
@@ -407,6 +405,7 @@ function stockChart() {
 
 // Function to create stock watchlist
 function createWatchlist() {
+	$("#watchlist-col").empty();
 	$("<table>").attr({
 		class: 'table table-striped',
 		id: 'watchlist-table'
@@ -536,6 +535,45 @@ $(document).on('click', ".deleteBtn", function (event) {
 });
 
 
+// Function to verify if user has a specific stock in watchlist
+function checkwatchlist(user,savedName,stockexchange,savedSymbol,savedPrice){
+   console.log('"users/'+user+'/'+stockexchange+savedSymbol+'"');
+   var ref = firebase.database().ref('users/'+user+'/'+stockexchange+savedSymbol);
+   ref.once('value').then(function(snapshot) { 
+   	    //console.log(snapshot.exists());
+   	 if (!snapshot.exists()){
+   	 	   firebase.database().ref('users').child(user).child(stockexchange+savedSymbol).set({
+             StockName: savedName,
+             StockExchange: stockexchange,
+             StockSymbol: savedSymbol,
+             Stockrecordprice: savedPrice,
+             stockrecordDate: firebase.database.ServerValue.TIMESTAMP
+            });
+		     result = false;
+		    $("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
+			"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + stockexchange +
+			"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
+		     savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+ 	  }
+   	 });
+  };
+
+
+//Button Function for Removing rows from watch-list 08-03-2017
+$(document).on('click', ".deleteBtn", function (event) {
+   event.preventDefault();
+   var key1 ="";
+   var key2 = "";
+   key1= $(this).closest('tr').find('td.symbolTD').html();
+   key2= $(this).closest('tr').find('td.exchangeTD').html();
+   
+   firebase.database().ref('users/'+auth().currentUser.uid).child(key2+key1).remove();
+   $(this).closest('tr').remove();
+});
+//
+
+
+// Change Register user adding name user and timestamp for future 08-03-2017
 function registerUser(username,userEmail,userPassword) {
 	$("#modalError").text("");
 	$("#modalRegisterError").text("");
@@ -573,7 +611,10 @@ function registerUser(username,userEmail,userPassword) {
 	});
 }
 
+//
+
 function loginUser() {
+
 	auth().signInWithEmailAndPassword(userEmail, userPassword).catch(function(error) {
 		var errorCode = error.code;
 		var errorMessage = error.message;
@@ -590,7 +631,9 @@ function loginUser() {
 			$("#modalError").text("Wrong password");
 		}
 	});
+
 	$("#passwordinput").val("");
+	checkwatchlistuser();
 }
 
 function logoutUser() {
@@ -600,13 +643,6 @@ function logoutUser() {
 		// An error happened.
 	});
 }
-
-auth().onAuthStateChanged(function(user) {
-	if (user) {
-	} else {
-	}
-	$("#myModal").modal('hide');
-});
 
 $("#confirmsignup").on("click", function(event) {
 	username = $("#signUpName").val();
