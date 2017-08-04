@@ -35,6 +35,26 @@
          visibility: hidden;
      }
 
+#loggedInUser
+{
+    margin-left: 3px;
+    margin-top: 3px;
+    color: white;
+    background: transparent;
+    visibility: hidden;
+    float: right;
+}
+#logout,
+#loggedIn,
+.logoutList{
+
+    background: white;
+}
+
+p {
+    color: white;
+}
+
      .hideWell {
          background: white;
          visibility: hidden;
@@ -77,9 +97,8 @@
          overflow: hidden;
          position: relative;
          line-height: 1.4em;
-/*          3 times the line-height to show 3 lines */
-/*         Why? It looks terrible, IMO. - Nick */
-         /*height: 4.2em;*/
+         height: 3em;
+
      }
 
      .carousel-control {
@@ -231,28 +250,28 @@
 
      .img1 {
          width: 78%;
-         height: 70%;
+         height: 80%;
          display: block;
          margin: auto;
      }
 
      .img2 {
          width: 78%;
-         height: 70%;
+         height: 80%;
          display: block;
          margin: auto;
      }
 
      .img3 {
          width: 78%;
-         height: 70%;
+         height: 80%;
          display: block;
          margin: auto;
      }
 
      .img4 {
          width: 78%;
-         height: 70%;
+         height: 80%;
          display: block;
          margin: auto;
      }
@@ -260,6 +279,7 @@
      .carousel {
          text-align: center;
      }
+
         .srcnews1,
         .srcnews2,
         .srcnews3,

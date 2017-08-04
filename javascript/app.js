@@ -360,7 +360,6 @@ function displayStock(response) {
 $(document).ready(function() {
 
 	newsforcarousel();
-	//checkwatchlistuser();
 	setInterval(function() {
 		newsforcarousel();
 	}, 240000);
@@ -436,23 +435,25 @@ function retrieveWatchlist(user) {
 			var nameVal = childSnapshot.val().StockName;
 			var priceVal = childSnapshot.val().Stockrecordprice;
 			var symbolVal = childSnapshot.val().StockSymbol;
-				createWatchlist();
-			   $.ajax({
-					url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
-					method: "GET",
-					'data-type': 'jsonp'
-				}).done(function(response) {
-					console.log(response.dataset.data[0][1]);
-					var newPrice = response.dataset.data[0][1];
-					var currencyVal = priceVal.slice(0, 1);
-					var usePrice = priceVal.slice(1, priceVal.length);
-					var difference = newPrice - parseFloat(usePrice);
-					$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + nameVal +
-						"</td> + <td class='symbolTD'>" + symbolVal + "</td> <td class='exchangeTD'>" + exchangeVal +
-						"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
-						currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + difference +
-						"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-				});
+			createWatchlist();
+			console.log(exchangeVal + " " + nameVal + " " + priceVal + " " + symbolVal);
+			$.ajax({
+				url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
+				method: "GET",
+				'data-type': 'jsonp'
+			}).done(function(response) {
+				console.log(response.dataset.data[0][1]);
+				var newPrice = response.dataset.data[0][1];
+				var currencyVal = priceVal.slice(0, 1);
+				var usePrice = priceVal.slice(1, priceVal.length);
+				var difference = newPrice - parseFloat(usePrice);
+				var useDiff = difference.toFixed(2);
+				$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + nameVal +
+					"</td> + <td class='symbolTD'>" + symbolVal + "</td> <td class='exchangeTD'>" + exchangeVal +
+					"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
+					currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + useDiff +
+					"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+			});
 		});
 	});
 }
@@ -475,11 +476,12 @@ function addToWatchlist() {
 		$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
 			"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
 			"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
-			savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+			savedPrice + "</td><td class='changeTD'>" + 'N/A' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
 		alert("Log in or data will save until session ends");
 	}
 	//
 }
+
 
 function checkwatchlistuser(users) {
 			if (users) {
@@ -495,9 +497,6 @@ function checkwatchlistuser(users) {
 		} else{
 			retrieveWatchlist();
 		}
-
-	//});
-
 }
 
 // Function to verify if user has a specific stock in watchlist
@@ -521,7 +520,7 @@ function checkwatchlist(user, savedName, stockexchange, savedSymbol, savedPrice)
 				savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
 		}
 	});
-};
+}
 
 
 //remove row from watch-list
@@ -661,6 +660,7 @@ function loginUser() {
 function logoutUser() {
 	auth().signOut().then(function() {
 		// Sign-out successful.
+		$(".userButton").empty();
 	}).catch(function(error) {
 		// An error happened.
 	});
@@ -707,4 +707,29 @@ $("#signin1").on("click", function(event) {
 
 auth().onAuthStateChanged(function(user) {
 	$("#myModal").modal('hide');
+	checkwatchlistuser();
+	if (user) {
+		// $('<ul id="userNav" class="nav navbar-nav">').css('visibility', 'visible').appendTo('.userButton');
+		$('<li id="userDrop" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret">').appendTo(".userButton");
+		$('<p>').text("Logged In As: " + auth().currentUser.email).appendTo(".userButton");
+		$('<ul id="userDropMenu" class="dropdown-menu">').css("visibility", "visible").appendTo('#userDrop');
+		$('<li id="logout">').css("visibility", "visible").appendTo('#userDropMenu');
+		$("<a id='logoutBtn' href='#'>").text("Logout").css("visibility", "visible").appendTo("#logout");
+		$("#logoutBtn").on("click", function(event) {
+			event.preventDefault();
+			console.log("logout");
+			logoutUser();
+		});
+	} else {
+		$("#listItemHolder").empty();
+		exchange = "";
+		emptyStockDisplay();
+		$("tbody").empty()
+	}
 });
+
+// $("#logoutBtn").on("click", function(event) {
+// 	event.preventDefault();
+// 	console.log("logout");
+// 	logoutUser();
+// });
