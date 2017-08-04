@@ -677,6 +677,7 @@ auth().onAuthStateChanged(function(user) {
 		});
 	} else {
 		$("#listItemHolder").empty();
+		$("#listItemHolder").css("visibility", "hidden");
 		exchange = "";
 		emptyStockDisplay();
 		$("tbody").empty()
