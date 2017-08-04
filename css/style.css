@@ -97,6 +97,7 @@ p {
          overflow: hidden;
          position: relative;
          line-height: 1.4em;
+         height: 3em;
      }
 
      .carousel-control {
@@ -247,28 +248,28 @@ p {
 
      .img1 {
          width: 78%;
-         height: 70%;
+         height: 80%;
          display: block;
          margin: auto;
      }
 
      .img2 {
          width: 78%;
-         height: 70%;
+         height: 80%;
          display: block;
          margin: auto;
      }
 
      .img3 {
          width: 78%;
-         height: 70%;
+         height: 80%;
          display: block;
          margin: auto;
      }
 
      .img4 {
          width: 78%;
-         height: 70%;
+         height: 80%;
          display: block;
          margin: auto;
      }
@@ -276,6 +277,7 @@ p {
      .carousel {
          text-align: center;
      }
+
         .srcnews1,
         .srcnews2,
         .srcnews3,
