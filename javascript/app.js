@@ -156,8 +156,6 @@ function newsforcarousel() {
 		});
 
 	}
-
-	console.log(newsresult);
 	return newsresult;
 }
 
@@ -305,8 +303,6 @@ function displayStock(response) {
 		data.push(response.dataset.data[i][1]);
 	}
 
-	console.log(label);
-	console.log(data);
 	var data = {
 		//labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
 		labels: label,
@@ -402,6 +398,14 @@ function stockChart() {
 	$(".chart-container").append(newCanvas);
 }
 
+//function to remove watchlist in logout
+function clearwatchlist (){
+	$("#watchlist-col").empty();
+	$("tbody").empty();
+}
+
+
+
 // Function to create stock watchlist
 function createWatchlist() {
 	$("#watchlist-col").empty();
@@ -430,19 +434,16 @@ function retrieveWatchlist(user) {
 
 			var key = childSnapshot.key;
 			var childData = childSnapshot.val(); // childData will be the actual contents of the child
-
 			var exchangeVal = childSnapshot.val().StockExchange;
 			var nameVal = childSnapshot.val().StockName;
 			var priceVal = childSnapshot.val().Stockrecordprice;
 			var symbolVal = childSnapshot.val().StockSymbol;
 			createWatchlist();
-			console.log(exchangeVal + " " + nameVal + " " + priceVal + " " + symbolVal);
 			$.ajax({
 				url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
 				method: "GET",
 				'data-type': 'jsonp'
 			}).done(function(response) {
-				console.log(response.dataset.data[0][1]);
 				var newPrice = response.dataset.data[0][1];
 				var currencyVal = priceVal.slice(0, 1);
 				var usePrice = priceVal.slice(1, priceVal.length);
@@ -467,7 +468,6 @@ function addToWatchlist() {
 
 	var authData = auth().currentUser;
 
-	console.log(authData.uid);
 	if (authData) {
 		checkwatchlistuser(authData);
 		checkwatchlist(authData.uid, savedName, savedExchange, savedSymbol, savedPrice);
@@ -477,7 +477,7 @@ function addToWatchlist() {
 			"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
 			"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
 			savedPrice + "</td><td class='changeTD'>" + 'N/A' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-		alert("Log in or data will save until session ends");
+		alert("Data will save until session ends");
 	}
 	//
 }
@@ -528,13 +528,11 @@ $(document).on('click', ".deleteBtn", function (event) {
   event.preventDefault();
   var key1 ="";
   var key2 = "";
-  //$(this).closest('tr').each(function (index1){
-
-    key1= $(this).closest('tr').find('td.symbolTD').html();
-    key2= $(this).closest('tr').find('td.exchangeTD').html();
-   console.log("La Key:"+key2+key1);
-   
- firebase.database().ref('users/'+auth().currentUser.uid).child(key2+key1).remove();
+      key1= $(this).closest('tr').find('td.symbolTD').html();
+      key2= $(this).closest('tr').find('td.exchangeTD').html();
+  if (auth().currentUser){
+     firebase.database().ref('users/'+auth().currentUser.uid).child(key2+key1).remove();
+  }
  $(this).closest('tr').remove();
 });
 
@@ -660,6 +658,11 @@ function loginUser() {
 function logoutUser() {
 	auth().signOut().then(function() {
 		// Sign-out successful.
+		 emptyStockDisplay();
+		 //add function to clear watchlist 08/03/2017 11:40 PM
+		 stockChart();
+		 //add function to clear watchlist 08/03/2017 11:40 PM
+		 clearwatchlist();
 		$(".userButton").empty();
 	}).catch(function(error) {
 		// An error happened.
