@@ -57,7 +57,7 @@ p {
 
      .hideWell {
          background: white;
-         visibility: hidden;
+         /*visibility: hidden;*/
      }
 
      input {
