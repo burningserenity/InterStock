@@ -144,6 +144,11 @@ p {
        color: red;
 
      }
+
+     #loading-spinner {
+       position: relative;
+       right: -275px;
+     }
      /*xs*/
 
      @media (max-width: 767px) {

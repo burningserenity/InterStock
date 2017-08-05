@@ -17,6 +17,7 @@ var username = "";
 var userEmail = "";
 var userPassword = "";
 var recordexist = false;
+var loadDiv;
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -194,152 +195,163 @@ function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
 
 // Click event to query Quandl for stock information and display said information on the page
 $("#symbolsubmit").on("click", function(event) {
-	event.preventDefault();
-	emptyStockDisplay();
-	// Remove and add stock chart
-	stockChart();
-	// Empty string to hold Quandl query
-	var stringapi = "";
-	// Get stock symbol from user input
-	symbol = $("#symbolsearch").val().toUpperCase().trim();
-	// Put entire Quandl query into variable and log it to the console
+		event.preventDefault();
+		emptyStockDisplay();
+		// Remove and add stock chart
+		stockChart();
+		$("<i>").attr({
+			class: 'fa fa-spinner fa-5x fa-spin',
+			id: 'loading-spinner',
+			'aria-hidden': 'false'
+		}).appendTo("#stockName");
+		// Empty string to hold Quandl query
+		var stringapi = "";
+		// Get stock symbol from user input
+		symbol = $("#symbolsearch").val().toUpperCase().trim();
+		// Put entire Quandl query into variable and log it to the console
 
-	stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY;
+		stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY;
 		//console.log(stringapi);
-	// Check if the user selected a specific exchange or not
-	if (exchange === "") {
-		queryCount = 0;
-		// If the user did not specify an exchange, check each of them for the stock requested
-		for (i = 0; i < exchangeList.length; i++) {
-			exchange = exchangeList[i].symbol;
-			// On the Quandl API, queries to the Bombay Stock Exchange must be prefixed with "BOM"
+		// Check if the user selected a specific exchange or not
+		if (exchange === "") {
+			queryCount = 0;
+			// If the user did not specify an exchange, check each of them for the stock requested
+			for (i = 0; i < exchangeList.length; i++) {
+				exchange = exchangeList[i].symbol;
+				// On the Quandl API, queries to the Bombay Stock Exchange must be prefixed with "BOM"
+				if (exchange === "BSE") {
+					symbol = "BOM" + symbol;
+				}
+				loadDiv = $("stockName");
+				$.ajax({
+					url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+					method: "GET",
+					'data-type': 'jsonp'
+				}).done(function(response) {
+					//console.log(response);
+					// Display found stock on the page
+					$("#loading-spinner").detach();
+					displayStock(response);
+					queryCount++;
+				});
+			}
+			// If no stock found in any exchange, display error message on page; queryCount variable
+			// ensures error message isn't displayed prematurely
+			if ($("#stockName").find("h3").length === 0 && i === exchangeList.length && queryCount === exchangeList.length) {
+				$("#loading-spinner").detach();
+				$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
+			}
+			// When finished querying, empty exchange string
+			exchange = "";
+		}
+		// If the user did specify an exchange, query only that exchange
+		else {
+			// Same as before
 			if (exchange === "BSE") {
 				symbol = "BOM" + symbol;
 			}
 			$.ajax({
-				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-				method: "GET",
-				'data-type': 'jsonp'
-			}).done(function(response) {
-				//console.log(response);
-				// Display found stock on the page
-				displayStock(response);
-				queryCount++;
-			});
+					url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+					method: "GET",
+					'data-type': 'jsonp'
+				}).done(function(response) {
+					console.log(response);
+					// Display stock on page, if found
+					$("#loading-spinner").detach();
+					displayStock(response);
+				})
+				// Any fail status e.g. a 404 error results in error display
+				.fail(function(XMLHttpRequest, textStatus, errorThrown) {
+					$("#loading-spinner").detach();
+					emptyStockDisplay();
+					stockChart();
+					$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
+				});
 		}
-		// If no stock found in any exchange, display error message on page; queryCount variable
-		// ensures error message isn't displayed prematurely
-		if ($("#stockName").find("h3").length === 0 && queryCount === exchangeList.length) {
-			$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
-		}
-		// When finished querying, empty exchange string
-		exchange = "";
-	}
-	// If the user did specify an exchange, query only that exchange
-	else {
-		// Same as before
-		if (exchange === "BSE") {
-			symbol = "BOM" + symbol;
-		}
-		$.ajax({
-				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
-				method: "GET",
-				'data-type': 'jsonp'
-			}).done(function(response) {
-				console.log(response);
-				// Display stock on page, if found
-				displayStock(response);
-			})
-			// Any fail status e.g. a 404 error results in error display
-			.fail(function(XMLHttpRequest, textStatus, errorThrown) {
-				emptyStockDisplay();
-				stockChart();
-				$("<h4>").attr('class', 'stockNameDisplay').html('We did not find any matches for the Information you entered. Please try again').appendTo("#stockSymbol");
-			});
-	}
-});
-
-function displayStock(response) {
-	emptyStockDisplay();
-	for (i = 0; i < exchangeList.length; i++) {
-		if (exchangeList[i].symbol === response.dataset.database_code) {
-			currency = exchangeList[i].currencySign;
-		}
-	}
-	$(".hideWell").css("visibility", "visible");
-	$("<h3>").attr({
-		class: 'stockNameDisplay',
-		'data-value': response.dataset.name
-	}).html('Name: ' + response.dataset.name).appendTo("#stockName");
-	$("<h4>").attr({
-		class: 'stockExchangeDisplay',
-		'data-value': response.dataset.database_code
-	}).html('Exchange: ' + response.dataset.database_code).appendTo("#exchangeSymbol");
-	$("<h4>").attr({
-		class: 'stockSymbolDisplay',
-		'data-value': response.dataset.dataset_code
-	}).html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
-	$("<h4>").attr({
-		class: 'stockCurrentPrice',
-		'data-value': currency + response.dataset.data[0][1]
-	}).html('Last Closing Price: ' + currency + response.dataset.data[0][1]).appendTo("#stockPrice");
-	$("<h4>").attr({
-		class: 'stockCurrentDate',
-		'data-value': response.dataset.data[0][0]
-	}).html('Date: ' + response.dataset.data[0][0]).appendTo("#stockDate");
-	$("<button>").attr({
-		type: 'button',
-		class: 'btn btn-info',
-		id: 'watchStock'
-	}).html("Save to Watchlist").appendTo("#save-btn-col");
-
-	// Populate stock chart
-	var label = [];
-	var data = [];
-
-	// Retrieve the most current price in the graph
-	for (var i = 9; i >= 0; i--) {
-		label.push(response.dataset.data[i][0]);
-		data.push(response.dataset.data[i][1]);
-	}
-
-	var data = {
-		//labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-		labels: label,
-		datasets: [{
-			label: "Price",
-			backgroundColor: "rgba(0, 0, 0, 0)",
-			borderColor: "rgba(0, 57, 122, 1)",
-			borderWidth: 2,
-			hoverBackgroundColor: "rgba(255,99,132,0.4)",
-			hoverBorderColor: "rgba(255,99,132,1)",
-			data: data,
-		}]
-	};
-
-	var options = {
-		maintainAspectRatio: false,
-		scales: {
-			yAxes: [{
-				stacked: true,
-				gridLines: {
-					display: true,
-					color: "rgba(0, 0, 255, 0.3)"
-				}
-			}],
-			xAxes: [{
-				gridLines: {
-					display: false
-				}
-			}]
-		}
-	};
-
-	stockChart();
-	Chart.Line('chart', {
-		options: options,
-		data: data
 	});
+
+	function displayStock(response) {
+		emptyStockDisplay();
+		for (i = 0; i < exchangeList.length; i++) {
+			if (exchangeList[i].symbol === response.dataset.database_code) {
+				currency = exchangeList[i].currencySign;
+			}
+		}
+		$(".hideWell").css("visibility", "visible");
+		$("<h3>").attr({
+			class: 'stockNameDisplay',
+			'data-value': response.dataset.name
+		}).html('Name: ' + response.dataset.name).appendTo("#stockName");
+		$("<h4>").attr({
+			class: 'stockExchangeDisplay',
+			'data-value': response.dataset.database_code
+		}).html('Exchange: ' + response.dataset.database_code).appendTo("#exchangeSymbol");
+		$("<h4>").attr({
+			class: 'stockSymbolDisplay',
+			'data-value': response.dataset.dataset_code
+		}).html('Stock Symbol/Code: ' + response.dataset.dataset_code).appendTo("#stockSymbol");
+		$("<h4>").attr({
+			class: 'stockCurrentPrice',
+			'data-value': currency + response.dataset.data[0][1]
+		}).html('Last Closing Price: ' + currency + response.dataset.data[0][1]).appendTo("#stockPrice");
+		$("<h4>").attr({
+			class: 'stockCurrentDate',
+			'data-value': response.dataset.data[0][0]
+		}).html('Date: ' + response.dataset.data[0][0]).appendTo("#stockDate");
+		$("<button>").attr({
+			type: 'button',
+			class: 'btn btn-info',
+			id: 'watchStock'
+		}).html("Save to Watchlist").appendTo("#save-btn-col");
+
+		// Populate stock chart
+		var label = [];
+		var data = [];
+
+		// Retrieve the most current price in the graph
+		for (var i = 9; i >= 0; i--) {
+			label.push(response.dataset.data[i][0]);
+			data.push(response.dataset.data[i][1]);
+		}
+
+		var data = {
+			//labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
+			labels: label,
+			datasets: [{
+				label: "Price",
+				backgroundColor: "rgba(0, 0, 0, 0)",
+				borderColor: "rgba(0, 57, 122, 1)",
+				borderWidth: 2,
+				hoverBackgroundColor: "rgba(255,99,132,0.4)",
+				hoverBorderColor: "rgba(255,99,132,1)",
+				data: data,
+			}]
+		};
+
+		var options = {
+			maintainAspectRatio: false,
+			scales: {
+				yAxes: [{
+					stacked: true,
+					gridLines: {
+						display: true,
+						color: "rgba(0, 0, 255, 0.3)"
+					}
+				}],
+				xAxes: [{
+					gridLines: {
+						display: false
+					}
+				}]
+			}
+		};
+
+		stockChart();
+		Chart.Line('chart', {
+			options: options,
+			data: data
+		});
+	}
 
 	$("#watchStock").on("click", function(event) {
 		console.log("clicked");
@@ -348,7 +360,6 @@ function displayStock(response) {
 		}
 		addToWatchlist();
 	});
-}
 
 
 
@@ -399,7 +410,7 @@ function stockChart() {
 }
 
 //function to remove watchlist in logout
-function clearwatchlist (){
+function clearwatchlist() {
 	$("#watchlist-col").empty();
 	$("tbody").empty();
 }
@@ -484,19 +495,19 @@ function addToWatchlist() {
 
 
 function checkwatchlistuser(users) {
-			if (users) {
-			var ref = firebase.database().ref('users/' + users.uid);
-			ref.once("value")
-				.then(function(snapshot) {
-					//console.log(snapshot.hasChildren());
-					if (snapshot.hasChildren()) {
-						createWatchlist();
-						retrieveWatchlist(users.uid);
-					}
-				});
-		} else{
-			retrieveWatchlist();
-		}
+	if (users) {
+		var ref = firebase.database().ref('users/' + users.uid);
+		ref.once("value")
+			.then(function(snapshot) {
+				//console.log(snapshot.hasChildren());
+				if (snapshot.hasChildren()) {
+					createWatchlist();
+					retrieveWatchlist(users.uid);
+				}
+			});
+	} else {
+		retrieveWatchlist();
+	}
 }
 
 // Function to verify if user has a specific stock in watchlist
@@ -524,41 +535,41 @@ function checkwatchlist(user, savedName, stockexchange, savedSymbol, savedPrice)
 
 
 //remove row from watch-list
-$(document).on('click', ".deleteBtn", function (event) {
-  event.preventDefault();
-  var key1 ="";
-  var key2 = "";
-      key1= $(this).closest('tr').find('td.symbolTD').html();
-      key2= $(this).closest('tr').find('td.exchangeTD').html();
-  if (auth().currentUser){
-     firebase.database().ref('users/'+auth().currentUser.uid).child(key2+key1).remove();
-  }
- $(this).closest('tr').remove();
+$(document).on('click', ".deleteBtn", function(event) {
+	event.preventDefault();
+	var key1 = "";
+	var key2 = "";
+	key1 = $(this).closest('tr').find('td.symbolTD').html();
+	key2 = $(this).closest('tr').find('td.exchangeTD').html();
+	if (auth().currentUser) {
+		firebase.database().ref('users/' + auth().currentUser.uid).child(key2 + key1).remove();
+	}
+	$(this).closest('tr').remove();
 });
 
 
 // Function to verify if user has a specific stock in watchlist
-function checkwatchlist(user,savedName,stockexchange,savedSymbol,savedPrice){
-   console.log('"users/'+user+'/'+stockexchange+savedSymbol+'"');
-   var ref = firebase.database().ref('users/'+user+'/'+stockexchange+savedSymbol);
-   ref.once('value').then(function(snapshot) { 
-   	    //console.log(snapshot.exists());
-   	 if (!snapshot.exists()){
-   	 	   firebase.database().ref('users').child(user).child(stockexchange+savedSymbol).set({
-             StockName: savedName,
-             StockExchange: stockexchange,
-             StockSymbol: savedSymbol,
-             Stockrecordprice: savedPrice,
-             stockrecordDate: firebase.database.ServerValue.TIMESTAMP
-            });
-		     result = false;
-		    $("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
-			"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + stockexchange +
-			"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
-		     savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
- 	  }
-   	 });
-  };
+function checkwatchlist(user, savedName, stockexchange, savedSymbol, savedPrice) {
+	console.log('"users/' + user + '/' + stockexchange + savedSymbol + '"');
+	var ref = firebase.database().ref('users/' + user + '/' + stockexchange + savedSymbol);
+	ref.once('value').then(function(snapshot) {
+		//console.log(snapshot.exists());
+		if (!snapshot.exists()) {
+			firebase.database().ref('users').child(user).child(stockexchange + savedSymbol).set({
+				StockName: savedName,
+				StockExchange: stockexchange,
+				StockSymbol: savedSymbol,
+				Stockrecordprice: savedPrice,
+				stockrecordDate: firebase.database.ServerValue.TIMESTAMP
+			});
+			result = false;
+			$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
+				"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + stockexchange +
+				"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
+				savedPrice + "</td><td class='changeTD'>" + '0.00' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+		}
+	});
+};
 
 
 //Button Function for Removing rows from watch-list 08-03-2017
@@ -585,34 +596,33 @@ function registerUser(username, userEmail, userPassword) {
 	$("#reenterpassword").css('border-color', '#CCC');
 	$("#inputpassword").css('border-color', '#CCC');
 	$("#Email").css('border-color', '#CCC');
-  
-  console.log(username+" "+userEmail+" "+userPassword);
-  auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
-	  return auth().createUserWithEmailAndPassword(userEmail, userPassword)
-	  .then(function(user){
-		  console.log(user.uid);
-		 	firebase.database().ref('users').child(user.uid).set({
-               UserName: username,
-               UserEmail: userEmail,
-               recordDate: firebase.database.ServerValue.TIMESTAMP
-            });
-            console.log("Grab user");
-    })
+
+	console.log(username + " " + userEmail + " " + userPassword);
+	auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
+		return auth().createUserWithEmailAndPassword(userEmail, userPassword)
+			.then(function(user) {
+				console.log(user.uid);
+				firebase.database().ref('users').child(user.uid).set({
+					UserName: username,
+					UserEmail: userEmail,
+					recordDate: firebase.database.ServerValue.TIMESTAMP
+				});
+				console.log("Grab user");
+			})
 	}).catch(function(error) {
 		// Handle Errors here.
 		var errorCode = error.code;
 		var errorMessage = error.message;
-		console.log(errorCode+" "+errorMessage);
+		console.log(errorCode + " " + errorMessage);
 		if (errorCode === 'auth/invalid-email') {
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("Please enter a valid email address");
-		}
-		else if (errorCode === 'auth/email-already-in-use'){
+		} else if (errorCode === 'auth/email-already-in-use') {
 			$("#signUpEmail").css('border-color', 'red');
 			$("#modalRegisterError").text("User already registered with that email address");
 		}
-	
-   });
+
+	});
 }
 
 //
@@ -658,11 +668,11 @@ function loginUser() {
 function logoutUser() {
 	auth().signOut().then(function() {
 		// Sign-out successful.
-		 emptyStockDisplay();
-		 //add function to clear watchlist 08/03/2017 11:40 PM
-		 stockChart();
-		 //add function to clear watchlist 08/03/2017 11:40 PM
-		 clearwatchlist();
+		emptyStockDisplay();
+		//add function to clear watchlist 08/03/2017 11:40 PM
+		stockChart();
+		//add function to clear watchlist 08/03/2017 11:40 PM
+		clearwatchlist();
 		$(".userButton").empty();
 	}).catch(function(error) {
 		// An error happened.
@@ -731,9 +741,3 @@ auth().onAuthStateChanged(function(user) {
 		$("tbody").empty()
 	}
 });
-
-// $("#logoutBtn").on("click", function(event) {
-// 	event.preventDefault();
-// 	console.log("logout");
-// 	logoutUser();
-// });
