@@ -361,17 +361,15 @@ function displayStock(response) {
 		options: options,
 		data: data
 	});
+
+	$("#watchStock").on("click", function(event) {
+		console.log("clicked");
+		if ($("#watchlist-col").find("table").length === 0) {
+			createWatchlist();
+		}
+		addToWatchlist();
+	});
 }
-
-$("#watchStock").on("click", function(event) {
-	console.log("clicked");
-	if ($("#watchlist-col").find("table").length === 0) {
-		createWatchlist();
-	}
-	addToWatchlist();
-});
-
-
 
 // Page Document Ready 08/01/2017
 $(document).ready(function() {
@@ -494,11 +492,15 @@ function addToWatchlist() {
 		checkwatchlist(authData.uid, savedName, savedExchange, savedSymbol, savedPrice);
 		console.log(recordexist);
 	} else {
-		$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
-			"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
-			"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
-			savedPrice + "</td><td class='changeTD'>" + 'N/A' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
-		alert("Data will save until session ends");
+		if ($("tbody").find("tr").length === 0) {
+			$("thead").detach();
+			$("tbody").append("<tr><td>" + "Please log in to save stock information" + "</td></tr>");
+		}
+		// $("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + savedName +
+		// 	"</td> + <td class='symbolTD'>" + savedSymbol + "</td> <td class='exchangeTD'>" + savedExchange +
+		// 	"</td><td class='savedPriceTD'>" + savedPrice + "</td><td class='currentPriceTD'>" +
+		// 	savedPrice + "</td><td class='changeTD'>" + 'N/A' + "</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+		// alert("Data will save until session ends");
 	}
 	//
 }
