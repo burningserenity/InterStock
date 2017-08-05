@@ -196,6 +196,7 @@ function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
 // Click event to query Quandl for stock information and display said information on the page
 $("#symbolsubmit").on("click", function(event) {
 	event.preventDefault();
+	$(".hideWell").css("visibility", "visible");
 	emptyStockDisplay();
 	// Remove and add stock chart
 	stockChart();
