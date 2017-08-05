@@ -18,6 +18,7 @@ var userEmail = "";
 var userPassword = "";
 var recordexist = false;
 var loadDiv;
+var newUser = false;
 
 // Quandl API
 // Example : https://www.quandl.com/api/v3/datasets/WIKI/FB.json?api_key=YOURAPIKEY
@@ -446,36 +447,41 @@ function createWatchlist() {
 
 
 function retrieveWatchlist(user) {
-	var user = auth().currentUser;
-	var userDir = database().ref().child("users").child(user.uid).orderByKey();
-	userDir.once("value").then(function(snapshot) {
-		snapshot.forEach(function(childSnapshot) {
+	if (!newUser) {
+		var user = auth().currentUser;
+		var userDir = database().ref().child("users").child(user.uid).orderByKey();
+		userDir.once("value").then(function(snapshot) {
+			snapshot.forEach(function(childSnapshot) {
 
-			var key = childSnapshot.key;
-			var childData = childSnapshot.val(); // childData will be the actual contents of the child
-			var exchangeVal = childSnapshot.val().StockExchange;
-			var nameVal = childSnapshot.val().StockName;
-			var priceVal = childSnapshot.val().Stockrecordprice;
-			var symbolVal = childSnapshot.val().StockSymbol;
-			createWatchlist();
-			$.ajax({
-				url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
-				method: "GET",
-				'data-type': 'jsonp'
-			}).done(function(response) {
-				var newPrice = response.dataset.data[0][1];
-				var currencyVal = priceVal.slice(0, 1);
-				var usePrice = priceVal.slice(1, priceVal.length);
-				var difference = newPrice - parseFloat(usePrice);
-				var useDiff = difference.toFixed(2);
-				$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + nameVal +
-					"</td> + <td class='symbolTD'>" + symbolVal + "</td> <td class='exchangeTD'>" + exchangeVal +
-					"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
-					currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + useDiff +
-					"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+				var key = childSnapshot.key;
+				var childData = childSnapshot.val(); // childData will be the actual contents of the child
+				var exchangeVal = childSnapshot.val().StockExchange;
+				var nameVal = childSnapshot.val().StockName;
+				var priceVal = childSnapshot.val().Stockrecordprice;
+				var symbolVal = childSnapshot.val().StockSymbol;
+				createWatchlist();
+				$.ajax({
+					url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
+					method: "GET",
+					'data-type': 'jsonp'
+				}).done(function(response) {
+					var newPrice = response.dataset.data[0][1];
+					var currencyVal = priceVal.slice(0, 1);
+					var usePrice = priceVal.slice(1, priceVal.length);
+					var difference = newPrice - parseFloat(usePrice);
+					var useDiff = difference.toFixed(2);
+					$("tbody").append("<tr class='deleteRow' data-id='1'><td class='stockNameTD'>" + nameVal +
+						"</td> + <td class='symbolTD'>" + symbolVal + "</td> <td class='exchangeTD'>" + exchangeVal +
+						"</td><td class='savedPriceTD'>" + priceVal + "</td><td class='currentPriceTD'>" +
+						currencyVal + newPrice + "</td><td class='changeTD'>" + currencyVal + useDiff +
+						"</td>" + '<td><button class="deleteBtn btn btn-danger btn-xs" href=""><span class="glyphicon glyphicon-trash"></span></button></td></tr>');
+				});
 			});
 		});
-	});
+	}
+	else {
+		newUser = false;
+	}
 }
 
 function addToWatchlist() {
@@ -608,6 +614,7 @@ function registerUser(username, userEmail, userPassword) {
 	$("#reenterpassword").css('border-color', '#CCC');
 	$("#inputpassword").css('border-color', '#CCC');
 	$("#Email").css('border-color', '#CCC');
+	newUser = true;
 
 	console.log(username + " " + userEmail + " " + userPassword);
 	auth().setPersistence(firebase.auth.Auth.Persistence.SESSION).then(function() {
@@ -686,6 +693,7 @@ function logoutUser() {
 		//add function to clear watchlist 08/03/2017 11:40 PM
 		clearwatchlist();
 		$(".userButton").empty();
+		$(".hideWell").css('visibility', 'hidden');
 	}).catch(function(error) {
 		// An error happened.
 	});
@@ -734,7 +742,6 @@ auth().onAuthStateChanged(function(user) {
 	$("#myModal").modal('hide');
 	checkwatchlistuser();
 	if (user) {
-		// $('<ul id="userNav" class="nav navbar-nav">').css('visibility', 'visible').appendTo('.userButton');
 		$('<li id="userDrop" class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret">').appendTo(".userButton");
 		$('<p>').text("Logged In As: " + auth().currentUser.email).appendTo(".userButton");
 		$('<ul id="userDropMenu" class="dropdown-menu">').css("visibility", "visible").appendTo('#userDrop');
