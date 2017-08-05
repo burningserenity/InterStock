@@ -172,23 +172,23 @@ function displaycarouselnews(newscar, newscar2, newscar3, newscar4, e) {
 			$(".img1").attr("src", newscar);
 			$(".hnews1").attr('href', newscar2);
 			$(".news1").html('<h4>' + newscar3 + '</h4>');
-			$(".srcnews1").html('<p>' + source + '</p>');
+			$(".srcnews1").html('<h5>' + source + '</p>');
 		case 1:
 			$(".img2").attr("src", newscar);
 			$(".hnews2").attr('href', newscar2);
 			$(".news2").html('<h4>' + newscar3 + '</h4>');
-			$(".srcnews2").html('<p>' + source + '</p>');
+			$(".srcnews2").html('<h5>' + source + '</p>');
 		case 2:
 			$(".img3").attr("src", newscar);
 			$(".hnews3").attr('href', newscar2);
 			$(".news3").html('<h4>' + newscar3 + '</h4>');
-			$(".srcnews3").html('<p>' + source + '</p>');
+			$(".srcnews3").html('<h5>' + source + '</p>');
 		case 3:
 
 			$(".img4").attr("src", newscar);
 			$(".hnews4").attr('href', newscar2);
 			$(".news4").html('<h4>' + newscar3 + '</h4>');
-			$(".srcnews4").html('<p>' + source + '</p>');
+			$(".srcnews4").html('<h5>' + source + '</p>');
 	}
 
 }
@@ -495,6 +495,7 @@ function addToWatchlist() {
 
 	if (authData) {
 		checkwatchlistuser(authData);
+		noClear = true;
 		checkwatchlist(authData.uid, savedName, savedExchange, savedSymbol, savedPrice);
 		console.log(recordexist);
 	} else {
