@@ -31,7 +31,6 @@ var newUser = false;
 //  Bombay Stock Exchange, India: BSE -> Prepend 'BOM' to each symbol
 
 // API Variables for Quandl
-var API_KEY = '8cvtFcrz_qNR_g2U9tGK';
 var queryURL = 'https://www.quandl.com/api/v3/datasets/';
 var exchange = "";
 var currency;
@@ -101,7 +100,6 @@ var queryCount = 0;
 // The Wall Street Journal: the-wall-street-journal
 
 //API Variables for NewsAPI
-var API_KEY_NEWS = 'fd8cd0087c7249fb8f5fdcd0cfda2e95';
 var queryURL_NEWS = 'https://newsapi.org/v1/articles?source=';
 var newsSrc = "";
 
@@ -212,7 +210,7 @@ $("#symbolsubmit").on("click", function(event) {
 	symbol = $("#symbolsearch").val().toUpperCase().trim();
 	// Put entire Quandl query into variable and log it to the console
 
-	stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY;
+	stringapi = queryURL + exchange + '/' + symbol + '.json?api_key=' + QUANDL_API_KEY;
 	//console.log(stringapi);
 	// Check if the user selected a specific exchange or not
 	if (exchange === "") {
@@ -226,7 +224,7 @@ $("#symbolsubmit").on("click", function(event) {
 			}
 			loadDiv = $("stockName");
 			$.ajax({
-					url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+					url: queryURL + exchange + '/' + symbol + '.json?api_key=' + QUANDL_API_KEY,
 					method: "GET",
 					'data-type': 'jsonp'
 				}).done(function(response) {
@@ -262,7 +260,7 @@ $("#symbolsubmit").on("click", function(event) {
 			symbol = "BOM" + symbol;
 		}
 		$.ajax({
-				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + API_KEY,
+				url: queryURL + exchange + '/' + symbol + '.json?api_key=' + QUANDL_API_KEY,
 				method: "GET",
 				'data-type': 'jsonp'
 			}).done(function(response) {
@@ -461,7 +459,7 @@ function retrieveWatchlist(user) {
 				var symbolVal = childSnapshot.val().StockSymbol;
 				createWatchlist();
 				$.ajax({
-					url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + API_KEY,
+					url: queryURL + exchangeVal + '/' + symbolVal + '.json?api_key=' + QUANDL_API_KEY,
 					method: "GET",
 					'data-type': 'jsonp'
 				}).done(function(response) {
